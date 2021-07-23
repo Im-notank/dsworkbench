@@ -714,7 +714,7 @@ public class RetimerDataPanel extends WizardPage {
         } else {
             Village target = jTargetCoord.getVillage();
             if (target == null) {
-                result = trans.get("-unbekannt-");
+                result = trans.get("unbekannt");
                 jWarningLabel.setVisible(true);
                 jWarningLabel.setText(trans.get("Zieldorfungueltig"));
             } else {

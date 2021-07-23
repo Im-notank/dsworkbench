@@ -87,6 +87,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         tThread.start();
 
         jCheckBox1.setSelected(GlobalOptions.getProperties().getBoolean("clock.alwaysOnTop"));
+        jCheckBoxRemoveOld.setSelected(GlobalOptions.getProperties().getBoolean("clock.delete_old"));
 
         setAlwaysOnTop(jCheckBox1.isSelected());
         cp = new ColoredProgressBar(0, 1000);
@@ -149,7 +150,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         }
         
         for (final TimerPanel p : timers.toArray(new TimerPanel[]{})) {
-            if (p.isExpired()) {
+            if (p.newExpired()) {
                 SystrayHelper.showInfoMessage(String.format(trans.get("istabgelaufen"), p.getName()));
                 //moved playing the sound to a new Thread because of graphic problems
                 new Thread(new Runnable() {
@@ -158,7 +159,9 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
                         playSound(p.getSound());
                     }
                 }).start();
-                removeTimer(p);
+                if(jCheckBoxRemoveOld.isSelected()) {
+                    removeTimer(p);
+                }
             } else {
                 p.update();
             }
@@ -294,6 +297,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jTimerName = new org.jdesktop.swingx.JXTextField();
+        jCheckBoxRemoveOld = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTimerContainer = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -338,7 +342,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jPanel1, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
         jCheckBox1.setText(trans.get("ImmerimVordergrund"));
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -348,7 +352,13 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
                 fireAlwaysOnTopChangedEvent(evt);
             }
         });
-        jPanel2.add(jCheckBox1, java.awt.BorderLayout.SOUTH);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jCheckBox1, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
@@ -443,7 +453,31 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         jPanel3.add(jTimerName, gridBagConstraints);
         jTimerName.getAccessibleContext().setAccessibleDescription(trans.get("BitteTimernameeingeben"));
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jPanel3, gridBagConstraints);
+
+        jCheckBoxRemoveOld.setSelected(true);
+        jCheckBoxRemoveOld.setText(trans.get("delete_old"));
+        jCheckBoxRemoveOld.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jCheckBoxRemoveOld.setMargin(new java.awt.Insets(5, 5, 5, 5));
+        jCheckBoxRemoveOld.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxRemoveOldfireAlwaysOnTopChangedEvent(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanel2.add(jCheckBoxRemoveOld, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -451,6 +485,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
         getContentPane().add(jPanel2, gridBagConstraints);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("AktiveTimer")));
@@ -545,6 +580,10 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
         JOptionPaneHelper.showInformationBox(this, trans.get("Timerentfernt"), removed + trans.get("Timerwurdenentfernt"));
     }//GEN-LAST:event_fireRemoveSelectedTimersEvent
 
+    private void jCheckBoxRemoveOldfireAlwaysOnTopChangedEvent(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxRemoveOldfireAlwaysOnTopChangedEvent
+        GlobalOptions.addProperty("clock.delete_old", Boolean.toString(jCheckBoxRemoveOld.isSelected()));
+    }//GEN-LAST:event_jCheckBoxRemoveOldfireAlwaysOnTopChangedEvent
+
     /**
      * @param args the command line arguments
      */
@@ -566,6 +605,7 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBoxRemoveOld;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

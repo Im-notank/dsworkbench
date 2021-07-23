@@ -919,6 +919,7 @@ ui.windows.ClockFrame.Aktivieren=Activate
 ui.windows.ClockFrame.Uhr=Clock
 ui.windows.ClockFrame.Lade=Load...
 ui.windows.ClockFrame.ImmerimVordergrund=Always in the foreground
+ui.windows.ClockFrame.delete_old=Delete outdated timers
 ui.windows.ClockFrame.Zeit=Time
 ui.windows.ClockFrame.Sound=Sound
 ui.windows.ClockFrame.Testen=Testing

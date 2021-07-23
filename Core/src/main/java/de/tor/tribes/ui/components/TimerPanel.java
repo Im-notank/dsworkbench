@@ -149,7 +149,16 @@ public class TimerPanel extends javax.swing.JPanel {
     public boolean isSelected() {
         return jSelectionBox.isSelected();
     }
-
+    
+    private boolean wasExpired = false;
+    public boolean newExpired() {
+        if(isExpired() && ! wasExpired) {
+            wasExpired = true;
+            return true;
+        }
+        return false;
+    }
+    
     public boolean isExpired() {
         return expires - System.currentTimeMillis() <= 0;
     }

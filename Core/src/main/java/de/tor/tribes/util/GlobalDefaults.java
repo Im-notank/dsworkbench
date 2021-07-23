@@ -75,6 +75,7 @@ public class GlobalDefaults {
         GLOBAL_DEFAULTS.addProperty("church.frame.alwaysOnTop", false);
         GLOBAL_DEFAULTS.addProperty("clipboard.notification", true);
         GLOBAL_DEFAULTS.addProperty("clock.alwaysOnTop", false);
+        GLOBAL_DEFAULTS.addProperty("clock.delete_old", true);
         GLOBAL_DEFAULTS.addProperty("command.sleep.time", 150);
         GLOBAL_DEFAULTS.addProperty("conquers.frame.alwaysOnTop", false);
         GLOBAL_DEFAULTS.addProperty("default.browser", "");
