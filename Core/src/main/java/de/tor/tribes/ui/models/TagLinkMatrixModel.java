@@ -22,6 +22,8 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.editors.MultiBooleanTableCellEditor;
 import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.tag.TagManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +35,8 @@ import javax.swing.table.AbstractTableModel;
  * @author Torridity
  */
 public class TagLinkMatrixModel extends AbstractTableModel {
-
+    private Translator trans = TranslationManager.getTranslator("ui.models.TagLinkMatrixModel");
+    
     private String[] columnNames = null;
     private Object[][] values = null;
     private Tag[] rowTags = null;
@@ -53,7 +56,7 @@ public class TagLinkMatrixModel extends AbstractTableModel {
 
         List<String> sColumns = new LinkedList<>();
         sColumns.add("");
-        sColumns.add("Alle");
+        sColumns.add(trans.get("Alle"));
         for (Integer iCont : continents) {
             String contString = "K" + ((iCont < 10) ? "0" : "") + iCont;
             sColumns.add(contString);
@@ -151,48 +154,48 @@ public class TagLinkMatrixModel extends AbstractTableModel {
                 String relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE1)) {
                     if (group1.length() > 0) {
-                        group1.append(" UND ");
+                        group1.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
                         relation += name;
                     } else {
-                        relation += "(" + name + " UND " + columnNames[j] + ")";
+                        relation += "(" + name + trans.get(" UND ") + columnNames[j] + ")";
                     }
                     group1.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE2)) {
                     if (group2.length() > 0) {
-                        group2.append(" UND ");
+                        group2.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
                         relation += name;
                     } else {
-                        relation += "(" + name + " UND " + columnNames[j] + ")";
+                        relation += "(" + name + " " + trans.get("UND") + " " + columnNames[j] + ")";
                     }
                     group2.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE3)) {
                     if (group3.length() > 0) {
-                        group3.append(" UND ");
+                        group3.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
                         relation += name;
                     } else {
-                        relation += "(" + name + " UND " + columnNames[j] + ")";
+                        relation += "(" + name + " " + trans.get("UND") + " " + columnNames[j] + ")";
                     }
                     group3.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE4)) {
                     if (group4.length() > 0) {
-                        group4.append(" UND ");
+                        group4.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
                         relation += name;
                     } else {
-                        relation += "(" + name + " UND " + columnNames[j] + ")";
+                        relation += "(" + name + " " + trans.get("UND") + " " + columnNames[j] + ")";
                     }
                     group4.append(relation);
                 }
@@ -205,19 +208,19 @@ public class TagLinkMatrixModel extends AbstractTableModel {
         }
         if (group2.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" ODER ");
+                builder.append(" ").append(trans.get("ODER")).append(" ");
             }
             builder.append("(").append(group2.toString()).append(")");
         }
         if (group3.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" ODER ");
+                builder.append(" ").append(trans.get("ODER")).append(" ");
             }
             builder.append("(").append(group3.toString()).append(")");
         }
         if (group4.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" ODER ");
+                builder.append(" ").append(trans.get("ODER")).append(" ");
             }
             builder.append("(").append(group4.toString()).append(")");
         }
@@ -238,48 +241,48 @@ public class TagLinkMatrixModel extends AbstractTableModel {
                 String relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE1)) {
                     if (group1.length() > 0) {
-                        group1.append(" und ");
+                        group1.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
-                        relation += "in Gruppe '" + name + "'";
+                        relation += trans.get("inGruppe") + " '" + name + "'";
                     } else {
-                        relation += "in Gruppe '" + name + "' sowie auf Kontinent " + columnNames[j];
+                        relation += trans.get("inGruppe") + " '" + name + "' " + trans.get("sowieaufKontinent ") + columnNames[j];
                     }
                     group1.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE2)) {
                     if (group2.length() > 0) {
-                        group2.append(" und ");
+                        group2.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
-                        relation += "in Gruppe '" + name + "'";
+                        relation += trans.get("inGruppe") + " '" + name + "'";
                     } else {
-                        relation += "in Gruppe '" + name + "' sowie auf Kontinent " + columnNames[j];
+                        relation += trans.get("inGruppe") + " '" + name + "' " + trans.get("sowieaufKontinent ") + columnNames[j];
                     }
                     group2.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE3)) {
                     if (group3.length() > 0) {
-                        group3.append(" und ");
+                        group3.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
-                        relation += "in Gruppe '" + name + "'";
+                        relation += trans.get("inGruppe") + " '" + name + "'";
                     } else {
-                        relation += "in Gruppe '" + name + "' sowie auf Kontinent " + columnNames[j];
+                        relation += trans.get("inGruppe") + " '" + name + "' " + trans.get("sowieaufKontinent ") + columnNames[j];
                     }
                     group3.append(relation);
                 }
                 relation = "";
                 if (MultiBooleanTableCellEditor.isOptionSet((Integer) value[j], MultiBooleanTableCellEditor.VALUE4)) {
                     if (group4.length() > 0) {
-                        group4.append(" und ");
+                        group4.append(" ").append(trans.get("UND")).append(" ");
                     }
                     if (j == 1) {
-                        relation += "in Gruppe '" + name + "'";
+                        relation += trans.get("inGruppe") + " '" + name + "'";
                     } else {
-                        relation += "in Gruppe '" + name + "' sowie auf Kontinent " + columnNames[j];
+                        relation += trans.get("inGruppe") + " '" + name + "' " + trans.get("sowieaufKontinent ") + columnNames[j];
                     }
                     group4.append(relation);
                 }
@@ -292,26 +295,26 @@ public class TagLinkMatrixModel extends AbstractTableModel {
         }
         if (group2.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" <BR/>oder<BR/> ");
+                builder.append(" <BR/>").append(trans.get("ODER")).append("<BR/> ");
             }
             builder.append("<b><font color='#1C7B38'>").append(group2.toString()).append("</font></b>");
         }
         if (group3.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" <BR/>oder<BR/> ");
+                builder.append(" <BR/>").append(trans.get("ODER")).append("<BR/> ");
             }
             builder.append("<b><font color='#0000FF'>").append(group3.toString()).append("</font></b>");
         }
         if (group4.length() > 0) {
             if (builder.length() > 0) {
-                builder.append(" <BR/>oder<BR/> ");
+                builder.append(" <BR/>").append(trans.get("ODER")).append("<BR/> ");
             }
             builder.append("<b><font color='#FF00FF'>").append(group4.toString()).append("</font></b>");
         }
         return builder.toString();
 
     }
-
+    
     public static void main(String[] args) {
         String data = "<html>Der verknüpfte Tag ist<BR/><b><font color='#0000FF'>in Gruppe 'Off' und auf Kontinent K74 und in Gruppe 'Off_F' und auf Kontinent K74 und in Gruppe 'Off_R' und auf Kontinent K83</font></b><BR/> oder <BR/> <b><font color='#FF00FF'>in Gruppe 'Def_R' und in Gruppe 'Deff'</font></b></html>";
         JOptionPane.showMessageDialog(null, data);

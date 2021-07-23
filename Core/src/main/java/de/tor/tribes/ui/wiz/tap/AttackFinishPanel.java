@@ -36,6 +36,8 @@ import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.JOptionPaneHelper;
 import de.tor.tribes.util.algo.types.TimeFrame;
 import de.tor.tribes.util.attack.StandardAttackManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -52,17 +54,12 @@ import org.netbeans.spi.wizard.WizardPanelNavResult;
  * @author Torridity
  */
 public class AttackFinishPanel extends WizardPage {
-
-    private static final String GENERAL_INFO = "<html>In diesem abschlie&szlig;enden Schritt werden alle Ergebnisse der Berechnung angezeigt. "
-            + "In der oberen Tabelle sind alle Ziele aufgelistet, sowie die prozentuale Angabe, wieviele der unter 'Ziele' angegebenen Anzahl von Angriffen auf "
-            + "dieses Dorf zugeteilt werden konnten. Die Einzelangriff kannst du dir anzeigen lassen, indem du eins oder mehrere Zeilen ausw&auml;hlst und auf den "
-            + "Button 'Details' klickst.<br/>"
-            + "Bist du mit dem Ergebnis zufrieden, hast du im unteren Bereich verschiedene M&ouml;glichkeiten, alle oder ausgew&auml;hlte Angriffe in einen neuen "
-            + "Angriffsplaner der Angriffs&uuml;bersicht zu &uuml;bertragen. Fahre mit der Maus &uuml;ber die einzelnen Buttons, um dir einen Tooltip mit der "
-            + "entsprechenden Erkl&auml;rung anzeigen zu lassen."
-            + "</html>";
+     private static Translator trans = TranslationManager.getTranslator("ui.wiz.tap.AttackFinishPanel");
+    private static final String GENERAL_INFO = trans.get("Ergebniseberechnung");
     private static AttackFinishPanel singleton = null;
     private VillageOverviewMapPanel overviewPanel = null;
+    
+   
     
     private static Logger logger = LogManager.getLogger();
     
@@ -74,7 +71,7 @@ public class AttackFinishPanel extends WizardPage {
     }
 
     public static String getDescription() {
-        return "Fertig";
+        return trans.get("Fertig");
     }
 
     public static String getStep() {
@@ -212,7 +209,7 @@ public class AttackFinishPanel extends WizardPage {
 
         jInfoTextPane.setEditable(false);
         jInfoTextPane.setContentType("text/html"); // NOI18N
-        jInfoTextPane.setText("<html>Du befindest dich im <b>Angriffsmodus</b>. Hier kannst du die Herkunftsd&ouml;rfer ausw&auml;hlen, die f&uuml;r Angriffe verwendet werden d&uuml;rfen. Hierf&uuml;r hast die folgenden M&ouml;glichkeiten:\n<ul>\n<li>Einf&uuml;gen von Dorfkoordinaten aus der Zwischenablage per STRG+V</li>\n<li>Einf&uuml;gen der Herkunftsd&ouml;rfer aus der Gruppen&uuml;bersicht</li>\n<li>Einf&uuml;gen der Herkunftsd&ouml;rfer aus dem SOS-Analyzer</li>\n<li>Einf&uuml;gen der Herkunftsd&ouml;rfer aus Berichten</li>\n<li>Einf&uuml;gen aus der Auswahlübersicht</li>\n<li>Manuelle Eingabe</li>\n</ul>\n</html>\n");
+        jInfoTextPane.setText(trans.get("Angriffsmodus_Herkunft"));
         jInfoScrollPane.setViewportView(jInfoTextPane);
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Angriffsdetails"));
@@ -230,6 +227,8 @@ public class AttackFinishPanel extends WizardPage {
         ));
         jScrollPane2.setViewportView(jXDetailsTable);
 
+        jScrollPane2.getAccessibleContext().setAccessibleName(trans.get("Angriffsdetails"));
+
         jSummaryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Zusammenfassung"));
         jSummaryPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -240,6 +239,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jSummaryPanel.add(jLabel2, gridBagConstraints);
+        jLabel2.getAccessibleContext().setAccessibleName(trans.get("AngegriffeneZiele"));
 
         jAttackedTargets.setText("0");
         jAttackedTargets.setToolTipText("");
@@ -258,6 +258,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jSummaryPanel.add(jLabel4, gridBagConstraints);
+        jLabel4.getAccessibleContext().setAccessibleName(trans.get("ZugeteilteAngriffe"));
 
         jOverallAttacks.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -275,6 +276,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jSummaryPanel.add(jLabel6, gridBagConstraints);
+        jLabel6.getAccessibleContext().setAccessibleName(trans.get("VerwendeteHerkunftsdoerfer"));
 
         jUsedSourceVillages.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -292,6 +294,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jSummaryPanel.add(jLabel3, gridBagConstraints);
+        jLabel3.getAccessibleContext().setAccessibleName(trans.get("VollbelegteZiele"));
 
         jPerfectTargets.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -301,6 +304,8 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jSummaryPanel.add(jPerfectTargets, gridBagConstraints);
+
+        jSummaryPanel.getAccessibleContext().setAccessibleName(trans.get("Zusammenfassung"));
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -313,8 +318,8 @@ public class AttackFinishPanel extends WizardPage {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Informationen einblenden");
-        jLabel1.setToolTipText("Blendet Informationen zu dieser Ansicht und zu den Datenquellen ein/aus");
+        jLabel1.setText(trans.get("Informationeneinblenden"));
+        jLabel1.setToolTipText(trans.get("BlendetInformationenEinAus"));
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -331,7 +336,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel2.setPreferredSize(new java.awt.Dimension(650, 613));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Angegriffene Ziele"));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("AngegriffeneZiele")));
 
         jxResultsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -355,11 +360,11 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel2.add(jScrollPane1, gridBagConstraints);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Abschließende Aktionen"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("AbschliessendeAktionen")));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/48x48/half_axe_clipboard.png"))); // NOI18N
-        jButton1.setToolTipText("Alle Angriffe in die Befehlsübersicht übertragen");
+        jButton1.setToolTipText(trans.get("AlleAngriffeindieBefehlsuebersichtuebertragen"));
         jButton1.setMaximumSize(new java.awt.Dimension(70, 70));
         jButton1.setMinimumSize(new java.awt.Dimension(70, 70));
         jButton1.setPreferredSize(new java.awt.Dimension(70, 70));
@@ -376,7 +381,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 20);
         jPanel3.add(jButton1, gridBagConstraints);
 
-        jButton2.setToolTipText("<html>Ziele entfernen, auf die weniger als die unten angezeigte Prozentzahl der max. Angriffe laufen.<br/>\nDurch die Entfernung werden ggf. Herkunftsd&ouml;rfer 'frei', die für andere Ziele verwendet werden können.</html>");
+        jButton2.setToolTipText(trans.get("Zieleentfernenaufdieweniger"));
         jButton2.setMaximumSize(new java.awt.Dimension(70, 70));
         jButton2.setMinimumSize(new java.awt.Dimension(70, 70));
         jButton2.setPreferredSize(new java.awt.Dimension(70, 70));
@@ -410,7 +415,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel3.add(jSlider1, gridBagConstraints);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/48x48/full_axe_clipboard.png"))); // NOI18N
-        jButton3.setToolTipText("Nur volle Angriffe in die Befehlsübersicht übertragen");
+        jButton3.setToolTipText(trans.get("NurvolleAngriffeindieBefehlsuebersichtuebertragen"));
         jButton3.setMaximumSize(new java.awt.Dimension(70, 70));
         jButton3.setMinimumSize(new java.awt.Dimension(70, 70));
         jButton3.setPreferredSize(new java.awt.Dimension(70, 70));
@@ -428,7 +433,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel3.add(jButton3, gridBagConstraints);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/48x48/selection_axe_clipboard.png"))); // NOI18N
-        jButton4.setToolTipText("Ausgewählte Angriffe in die Befehlsübersicht übertragen");
+        jButton4.setToolTipText(trans.get("AusgewaehlteAngriffeindieBefehlsuebersichtuebertragen"));
         jButton4.setMaximumSize(new java.awt.Dimension(70, 70));
         jButton4.setMinimumSize(new java.awt.Dimension(70, 70));
         jButton4.setPreferredSize(new java.awt.Dimension(70, 70));
@@ -450,7 +455,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel1.setPreferredSize(new java.awt.Dimension(361, 60));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jXLabel1.setText("Standardangriff für Offs:");
+        jXLabel1.setText(trans.get("StandardangriffOffs"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -458,7 +463,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jXLabel1, gridBagConstraints);
 
-        jXLabel2.setText("Standardangriff für Fakes:");
+        jXLabel2.setText(trans.get("StandardangriffFakes"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -515,7 +520,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel4.add(jPanel5, gridBagConstraints);
 
         jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/search.png"))); // NOI18N
-        jToggleButton1.setToolTipText("Informationskarte vergrößern");
+        jToggleButton1.setToolTipText(trans.get("Informationskartevergroessern"));
         jToggleButton1.setMaximumSize(new java.awt.Dimension(100, 23));
         jToggleButton1.setMinimumSize(new java.awt.Dimension(100, 23));
         jToggleButton1.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -532,7 +537,7 @@ public class AttackFinishPanel extends WizardPage {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
         jPanel4.add(jToggleButton1, gridBagConstraints);
 
-        jExpertView.setText("Expertenansicht");
+        jExpertView.setText(trans.get("Expertenansicht"));
         jExpertView.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fireChangeExpertViewEvent(evt);
@@ -550,7 +555,7 @@ public class AttackFinishPanel extends WizardPage {
         jPanel2.add(jPanel4, gridBagConstraints);
 
         jToggleButton2.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-        jToggleButton2.setText("Zusammenfassung anzeigen");
+        jToggleButton2.setText(trans.get("Zusammenfassunganzeigen"));
         jToggleButton2.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 fireShowHideSummaryEvent(evt);
@@ -583,10 +588,10 @@ public class AttackFinishPanel extends WizardPage {
     private void fireHideInfoEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireHideInfoEvent
         if (jXCollapsiblePane1.isCollapsed()) {
             jXCollapsiblePane1.setCollapsed(false);
-            jLabel1.setText("Informationen ausblenden");
+            jLabel1.setText(trans.get("Informationenausblenden"));
         } else {
             jXCollapsiblePane1.setCollapsed(true);
-            jLabel1.setText("Informationen einblenden");
+            jLabel1.setText(trans.get("Informationeneinblenden"));
         }
     }//GEN-LAST:event_fireHideInfoEvent
 
@@ -604,15 +609,15 @@ public class AttackFinishPanel extends WizardPage {
 
         if (!targetsToRemove.isEmpty()) {
             if (AttackTargetPanel.getSingleton().removeTargets(targetsToRemove)) {
-                JOptionPaneHelper.showInformationBox(this, targetsToRemove.size() + " Ziel(e) wurden entfernt. Wechsle nun zum vorherigen Schritt\n"
-                        + "und führe die Berechnung erneut durch.", "Information");
+                JOptionPaneHelper.showInformationBox(this, targetsToRemove.size() + trans.get("Zielwurdenentfernt")
+                        + trans.get("Berechnungerneutdurch"), trans.get("Information"));
                 ValidationPanel.getSingleton().setup();
                 AttackSourceFilterPanel.getSingleton().setup();
             } else {
-                JOptionPaneHelper.showInformationBox(this, "Es wurden alle Ziele entfernt.\nBitte wähle neue Ziele oder verwende die bisherigen Erbgenisse.", "Information");
+                JOptionPaneHelper.showInformationBox(this, trans.get("EswurdenalleZieleentfernt"), trans.get("Information"));
             }
         } else {
-            JOptionPaneHelper.showInformationBox(this, "Keine entsprechenden Ziele gefunden.", "Information");
+            JOptionPaneHelper.showInformationBox(this, trans.get("KeineentsprechendenZielegefunden"), trans.get("Information"));
         }
     }//GEN-LAST:event_fireRecalculateEvent
 
@@ -690,16 +695,16 @@ public class AttackFinishPanel extends WizardPage {
     private void changeExpertView() {
         if (jExpertView.isSelected()) {
             jScrollPane1.setViewportView(jXDetailsTable);
-            jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Zieldetails"));
+            jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("Zieldetails")));
         } else {
             jScrollPane1.setViewportView(jxResultsTable);
-            jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Angegriffene Ziele"));
+            jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("AngegriffeneZiele")));
         }
     }
 
     private void transferToAttackView(List<Attack> pToTransfer) {
         if (pToTransfer.isEmpty()) {
-            JOptionPaneHelper.showInformationBox(this, "Keine Angriffe gewählt", "Information");
+            JOptionPaneHelper.showInformationBox(this, trans.get("KeineAngriffegewaehlt"), trans.get("Information"));
             return;
         }
 

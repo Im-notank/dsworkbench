@@ -16,6 +16,9 @@
 package de.tor.tribes.types;
 
 import de.tor.tribes.util.ServerSettings;
+import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,8 +33,8 @@ import org.apache.logging.log4j.Logger;
  * @author Charon
  */
 public class TimeSpan implements Comparable<TimeSpan> {
-
-  private static Logger logger = LogManager.getLogger("AttackTableModel");
+  private static Logger logger = LogManager.getLogger("TimeSpan");
+  private Translator trans = TranslationManager.getTranslator("types.TimeSpan");
   
   @Override
   public TimeSpan clone() throws CloneNotSupportedException {
@@ -134,20 +137,20 @@ public class TimeSpan implements Comparable<TimeSpan> {
   }
 
   public String getValidityInfo() {
-    String typeStr = (getDirection() == DIRECTION.SEND)?("Abschick"):("Ankunfts");
+    String typeStr = (getDirection() == DIRECTION.SEND)?(trans.get("Abschick")):(trans.get("Ankunfts"));
     if (isValidAtExactTime() && getSpan().getMinimum() < System.currentTimeMillis()) {
       //exact date is in past
-      return typeStr + "datum in der Vergangenheit";
+      return typeStr + trans.get("datuminderVergangenheit");
     } else if (isValidAtSpecificDay()) {
       if (getDate().getTime() < System.currentTimeMillis()) {
-        return typeStr + "datum in der Vergangenheit";
+        return typeStr + trans.get("datuminderVergangenheit");
       }
       if (getSpan().getMaximum() < System.currentTimeMillis()) {
         //start and end are in past
-        return typeStr + "zeitrahmen in der Vergangenheit";
+        return typeStr + trans.get("zeitrahmeninderVergangenheit");
       }
     } else if(isValidAtManualRange() && exactSpan.getMaximum() < System.currentTimeMillis()) {
-        return typeStr + "zeitrahmen in der Vergangenheit";
+        return typeStr + trans.get("zeitrahmeninderVergangenheit");
     }
 
     //date/frame is valid or we use each day
@@ -318,24 +321,26 @@ public class TimeSpan implements Comparable<TimeSpan> {
   @Override
   public String toString() {
     String result = null;
+    SimpleDateFormat fDate = TimeManager.getSimpleDateFormat(trans.get("dateFormat"));
+    SimpleDateFormat tDate = TimeManager.getSimpleDateFormat(trans.get("timeFormat"));
     
     if (isValidAtSpecificDay()) {
-      SimpleDateFormat fDate = new SimpleDateFormat("dd.MM.yy");
-      int startHour =(int) DateUtils.getFragmentInHours(new Date(getSpan().getMinimum()), Calendar.DATE);
-      int endHour =(int) DateUtils.getFragmentInHours(new Date(getSpan().getMaximum() + 1), Calendar.DATE);
+      int startHour = (int) DateUtils.getFragmentInHours(new Date(getSpan().getMinimum()), Calendar.DATE);
+      int endHour = (int) DateUtils.getFragmentInHours(new Date(getSpan().getMaximum() + 1), Calendar.DATE);
       
-      result = "Am " + fDate.format(getDate()) + ", von " + startHour + " Uhr bis " + endHour + " Uhr";
+      result = String.format(trans.get("specificDate"), fDate.format(getDate()), startHour, endHour);
     } else if (isValidAtEveryDay()) {
-      int startHour =(int) (getSpan().getMinimum() / DateUtils.MILLIS_PER_HOUR);
-      int endHour =(int) ((getSpan().getMaximum() + 1) / DateUtils.MILLIS_PER_HOUR);
+      int startHour = (int) (getSpan().getMinimum() / DateUtils.MILLIS_PER_HOUR);
+      int endHour = (int) ((getSpan().getMaximum() + 1) / DateUtils.MILLIS_PER_HOUR);
       
-      result = "T\u00E4glich, von " + startHour + " Uhr bis " + endHour + " Uhr";
+      result = String.format(trans.get("everyDate"), startHour, endHour);
     } else if (isValidAtExactTime()) {
-      SimpleDateFormat f = new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss 'Uhr'");
-      result = "Am " + f.format(getSpan().getMinimum());
+      Long min = getSpan().getMinimum();
+      result = String.format(trans.get("exactTime"), fDate.format(min), tDate.format(min));
     } else if (isValidAtManualRange()) {
-      SimpleDateFormat f = new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss 'Uhr'");
-      result = "Von " + f.format(new Date(getSpan().getMinimum())) + " bis " + f.format(new Date(getSpan().getMaximum()));
+      Long min = getSpan().getMinimum();
+      Long max = getSpan().getMaximum();
+      result = String.format(trans.get("manualTime"), fDate.format(min), tDate.format(min), fDate.format(max), tDate.format(max));
     } else {
       result = "";
     }

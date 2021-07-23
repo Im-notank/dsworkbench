@@ -19,6 +19,8 @@ import de.tor.tribes.types.FightReport;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.report.ReportManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.util.Date;
 import javax.swing.table.AbstractTableModel;
 import org.apache.logging.log4j.LogManager;
@@ -30,11 +32,16 @@ import org.apache.logging.log4j.Logger;
  * @author Torridity
  */
 public class ReportManagerTableModel extends AbstractTableModel {
-
+    private static Logger logger = LogManager.getLogger("ReportTableModel");
+    private Translator trans = TranslationManager.getTranslator("ui.models.ReportManagerTableModel");
+    
     private String sSet = null;
     private Class[] types = new Class[]{FightReport.status.class, Date.class, Tribe.class, Village.class, Tribe.class, Village.class, Integer.class, Byte.class};
-    private String[] colNames = new String[]{"Status", "Gesendet", "Angreifer", "Herkunft", "Verteidiger", "Ziel", "Typ", "Sonstiges"};
-    private static Logger logger = LogManager.getLogger("ReportTableModel");
+    private String[] colNames = new String[]{
+        trans.get("Status"), trans.get("Gesendet"), trans.get("Angreifer"),
+        trans.get("Herkunft"), trans.get("Verteidiger"), trans.get("Ziel"),
+        trans.get("Typ"), trans.get("Sonstiges")
+    };
 
     public ReportManagerTableModel(String pSet) {
         sSet = pSet;

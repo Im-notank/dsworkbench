@@ -52,12 +52,12 @@ public class DataHolder {
     private HashMap<String, Ally> mAlliesByTagName = null;
     private HashMap<String, Tribe> mTribesByName = null;
     private List<UnitHolder> mUnits = null;
+    private HashMap<String, UnitHolder> mUnitsByPlainName = null;;
     private HashMap<String, UnitHolder> mUnitsByName = null;
     private List<DataHolderListener> mListeners = null;
     private boolean bAborted = false;
     private static DataHolder SINGLETON = null;
     private boolean loading = false;
-    private int currentBonusType = 0;
     private boolean DATA_VALID = false;
 
     public static synchronized DataHolder getSingleton() {
@@ -91,6 +91,7 @@ public class DataHolder {
         mAlliesByName = new HashMap<>();
         mAlliesByTagName = new HashMap<>();
         mUnitsByName = new HashMap<>();
+        mUnitsByPlainName = new HashMap<>();
         mUnits = new LinkedList<>();
         DATA_VALID = false;
     }
@@ -126,10 +127,6 @@ public class DataHolder {
         return Constants.SERVER_DIR + "/" + GlobalOptions.getSelectedServer();
     }
 
-    public int getCurrentBonusType() {
-        return currentBonusType;
-    }
-
     public boolean isDataAvailable(String pServerId) {
         String dataDir = Constants.SERVER_DIR + "/" + pServerId;
         if (pServerId == null) {
@@ -159,12 +156,6 @@ public class DataHolder {
             if (settings.exists()) {
                 ServerSettings.getSingleton().loadSettings(GlobalOptions.getSelectedServer());
                 BuildingSettings.loadSettings(GlobalOptions.getSelectedServer());
-                try {
-                    currentBonusType = ServerSettings.getSingleton().getNewBonus();
-                } catch (Exception e) {
-                    //bonus_new field not found. Set to old type
-                    currentBonusType = 0;
-                }
             } else {
                 if (GlobalOptions.isOfflineMode()) {
                     fireDataHolderEvents("Servereinstellungen nicht gefunden. Download im Offline-Modus nicht möglich.");
@@ -194,13 +185,6 @@ public class DataHolder {
 
                     if (!BuildingSettings.loadSettings(GlobalOptions.getSelectedServer())) {
                         throw new Exception("Failed to load buildings");
-                    }
-                    
-                    try {
-                        currentBonusType = ServerSettings.getSingleton().getNewBonus();
-                    } catch (Exception e) {
-                        //bonus_new field not found. Set to old type
-                        currentBonusType = 0;
                     }
                 }
             }
@@ -935,6 +919,7 @@ public class DataHolder {
     private void parseUnits() {
         mUnits.clear();
         mUnitsByName.clear();
+        mUnitsByPlainName.clear();
         String unitFile = getDataDirectory() + "/units.xml";
         logger.debug("Loading units");
         try {
@@ -945,7 +930,8 @@ public class DataHolder {
                     UnitHolder unit = new UnitHolder(e);
                     if (unit.getPlainName() != null) {
                         mUnits.add(unit);
-                        mUnitsByName.put(unit.getPlainName(), unit);
+                        mUnitsByName.put(unit.getName(), unit);
+                        mUnitsByPlainName.put(unit.getPlainName(), unit);
                     }
                 } catch (Exception inner) {
                     logger.error("Failed loading unit", inner);
@@ -1160,9 +1146,23 @@ public class DataHolder {
     }
 
     /**
-     * Get a unit by its name
+     * Get a unit by its plainname
      */
     public UnitHolder getUnitByPlainName(String pName) {
+        UnitHolder result = null;
+        if (pName != null) {
+            result = mUnitsByPlainName.get(pName);
+        }
+        if (result == null) {
+            result = UnknownUnit.getSingleton();
+        }
+        return result;
+    }
+
+    /**
+     * Get a unit by its translated name
+     */
+    public UnitHolder getUnitByName(String pName) {
         UnitHolder result = null;
         if (pName != null) {
             result = mUnitsByName.get(pName);

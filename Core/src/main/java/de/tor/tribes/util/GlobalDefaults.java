@@ -17,7 +17,9 @@ package de.tor.tribes.util;
 
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.UnitHolder;
+import de.tor.tribes.types.Layer;
 import de.tor.tribes.util.bb.BasicFormatter;
+import de.tor.tribes.util.translation.TranslationManager;
 import java.awt.Toolkit;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.logging.log4j.LogManager;
@@ -59,6 +61,9 @@ public class GlobalDefaults {
     
     public static void loadDefaults() {
         GLOBAL_DEFAULTS = new PropertiesConfiguration();
+        GLOBAL_DEFAULTS.addProperty("ui.language", TranslationManager.DEFAULT_LANGUAGE);
+        TranslationManager.getSingleton().setLanguage(GlobalOptions.getProperty("ui.language"));
+        
         GLOBAL_DEFAULTS.addProperty("attack.movement", false);
         GLOBAL_DEFAULTS.addProperty("attack.planer.check.amount", 20000);
         GLOBAL_DEFAULTS.addProperty("attack.planer.enable.check", true);
@@ -146,17 +151,7 @@ public class GlobalDefaults {
             GLOBAL_DEFAULTS.addProperty(unit.getName() + ".color", "#ff0000");
         }
         
-        GLOBAL_DEFAULTS.addProperty("layer.order",
-                "Markierungen;" +
-                "Dörfer;" +
-                "Dorfsymbole;" +
-                "Truppendichte;" +
-                "Notizmarkierungen;" +
-                "Angriffe;" +
-                "Unterstützungen;" +
-                "Zeichnungen;" +
-                "Kirchenradien;" +
-                "Wachturmradien");
+        GLOBAL_DEFAULTS.addProperty("layer.order", Layer.getDefaultLayerString());
       
         //Default templates
         GLOBAL_DEFAULTS.addProperty("attack.template.header", "<Standard>");

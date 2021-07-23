@@ -17,6 +17,7 @@ package de.tor.tribes.ui.models;
 
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.UnitHolder;
+import de.tor.tribes.types.Layer;
 import de.tor.tribes.types.ext.Ally;
 import de.tor.tribes.types.ext.NoAlly;
 import de.tor.tribes.types.ext.Tribe;
@@ -25,6 +26,8 @@ import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.panels.MapPanel;
 import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.util.DSCalculator;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.troops.TroopsManager;
 import de.tor.tribes.util.troops.VillageTroopsHolder;
 import java.text.NumberFormat;
@@ -43,8 +46,8 @@ import org.apache.logging.log4j.Logger;
  * @author Torridity
  */
 public class TroopsTableModel extends AbstractTableModel {
-
     private static Logger logger = LogManager.getLogger("TroopTable");
+    private Translator trans = TranslationManager.getTranslator("ui.models.TroopsTableModel");
 
     public enum COL_CONTENT {
         ALLY, TRIBE, VILLAGE, LAST_CHANGE,
@@ -55,7 +58,7 @@ public class TroopsTableModel extends AbstractTableModel {
     private NumberFormat nf = NumberFormat.getInstance();
     private HashMap<String, ImageIcon> columnIcons = null;
     private List<COL_CONTENT> content = null;
-
+    
     public TroopsTableModel(String pSet) {
         sSet = pSet;
         nf.setMinimumFractionDigits(0);
@@ -80,10 +83,10 @@ public class TroopsTableModel extends AbstractTableModel {
         content.add(COL_CONTENT.VILLAGE);
         content.add(COL_CONTENT.LAST_CHANGE);
         columnIcons = new HashMap<>();
-        columnIcons.put("Stamm", null);
-        columnIcons.put("Spieler", null);
-        columnIcons.put("Dorf", null);
-        columnIcons.put("Stand", null);
+        columnIcons.put(trans.get("Stamm"), null);
+        columnIcons.put(trans.get("Spieler"), null);
+        columnIcons.put(trans.get("Dorf"), null);
+        columnIcons.put(trans.get("Stand"), null);
 
         for (UnitHolder pUnit : DataHolder.getSingleton().getUnits()) {
             switch (pUnit.getPlainName()) {
@@ -136,13 +139,13 @@ public class TroopsTableModel extends AbstractTableModel {
         content.add(COL_CONTENT.OUTSIDE);
         content.add(COL_CONTENT.INSIDE);
         content.add(COL_CONTENT.FARM);
-        columnIcons.put("Angriff", new ImageIcon("graphics/icons/att.png"));
-        columnIcons.put("Verteidigung", new ImageIcon("graphics/icons/def.png"));
-        columnIcons.put("Verteidigung (Kavallerie)", new ImageIcon("graphics/icons/def_cav.png"));
-        columnIcons.put("Verteidigung (Bogen)", new ImageIcon("graphics/icons/def_archer.png"));
-        columnIcons.put("Unterstützungen außerhalb", new ImageIcon("graphics/icons/move_out.png"));
-        columnIcons.put("Unterstützungen innerhalb", new ImageIcon("graphics/icons/move_in.png"));
-        columnIcons.put("Bauernhofbedarf", new ImageIcon("graphics/icons/farm.png"));
+        columnIcons.put(trans.get("Angriff"), new ImageIcon("graphics/icons/att.png"));
+        columnIcons.put(trans.get("Verteidigung"), new ImageIcon("graphics/icons/def.png"));
+        columnIcons.put(trans.get("VerteidigungKavallerie"), new ImageIcon("graphics/icons/def_cav.png"));
+        columnIcons.put(trans.get("VerteidigungBogen"), new ImageIcon("graphics/icons/def_archer.png"));
+        columnIcons.put(trans.get("Unterstuetzungenaussserhalb"), new ImageIcon("graphics/icons/move_out.png"));
+        columnIcons.put(trans.get("Unterstuetzungeninnerhalb"), new ImageIcon("graphics/icons/move_in.png"));
+        columnIcons.put(trans.get("Bauernhofbedarf"), new ImageIcon("graphics/icons/farm.png"));
         super.fireTableStructureChanged();
     }
 
@@ -226,53 +229,53 @@ public class TroopsTableModel extends AbstractTableModel {
         COL_CONTENT colContent = content.get(columnIndex);
         switch (colContent) {
             case ALLY:
-                return "Stamm";
+                return trans.get("Stamm");
             case TRIBE:
-                return "Spieler";
+                return trans.get("Spieler");
             case VILLAGE:
-                return "Dorf";
+                return trans.get("Dorf");
             case LAST_CHANGE:
-                return "Stand";
+                return trans.get("Stand");
             case SPEAR:
-                return "Speerträger";
+                return trans.getRaw("io.UnitHolder.spear");
             case SWORD:
-                return "Schwertkämpfer";
+                return trans.getRaw("io.UnitHolder.sword");
             case AXE:
-                return "Axtkämpfer";
+                return trans.getRaw("io.UnitHolder.axe");
             case ARCHER:
-                return "Bogenschütze";
+                return trans.getRaw("io.UnitHolder.archer");
             case SPY:
-                return "Späher";
+                return trans.getRaw("io.UnitHolder.spy");
             case LIGHT:
-                return "Leichte Kavallerie";
+                return trans.getRaw("io.UnitHolder.light");
             case MARCHER:
-                return "Berittener Bogenschütze";
+                return trans.getRaw("io.UnitHolder.marcher");
             case HEAVY:
-                return "Schwere Kavallerie";
+                return trans.getRaw("io.UnitHolder.heavy");
             case RAM:
-                return "Ramme";
+                return trans.getRaw("io.UnitHolder.ram");
             case CATA:
-                return "Katapult";
+                return trans.getRaw("io.UnitHolder.catapult");
             case KNIGHT:
-                return "Paladin";
-            case MILITIA:
-                return "Miliz";
+                return trans.getRaw("io.UnitHolder.knight");
             case SNOB:
-                return "Adelsgeschlecht";
+                return trans.getRaw("io.UnitHolder.snob");
+            case MILITIA:
+                return trans.getRaw("io.UnitHolder.militia");
             case OFF:
-                return "Angriff";
+                return trans.get("Angriff");
             case DEF:
-                return "Verteidigung";
+                return trans.get("Verteidigung");
             case DEF_CAV:
-                return "Verteidigung (Kavallerie)";
+                return trans.get("VerteidigungKavallerie");
             case DEF_ARCH:
-                return "Verteidigung (Bogen)";
+                return trans.get("VerteidigungBogen");
             case OUTSIDE:
-                return "Unterstützungen außerhalb";
+                return trans.get("Unterstuetzungenaussserhalb");
             case INSIDE:
-                return "Unterstützungen innerhalb";
+                return trans.get("Unterstuetzungeninnerhalb");
             case FARM:
-                return "Bauernhofbedarf";
+                return trans.get("Bauernhofbedarf");
         }
         return null;
     }
@@ -316,7 +319,7 @@ public class TroopsTableModel extends AbstractTableModel {
             case VILLAGE:
                 return h.getVillage();
             case LAST_CHANGE:
-                return h.getState();//new SimpleDateFormat("dd.MM.yy HH:mm:ss.SSS").format(h.getState());
+                return h.getState();
             case SPEAR:
                 return h.getTroops().getAmountForUnit("spear");
             case SWORD:
@@ -346,7 +349,7 @@ public class TroopsTableModel extends AbstractTableModel {
             case OFF:
                 return h.getTroops().getOffValue();
             case DEF:
-                return h.getTroops().getDefValue();
+                return h.getTroops().getDefInfantryValue();
             case DEF_CAV:
                 return h.getTroops().getDefCavalryValue();
             case DEF_ARCH:
@@ -426,6 +429,6 @@ public class TroopsTableModel extends AbstractTableModel {
                 break;
         }
         //update troops layer
-        MapPanel.getSingleton().getMapRenderer().initiateRedraw(MapRenderer.TROOP_LAYER);
+        MapPanel.getSingleton().getMapRenderer().initiateRedraw(Layer.TROOP_DENSITY);
     }
 }

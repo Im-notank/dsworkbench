@@ -17,6 +17,8 @@ package de.tor.tribes.ui.wiz;
 
 import de.tor.tribes.io.ServerManager;
 import de.tor.tribes.types.ext.Tribe;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -36,6 +38,7 @@ import org.netbeans.spi.wizard.WizardPanelNavResult;
  */
 public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
     private static Logger logger = LogManager.getLogger("ServerSettings");
+    private static Translator trans = TranslationManager.getTranslator("de.tor.tribes.ui.wiz.ServerSettings");
 
   private WizardController wizCtrl;
   private Map currentSettings = null;
@@ -57,25 +60,25 @@ public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
       } else {
         Arrays.sort(serverIds);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.addElement("-Bitte wählen-");
+        model.addElement(trans.get("please_select"));
         for (String entry : serverIds) {
           model.addElement(entry);
         }
         jServerBox.setModel(model);
         DefaultComboBoxModel tribeModel = new DefaultComboBoxModel();
-        tribeModel.addElement("-Bitte Server wählen-");
+        tribeModel.addElement(trans.get("please_select_server"));
         jTribeBox.setModel(tribeModel);
       }
     } catch (Exception e) {
       logger.error("Fehler bei der Server suche", e);
-      wizCtrl.setProblem("Keine Server gefunden. Bitte versuch es später noch einmal.");
+      wizCtrl.setProblem(trans.get("unable_to_find_servers"));
       isError = true;
     }
 
     jSelectServerButton.setEnabled(!isError);
 
     if (!isError) {
-      wizCtrl.setProblem("Bitte wähle einen Server und Spielernamen.");
+      wizCtrl.setProblem(trans.get("problem_select_server_and_player"));
     } else {
       jServerBox.setModel(new DefaultComboBoxModel(new Object[]{"Nicht möglich"}));
       jTribeBox.setModel(new DefaultComboBoxModel(new Object[]{"Nicht möglich"}));
@@ -110,9 +113,9 @@ public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
         jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 150));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(400, 150));
 
-        jTextPane1.setContentType("text/html");
         jTextPane1.setEditable(false);
-        jTextPane1.setText("<html>In diesem letzten Schritt wird der Server auf dem du spielst und dein Name im Spiel festgelegt.\nPrinzipiell kannst du DS Workbench für beliebig viele Server und mit jedem Spielernamen benutzen, einen Zugriff auf die eigentlichen DS-Accounts hast du dadurch jedoch nicht. \nVielmehr dient dies dazu, um z.B. gleichzeitig UV-Accounts in DS Workbench zu verwenden oder für einen Mitspieler Angriffe zu planen.</html>");
+        jTextPane1.setContentType("text/html"); // NOI18N
+        jTextPane1.setText(trans.get("main_text"));
         jTextPane1.setMaximumSize(new java.awt.Dimension(400, 400));
         jTextPane1.setMinimumSize(new java.awt.Dimension(400, 400));
         jTextPane1.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -131,7 +134,7 @@ public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 250));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Server");
+        jLabel1.setText(trans.get("server"));
         jLabel1.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel1.setMinimumSize(new java.awt.Dimension(100, 14));
         jLabel1.setPreferredSize(new java.awt.Dimension(100, 14));
@@ -151,7 +154,7 @@ public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel1.add(jServerBox, gridBagConstraints);
 
-        jLabel2.setText("Spielername");
+        jLabel2.setText(trans.get("playerName"));
         jLabel2.setMaximumSize(new java.awt.Dimension(100, 14));
         jLabel2.setMinimumSize(new java.awt.Dimension(100, 14));
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 14));
@@ -177,7 +180,7 @@ public class ServerSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 0);
         jPanel1.add(jTribeBox, gridBagConstraints);
 
-        jSelectServerButton.setText("Wählen");
+        jSelectServerButton.setText(trans.get("select"));
         jSelectServerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fireSelectServerEvent(evt);
@@ -204,8 +207,8 @@ private void fireSelectServerEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
     selection = (String) jServerBox.getSelectedItem();
   } catch (ClassCastException ignored) {
   }
-  if (selection == null || "-Bitte wählen-".equals(selection)) {
-    wizCtrl.setProblem("Bitte einen Server auswählen");
+  if (selection == null || trans.get("please_select").equals(selection)) {
+    wizCtrl.setProblem(trans.get("problem_select_server"));
     return;
   }
 
@@ -228,26 +231,26 @@ private void fireSelectServerEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:e
 
           if (tribes.isEmpty()) {
               logger.error("Keine Spieler gefunden");
-              wizCtrl.setProblem("Keine Spieler gefunden. Versuch es bitte später noch einmal.");
+              wizCtrl.setProblem(trans.get("problem_no_players_found"));
               return;
           }
           Collections.sort(tribes, Tribe.CASE_INSENSITIVE_ORDER);
           DefaultComboBoxModel model = new DefaultComboBoxModel();
-          model.addElement("-Bitte wählen-");
+          model.addElement(trans.get("please_select"));
           for (Tribe t : tribes) {
               model.addElement(t);
           }
           jTribeBox.setModel(model);
           currentSettings.put("server", selection);
-          wizCtrl.setProblem("Bitte einen Spielernamen wählen");
+          wizCtrl.setProblem(trans.get("problem_select_player"));
       } catch (Throwable t) {
           logger.error("Fehler beim download der Spielerdaten", t);
-          wizCtrl.setProblem("Fehler beim Download der Spielerdaten");
+          wizCtrl.setProblem(trans.get("problem_downloading"));
       }
 
   } catch (Throwable t) {
     logger.error("Fehler beim download der Spielerdaten", t);
-    wizCtrl.setProblem("Fehler beim Herunterladen der Serverinformationen.\nBitte versuch es später nochmal.");
+    wizCtrl.setProblem(trans.get("problem_downloading_server"));
   }
 
 }//GEN-LAST:event_fireSelectServerEvent
@@ -259,7 +262,7 @@ private void fireTribeChangedEvent(java.awt.event.ItemEvent evt) {//GEN-FIRST:ev
   } catch (ClassCastException ignored) {
   }
   if (tribe == null) {
-    wizCtrl.setProblem("Bitte einen Spielernamen wählen");
+    wizCtrl.setProblem(trans.get("problem_select_player"));
     return;
   }
   wizCtrl.setProblem(null);

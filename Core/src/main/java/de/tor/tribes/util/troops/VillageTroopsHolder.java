@@ -21,7 +21,9 @@ import de.tor.tribes.io.TroopAmountFixed;
 import de.tor.tribes.io.UnitHolder;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.BBSupport;
-import de.tor.tribes.util.interfaces.BBFormatterInterface;
+import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,7 @@ import org.jdom2.Element;
  */
 public class VillageTroopsHolder extends ManageableType implements BBSupport {
     private static Logger logger = LogManager.getLogger("VillageTroopsHolder");
+    private static Translator trans = TranslationManager.getTranslator("types.VillageTroopsHolder");
 
     public final static String[] UNIT_NAMES = new String[] {
         "spear", "sword", "axe", "archer", "spy", "light", "marcher",
@@ -43,7 +46,6 @@ public class VillageTroopsHolder extends ManageableType implements BBSupport {
     };
     
     public final static String[] BB_VARIABLES;
-    public final static String STANDARD_TEMPLATE;
     static {
         List<String> bbTemp = new ArrayList<>();
         bbTemp.addAll(Arrays.asList(new Village().getBBVariables()));
@@ -55,24 +57,6 @@ public class VillageTroopsHolder extends ManageableType implements BBSupport {
             bbTemp.add("%" + unitName.toUpperCase() + "_AMOUNT%");
         }
         BB_VARIABLES = bbTemp.toArray(new String[bbTemp.size()]);
-        
-        StringBuilder stdTemplate = new StringBuilder();
-        stdTemplate.append("[b]Truppenübersicht[/b]\n");
-        stdTemplate.append("[table]\n");
-        stdTemplate.append("[**]Dorf");
-        for (String unitName : UNIT_NAMES) {
-            stdTemplate.append("[||]%").append(unitName.toUpperCase()).append("_ICON%");
-        }
-        stdTemplate.append("[/**]\n");
-        stdTemplate.append(BBFormatterInterface.LIST_START);
-        stdTemplate.append("[*]%VILLAGE%");
-        for (String unitName : UNIT_NAMES) {
-            stdTemplate.append("[|]").append("%").append(unitName.toUpperCase()).append("_AMOUNT%");
-        }
-        stdTemplate.append("[/*]\n");
-        stdTemplate.append(BBFormatterInterface.LIST_END);
-        stdTemplate.append("[/table]");
-        STANDARD_TEMPLATE = stdTemplate.toString();
     }
     
     private Village village = null;
@@ -152,6 +136,10 @@ public class VillageTroopsHolder extends ManageableType implements BBSupport {
         }
         return result;
     }
+    
+    public static String getStandardTemplate() {
+        return trans.get("standard_template");
+    }
 
     @Override
     public String[] getBBVariables() {
@@ -175,7 +163,7 @@ public class VillageTroopsHolder extends ManageableType implements BBSupport {
         
         String updateVal = "-";
         if(state != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm:ss");
+            SimpleDateFormat sdf = TimeManager.getSimpleDateFormat("yy.MM.dd HH:mm:ss");
             updateVal = sdf.format(state);
         }
         replacements.add(updateVal);

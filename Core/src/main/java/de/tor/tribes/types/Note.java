@@ -20,12 +20,14 @@ import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.util.BBSupport;
+import de.tor.tribes.util.TimeManager;
 import de.tor.tribes.util.bb.VillageListFormatter;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,16 +40,20 @@ import org.jdom2.Element;
  * @author Torridity
  */
 public class Note extends ManageableType implements BBSupport {
-
     private static Logger logger = LogManager.getLogger("Note");
+    private static Translator trans = TranslationManager.getTranslator("types.Note");
+
     private final static String[] VARIABLES = new String[]{"%LAST_CHANGE%", "%NOTE_TEXT%", "%VILLAGE_LIST%", "%NOTE_ICON%"};
-    public final static String STANDARD_TEMPLATE = "[quote][b]Notiz vom:[/b] %LAST_CHANGE%\n\n[b]Zugeordnete Dörfer:[/b]\n%VILLAGE_LIST%\n\n[b]Notizsymbol:[/b] %NOTE_ICON%\n\n[b]Notiztext:[/b]\n\n%NOTE_TEXT%[/quote]";
     private String sNoteText = null;
     private List<Integer> villageIds = null;
     private long timestamp = -1;
     private int noteSymbol = -1;
     private int mapMarker = 0;
 
+    public static String getStandardTemplate() {
+        return trans.get("standard_template");
+    }
+    
     public Note() {
         villageIds = new LinkedList<>();
         timestamp = System.currentTimeMillis();
@@ -137,31 +143,6 @@ public class Note extends ManageableType implements BBSupport {
             return null;
         }
         return note;
-    }
-
-    public String toBBCode() {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append("[quote][b]Notiz vom:[/b] ");
-        buffer.append(new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date(timestamp)));
-        buffer.append("\n\n");
-        buffer.append("[b]Zugeordnete Dörfer:[/b]\n\n");
-        boolean isNext = false;
-        for (Integer id : villageIds) {
-            if (isNext) {
-                buffer.append(", ");
-            }
-            Village v = DataHolder.getSingleton().getVillagesById().get(id);
-            buffer.append(v.toBBCode());
-            isNext = true;
-        }
-        buffer.append("\n\n");
-        if (noteSymbol != -1) {
-            buffer.append("[b]Notizsymbol:[/b] [img]").append(ImageManager.getNoteImageURLOnServer(noteSymbol)).append("[/img]\n\n");
-        }
-        buffer.append("[b]Notiztext:[/b]\n\n");
-        buffer.append(getNoteText());
-        buffer.append("[/quote]\n");
-        return buffer.toString();
     }
 
     @Override
@@ -262,7 +243,7 @@ public class Note extends ManageableType implements BBSupport {
 
     @Override
     public String[] getReplacements(boolean pExtended) {
-        String lastChangeVal = new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date(timestamp));
+        String lastChangeVal = TimeManager.getSimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date(timestamp));
         String villageVal = "";
 
         List<Village> villages = new LinkedList<>();

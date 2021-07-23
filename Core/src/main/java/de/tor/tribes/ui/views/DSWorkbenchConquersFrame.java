@@ -27,6 +27,8 @@ import de.tor.tribes.ui.windows.AbstractDSWorkbenchFrame;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.conquer.ConquerManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +37,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +59,8 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * @author Charon
  */
 public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implements GenericManagerListener, ListSelectionListener, ActionListener {
-
+    private Translator trans = TranslationManager.getTranslator("ui.views.DSWorkbenchConquersFrame");
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Find")) {
@@ -75,7 +77,9 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
 
             for (int i = 0; i < jConquersTable.getColumnCount(); i++) {
                 TableColumnExt col = jConquersTable.getColumnExt(i);
-                if (col.isVisible() && !col.getTitle().equals("Entfernung") && !col.getTitle().equals("Dorfpunkte")) {
+                if (col.isVisible() &&
+                        !col.getTitle().equals(trans.getRaw("ui.models.ConquerTableModel.Entfernung")) &&
+                        !col.getTitle().equals(trans.getRaw("ui.models.ConquerTableModel.Dorfpunkte"))) {
                     model.addElement(col.getTitle());
                 }
             }
@@ -169,10 +173,10 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
 
     private void buildMenu() {
         JXTaskPane transferPane = new JXTaskPane();
-        transferPane.setTitle("Übertragen");
+        transferPane.setTitle(trans.get("Uebertragen"));
 
         JXButton button2 = new JXButton(new ImageIcon(DSWorkbenchConquersFrame.class.getResource("/res/ui/att_browser.png")));
-        button2.setToolTipText("Zentriert die markierte Eroberungen im Spiel");
+        button2.setToolTipText(trans.get("ZentriertmarkierteEroberungen"));
         button2.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -184,7 +188,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         transferPane.getContentPane().add(button2);
         if (!GlobalOptions.isMinimal()) {
             JXButton centerOnMap = new JXButton(new ImageIcon(DSWorkbenchConquersFrame.class.getResource("/res/center_24x24.png")));
-            centerOnMap.setToolTipText("Zentriert die markierte Eroberung auf der Hauptkarte");
+            centerOnMap.setToolTipText(trans.get("ZentriertmarkierteEroberungenHauptkarte"));
             centerOnMap.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -255,7 +259,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         infoPanel.setCollapsed(true);
         infoPanel.setInheritAlpha(false);
 
-        jXLabel1.setText("Keine Meldung");
+        jXLabel1.setText(trans.get("KeineMeldung"));
         jXLabel1.setOpaque(true);
         jXLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -294,7 +298,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jXPanel2.add(jSeparator1, gridBagConstraints);
 
-        jLastUpdateLabel.setText("Letzte Aktualisierung:");
+        jLastUpdateLabel.setText(trans.get("LetzteAktualisierung"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -305,7 +309,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         jXPanel2.add(jLastUpdateLabel, gridBagConstraints);
 
         jGreyConquersLabel.setBackground(new java.awt.Color(255, 204, 204));
-        jGreyConquersLabel.setText("Grau-Adelungen:");
+        jGreyConquersLabel.setText(trans.get("GrauAdelungen"));
         jGreyConquersLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -317,7 +321,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         jXPanel2.add(jGreyConquersLabel, gridBagConstraints);
 
         jFriendlyConquersLabel.setBackground(new java.awt.Color(0, 255, 255));
-        jFriendlyConquersLabel.setText("Aufadelungen:");
+        jFriendlyConquersLabel.setText(trans.get("Aufadelungen"));
         jFriendlyConquersLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -329,7 +333,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         jXPanel2.add(jFriendlyConquersLabel, gridBagConstraints);
 
         jSelfConquersLabel.setBackground(new java.awt.Color(213, 255, 128));
-        jSelfConquersLabel.setText("Selbstadelungen:");
+        jSelfConquersLabel.setText(trans.get("Selbstadelungen"));
         jSelfConquersLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -348,7 +352,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         jXPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jXPanel3.setInheritAlpha(false);
 
-        jButton12.setText("Anwenden");
+        jButton12.setText(trans.get("Anwenden"));
         jButton12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jButton12fireHideGlassPaneEvent(evt);
@@ -361,16 +365,16 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
             }
         });
 
-        jLabel21.setText("Suchbegriff");
+        jLabel21.setText(trans.get("Suchbegriff"));
 
-        jFilterRows.setText("Nur gefilterte Zeilen anzeigen");
+        jFilterRows.setText(trans.get("NurgefilterteZeilenanzeigen"));
         jFilterRows.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jFilterRowsfireUpdateFilterEvent(evt);
             }
         });
 
-        jFilterCaseSensitive.setText("Groß-/Kleinschreibung beachten");
+        jFilterCaseSensitive.setText(trans.get("GrossKleinschreibung"));
         jFilterCaseSensitive.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jFilterCaseSensitivefireUpdateFilterEvent(evt);
@@ -385,7 +389,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         jXColumnList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jXColumnList);
 
-        jLabel22.setText("Spalten");
+        jLabel22.setText(trans.get("Spalten"));
 
         javax.swing.GroupLayout jXPanel3Layout = new javax.swing.GroupLayout(jXPanel3);
         jXPanel3.setLayout(jXPanel3Layout);
@@ -432,10 +436,10 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
 
         jxFilterPane.add(jXPanel3, new java.awt.GridBagConstraints());
 
-        setTitle("Eroberungen");
+        setTitle(trans.get("Eroberungen"));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jConquersFrameAlwaysOnTop.setText("Immer im Vordergrund");
+        jConquersFrameAlwaysOnTop.setText(trans.get("ImmerimVordergrund"));
         jConquersFrameAlwaysOnTop.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fireConquersFrameAlwaysOnTopEvent(evt);
@@ -502,7 +506,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         if (e.getValueIsAdjusting()) {
             int selectionCount = jConquersTable.getSelectedRowCount();
             if (selectionCount != 0) {
-                showInfo(selectionCount + ((selectionCount == 1) ? " Eroberung gewählt" : " Eroberungen gewählt"));
+                showInfo(selectionCount + ((selectionCount == 1) ? trans.get("Eroberunggewaehlt") : trans.get("Eroberungengewaehlt")));
             }
         }
     }
@@ -590,7 +594,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
     private void centerVillageOnMap() {
         List<Conquer> selection = getSelectedConquers();
         if (selection.isEmpty()) {
-            showError("Keine Eroberung gewählt");
+            showError(trans.get("KeineEroberunggewaehlt"));
             return;
         }
         DSWorkbenchMainFrame.getSingleton().centerVillage(selection.get(0).getVillage());
@@ -600,7 +604,7 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
     private void centerVillageInGame() {
         List<Conquer> selection = getSelectedConquers();
         if (selection.isEmpty()) {
-            showError("Keine Eroberung gewählt");
+            showError(trans.get("KeineEroberunggewaehlt"));
             return;
         }
         BrowserInterface.centerVillage(selection.get(0).getVillage());
@@ -611,8 +615,13 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         ConquerManager.getSingleton().addManagerListener(this);
         //update view
         jConquersTable.getTableHeader().setDefaultRenderer(new DefaultTableHeaderRenderer());
-        UIHelper.initTableColums(jConquersTable, "Dorfpunkte", "Kontinent", "Entfernung");
-        UIHelper.initTableColums(jConquersTable, 90, "Zustimmung");
+        UIHelper.initTableColums(jConquersTable,
+                trans.getRaw("ui.models.ConquerTableModel.Dorfpunkte"),
+                trans.getRaw("ui.models.ConquerTableModel.Kontinent"),
+                trans.getRaw("ui.models.ConquerTableModel.Entfernung"));
+        UIHelper.initTableColums(jConquersTable, 90,
+                trans.getRaw("ui.models.ConquerTableModel.Zustimmung")
+        );
 
         ((ConquerTableModel) jConquersTable.getModel()).fireTableDataChanged();
     }
@@ -680,11 +689,10 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
 
     @Override
     public void dataChangedEvent(String pGroup) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(ConquerManager.getSingleton().getLastUpdate());
-        SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        Date c = new Date(ConquerManager.getSingleton().getLastUpdate());
+        SimpleDateFormat f = TimeManager.getSimpleDateFormat(trans.get("dateFormat"));
 
-        jLastUpdateLabel.setText("<html><b>Letzte Aktualisierung:</b> " + f.format(c.getTime()) + "</html>");
+        jLastUpdateLabel.setText(String.format(trans.get("updateLabel"), f.format(c)));
 
         int[] conquerStats = ConquerManager.getSingleton().getConquersStats();
         int conquers = ConquerManager.getSingleton().getConquerCount();
@@ -692,9 +700,9 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
         int percFriendly = (int) Math.rint(100.0 * (double) conquerStats[1] / (double) conquers);
         int percSelf = (int) Math.rint(100.0 * (double) conquerStats[2] / (double) conquers);
 
-        jGreyConquersLabel.setText("<html><b>Grau-Adelungen:</b> " + conquerStats[0] + " von " + conquers + " (" + percGrey + "%)" + "</html>");
-        jFriendlyConquersLabel.setText("<html><b>Aufadelungen:</b> " + conquerStats[1] + " von " + conquers + " (" + percFriendly + "%)" + "</html>");
-        jSelfConquersLabel.setText("<html><b>Selbstadelungen:</b> " + conquerStats[2] + " von " + conquers + " (" + percSelf + "%)" + "</html>");
+        jGreyConquersLabel.setText(String.format(trans.get("greyConquerLabel"), conquerStats[0], conquers, percGrey));
+        jFriendlyConquersLabel.setText(String.format(trans.get("friendlyConquersLabel"), conquerStats[1], conquers, percFriendly));
+        jSelfConquersLabel.setText(String.format(trans.get("selfConquersLabel"), conquerStats[2], conquers, percSelf));
         ((ConquerTableModel) jConquersTable.getModel()).fireTableDataChanged();
     }
 }

@@ -15,6 +15,8 @@
  */
 package de.tor.tribes.ui.wiz;
 
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.util.Map;
 import org.netbeans.spi.wizard.Wizard;
 import org.netbeans.spi.wizard.WizardPanel;
@@ -25,6 +27,7 @@ import org.netbeans.spi.wizard.WizardPanelNavResult;
  * @author Torridity
  */
 public class FinishPage extends javax.swing.JPanel implements WizardPanel {
+    private static Translator trans = TranslationManager.getTranslator("de.tor.tribes.ui.wiz.FinishPage");
 
     /** Creates new form FinishPage */
     public FinishPage() {
@@ -54,9 +57,9 @@ public class FinishPage extends javax.swing.JPanel implements WizardPanel {
         jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 150));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(400, 150));
 
-        jTextPane1.setContentType("text/html");
         jTextPane1.setEditable(false);
-        jTextPane1.setText("<html>Herzlichen Glückwunsch, die grundlegenden Einstellungen von DS Workbench ist nun abgeschlossen. Mit einem Klick auf <b>Fertig</b> wird DS Workbench mit den gewählten Einstellungen gestartet. Möchtest du daran noch etwas ändern, so kannst du entweder über <b>Zurück</b> auf die entsprechende Seite wechseln, oder später direkt in DS Workbench im Hauptmenü, welches im unteren Bild zu erkennen ist, auf alle Einstellungen zugreifen.</html>");
+        jTextPane1.setContentType("text/html"); // NOI18N
+        jTextPane1.setText(trans.get("main_text"));
         jTextPane1.setMaximumSize(new java.awt.Dimension(400, 400));
         jTextPane1.setMinimumSize(new java.awt.Dimension(400, 400));
         jTextPane1.setPreferredSize(new java.awt.Dimension(400, 400));

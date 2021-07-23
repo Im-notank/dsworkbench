@@ -31,6 +31,8 @@ import de.tor.tribes.util.ImageUtils;
 import de.tor.tribes.util.JOptionPaneHelper;
 import de.tor.tribes.util.PropertyHelper;
 import de.tor.tribes.util.attack.AttackManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -65,7 +67,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * @author Charon
  */
 public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements GenericManagerListener, ActionListener, Serializable {
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         AttackTableTab activeTab = getActiveTab();
@@ -107,8 +109,11 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 for (int i = 0; i < activeTab.getAttackTable().getColumnCount(); i++) {
                     TableColumnExt col = activeTab.getAttackTable().getColumnExt(i);
                     if (col.isVisible()) {
-                        if (!col.getTitle().equals("Einheit") && !col.getTitle().equals("Typ") && !col.getTitle().equals("Sonstiges")
-                                && !col.getTitle().equals("Abschickzeit") && !col.getTitle().equals("Ankunftzeit") && !col.getTitle().equals("Verbleibend")) {
+                        if (!col.getTitle().equals(trans.getRaw("ui.models.AttackTableModel.unit")) && 
+                                !col.getTitle().equals(trans.getRaw("ui.models.AttackTableModel.type")) &&
+                                !col.getTitle().equals(trans.getRaw("ui.models.AttackTableModel.send_time")) && 
+                                !col.getTitle().equals(trans.getRaw("ui.models.AttackTableModel.arrive_time")) && 
+                                !col.getTitle().equals(trans.getRaw("ui.models.AttackTableModel.remaining"))) {
                             model.addElement(col.getTitle());
                         }
                     }
@@ -119,6 +124,9 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }
     }
+    
+    private static Translator trans = TranslationManager.getTranslator("ui.views.DSWorkbenchAttackFrame");
+    
     private static Logger logger = LogManager.getLogger("AttackView");
     private static DSWorkbenchAttackFrame SINGLETON = null;
     private CountdownThread mCountdownThread = null;
@@ -244,15 +252,15 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
     private void buildMenu() {
         // <editor-fold defaultstate="collapsed" desc="Edit task pane">
         JXTaskPane editTaskPane = new JXTaskPane();
-        editTaskPane.setTitle("Bearbeiten");
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/document_new_24x24.png", "Neuen Plan erstellen", new MouseAdapter() {
+        editTaskPane.setTitle(trans.get("Bearbeiten"));
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/document_new_24x24.png", trans.get("NeuenPlanerstellen"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 createNewAttackPlan();
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/garbage.png", "Abgelaufene Befehle entfernen", new MouseAdapter() {
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/garbage.png", trans.get("AbgelaufeneBefehleentfernen"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -262,8 +270,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/att_changeTime.png", "Ankunfts-/Abschickzeit für markierte Befehle &auml;ndern. "
-                + "Die Startzeit der Befehle wird dabei entsprechend der Laufzeit angepasst", new MouseAdapter() {
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/att_changeTime.png", trans.get("AnkunftsAbschickzeit"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -273,8 +280,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/attack_unit_unknown.png", "Einheit und Befehlstyp für markierte Befehle &auml;ndern. "
-                + "Bitte beachte, dass sich beim &Auml;ndern der Einheit auch die Startzeit der Befehle &auml;ndern kann", new MouseAdapter() {
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/attack_unit_unknown.png", trans.get("EinheitundBefehlstyp"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -284,7 +290,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/standard_attacks.png", "Truppen aus den Standardangriffen neu laden "
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/standard_attacks.png", trans.get("TruppenStandardangriffen")
                 , new MouseAdapter() {
 
             @Override
@@ -295,7 +301,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser_unsent.png", "'&Uuml;bertragen' Feld für markierte Befehle l&ouml;schen", new MouseAdapter() {
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser_unsent.png", trans.get("UebertragenFeld"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -305,8 +311,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/pencil2.png", "Markierte Befehle auf der Karte einzeichen. "
-                + "Ist ein gewählter Befehl bereits eingezeichnet, so wird er nach Bet&auml;tigung dieses Buttons nicht mehr eingezeichnet", new MouseAdapter() {
+        editTaskPane.getContentPane().add(factoryButton("/res/ui/pencil2.png", trans.get("MarkierteBefehle"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -319,9 +324,8 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="Transfer task pane">
         JXTaskPane transferTaskPane = new JXTaskPane();
-        transferTaskPane.setTitle("Übertragen");
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_clipboard.png", "Markierte Befehle im Klartext in die Zwischenablage kopieren. "
-                + "Der Inhalt der Zwischenablage kann dann z.B. in Excel oder OpenOffice eingef&uuml;gt werden", new MouseAdapter() {
+        transferTaskPane.setTitle(trans.get("Uebertragen"));
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_clipboard.png", trans.get("MarkierteBefehleKlartext"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -332,8 +336,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }));
 
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_HTML.png", "Markierte Befehle in eine HTML Datei kopieren.<br/>"
-                + "Die erstellte Datei kann dann per eMail verschickt oder zum Abschicken von Befehlen ohne ge&ouml;ffnetesDS Workbench verwendet werden", new MouseAdapter() {
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_HTML.png", trans.get("MarkierteBefehleHTLM"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -344,10 +347,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }));
         
-         transferTaskPane.getContentPane().add(factoryButton("/res/ui/toTextFile.png", "Markierte Befehle auf mehrere Textdateien aufteilen.<br/>"
-                + "Es werden f&uuml;r jeden Spieler mehrere Textdateien erstellt, die eine einstellbare Anzahl an Angriffe in BB-Codes enthalten.<br/>"
-                 + "Diese k&ouml;nnen dann per Mail zugeschickt und weiterverarbeitet werden. Alternativ k&ouml;nnen die Textdateien f&uuml;r jeden Spieler<br/>"
-                 + "auch in eine ZIP-Datei gepackt werden, um sie einfacher zu versenden.", new MouseAdapter() {
+         transferTaskPane.getContentPane().add(factoryButton("/res/ui/toTextFile.png", trans.get("MarkierteBefehleTextdateien"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -358,7 +358,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }));
         
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/re-time.png", "Markierten Befehl in das Werkzeug 'Retimer' einfügen. Im Anschluss daran muss im Retimer noch die vermutete Einheit gewählt werden.", new MouseAdapter() {
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/re-time.png", trans.get("MarkierteBefehleWerkzeug"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -368,8 +368,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser.png", "Markierte Befehle in den Browser &uuml;bertragen. "
-                + "Im Normalfall werden nur einzelne Befehle &uuml;bertragen. F&uuml;r das &Uuml;bertragen mehrerer Befehle ist zuerst das Klickkonto entsprechend zu f&uuml;llen", new MouseAdapter() {
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser.png", trans.get("MarkierteBefehleBrowser"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -379,9 +378,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/export_js.png", "Markierte Befehle in ein Userscript schreiben. "
-                + "Das erstellte Userscript muss im Anschluss manuell im Browser installiert werden. "
-                + "Als Ergebnis bekommt man an verschiedenen Stellen im Spiel Informationen &uuml;ber geplante Befehle angezeigt.", new MouseAdapter() {
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/export_js.png", trans.get("MarkierteBefehleUserscript"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -392,7 +389,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }));
 
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/to_selection.png", "Herkunfts- oder Zield&ouml;rfer markierter Befehle in die Auswahl&uuml;bersicht übertragen.", new MouseAdapter() {
+        transferTaskPane.getContentPane().add(factoryButton("/res/ui/to_selection.png", trans.get("HerkunftsoderZielDoerfer"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -407,10 +404,9 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         // <editor-fold defaultstate="collapsed" desc="Misc task pane">
 
         JXTaskPane miscTaskPane = new JXTaskPane();
-        miscTaskPane.setTitle("Sonstiges");
+        miscTaskPane.setTitle(trans.get("Sonstiges"));
 
-        miscTaskPane.getContentPane().add(factoryButton("/res/ui/colorize.gif", "F&auml;rbt zusammengeh&ouml;rigen Befehle entsprechend der aktuellen Tabellensortierung ein<br/>"
-                + "<i>Farbalgorithmus &copy;bodhiBrute</i>", new MouseAdapter() {
+        miscTaskPane.getContentPane().add(factoryButton("/res/ui/colorize.gif", trans.get("Faerbtzusammen"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -421,7 +417,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         }));
 
-        miscTaskPane.getContentPane().add(factoryButton("/res/ui/att_alert_off.png", "Einen Alarm für den gewählten Befehl erstellen", new MouseAdapter() {
+        miscTaskPane.getContentPane().add(factoryButton("/res/ui/att_alert_off.png", trans.get("EinenAlarm"), new MouseAdapter() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -481,7 +477,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         jXPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jXPanel2.setInheritAlpha(false);
 
-        jButton12.setText("Anwenden");
+        jButton12.setText(trans.get("Anwenden"));
         jButton12.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fireHideGlassPaneEvent(evt);
@@ -494,16 +490,16 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
             }
         });
 
-        jLabel21.setText("Suchbegriff");
+        jLabel21.setText(trans.get("Suchbegriff"));
 
-        jFilterRows.setText("Nur gefilterte Zeilen anzeigen");
+        jFilterRows.setText(trans.get("NurgefilterteZeilenanzeigen"));
         jFilterRows.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fireUpdateFilterEvent(evt);
             }
         });
 
-        jFilterCaseSensitive.setText("Groß-/Kleinschreibung beachten");
+        jFilterCaseSensitive.setText(trans.get("GrossKleinschreibung"));
         jFilterCaseSensitive.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fireUpdateFilterEvent(evt);
@@ -518,7 +514,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         jXColumnList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jXColumnList);
 
-        jLabel22.setText("Spalten");
+        jLabel22.setText(trans.get("Spalten"));
 
         javax.swing.GroupLayout jXPanel2Layout = new javax.swing.GroupLayout(jXPanel2);
         jXPanel2.setLayout(jXPanel2Layout);
@@ -574,7 +570,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         });
         jXAttackPanel.add(jAttackTabPane, java.awt.BorderLayout.CENTER);
 
-        setTitle("Befehle");
+        setTitle(trans.get("Befehle"));
         setMinimumSize(new java.awt.Dimension(700, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -589,7 +585,7 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jAttackPanel, gridBagConstraints);
 
-        jAttackFrameAlwaysOnTop.setText("Immer im Vordergrund");
+        jAttackFrameAlwaysOnTop.setText(trans.get("ImmerimVordergrund"));
         jAttackFrameAlwaysOnTop.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fireAttackFrameAlwaysOnTopEvent(evt);
@@ -630,13 +626,13 @@ private void fireAttackFrameAlwaysOnTopEvent(javax.swing.event.ChangeEvent evt) 
 private void createNewAttackPlan() {                                           
     int unusedId = 1;
     while (unusedId < 1000) {
-        if (AttackManager.getSingleton().addGroup("Neuer Plan " + unusedId)) {
+        if (AttackManager.getSingleton().addGroup(trans.get("NeuerPlan") + unusedId)) {
             break;
         }
         unusedId++;
     }
     if (unusedId == 1000) {
-        JOptionPaneHelper.showErrorBox(DSWorkbenchAttackFrame.this, "Du hast mehr als 1000 Befehlspläne. Bitte lösche zuerst ein paar bevor du Neue erstellst.", "Fehler");
+        JOptionPaneHelper.showErrorBox(DSWorkbenchAttackFrame.this, trans.get("TausendeBefehlsplaene"), trans.get("Fehler"));
     }
 }
 
@@ -726,15 +722,15 @@ private void createNewAttackPlan() {
                     if(!newName.equals(tab.getAttackPlan())) {
                         newName = newName.trim();
                         if (newName.length() == 0) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, "'" + newName + "' ist ein ungültiger Planname", "Fehler");
+                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigerPlanname"), newName), trans.get("Fehler"));
                             return;
                         }
                         if (AttackManager.getSingleton().groupExists(newName)) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, "Es existiert bereits ein Plan mit dem Namen '" + newName + "'", "Fehler");
+                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("existiertbereits"), newName), trans.get("Fehler"));                        
                             return;
                         }
                         if (! JDomUtils.stringAllowed(newName)) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, "Der name '" + newName + "' enthält ungültige Sonderzeichen", "Fehler");
+                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigeSonderzeichen"), newName), trans.get("Fehler"));
                             return;
                         }
                         
@@ -748,8 +744,8 @@ private void createNewAttackPlan() {
                 public void event() {
                     int i = jAttackTabPane.indexOfTabComponent(component);
                     AttackTableTab tab = (AttackTableTab) jAttackTabPane.getComponentAt(i);
-                    if (JOptionPaneHelper.showQuestionConfirmBox(jAttackTabPane, "Befehlsplan '" + tab.getAttackPlan() +
-                            "' und alle darin enthaltenen Befehle wirklich löschen? ", "Löschen", "Nein", "Ja") == JOptionPane.YES_OPTION) {
+                    if (JOptionPaneHelper.showQuestionConfirmBox(jAttackTabPane, String.format(trans.get("Befehlewirklichloeschen"), tab.getAttackPlan())
+                            , trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
                         AttackManager.getSingleton().removeGroup(tab.getAttackPlan());
                     }
                 }
@@ -764,7 +760,7 @@ private void createNewAttackPlan() {
         }
         
         jAttackTabPane.addTab("", new javax.swing.ImageIcon(getClass().getResource("/res/ui/document_new_24x24.png")),
-                new JPanel(), "Leeren Plan erstellen");
+                new JPanel(), trans.get("LeerenPlanerstellen"));
         
         generatingAttackTabs = false;
         

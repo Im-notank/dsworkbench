@@ -40,7 +40,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -419,12 +418,12 @@ public class DSWorkbenchTagFrame extends AbstractDSWorkbenchFrame implements Gen
 
             if (extended) {
                 buffer.append("\n[size=8]Erstellt am ");
-                buffer.append(new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(Calendar.getInstance().getTime()));
+                buffer.append(TimeManager.getSimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date()));
                 buffer.append(" mit DS Workbench ");
                 buffer.append(Constants.VERSION).append(Constants.VERSION_ADDITION + "[/size]\n");
             } else {
                 buffer.append("\nErstellt am ");
-                buffer.append(new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(Calendar.getInstance().getTime()));
+                buffer.append(TimeManager.getSimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date()));
                 buffer.append(" mit DS Workbench ");
                 buffer.append(Constants.VERSION).append(Constants.VERSION_ADDITION + "\n");
             }
@@ -512,8 +511,11 @@ public class DSWorkbenchTagFrame extends AbstractDSWorkbenchFrame implements Gen
         StringBuilder data = new StringBuilder();
 
         try {
+            boolean first = true;
             for (Integer id : villageIds) {
-                data.append(id).append(";");
+                if(! first) data.append(";");
+                data.append(id);
+                first = false;
             }
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(data.toString()), null);
             showSuccess("<html>D&ouml;rfer erfolgreich in die Zwischenablage kopiert.<br/>F&uuml;ge sie nun in der Gruppen&uuml;bersicht in das entsprechende Feld unterhalb einer leeren Gruppe ein und weise sie dadurch dieser Gruppe zu.</html>");

@@ -59,6 +59,8 @@ import de.tor.tribes.util.bb.TroopListFormatter;
 import de.tor.tribes.util.bb.VillageListFormatter;
 import de.tor.tribes.util.bb.WinnerLoserStatsFormatter;
 import de.tor.tribes.util.interfaces.BBChangeListener;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.troops.VillageTroopsHolder;
 import de.tor.tribes.util.village.KnownVillage;
 import java.awt.Color;
@@ -79,6 +81,8 @@ import org.apache.logging.log4j.Logger;
 public class BBCodeEditor extends javax.swing.JFrame {
     private static Logger logger = LogManager.getLogger("BBCodeEditor");
 
+    private Translator trans = TranslationManager.getTranslator("ui.windows.BBCodeEditor");
+    
     private BasicFormatter element = null;
     private final List<BasicFormatter> elementList = new ArrayList<>();
     private final Map<Class, List<? extends BBSupport>> samples = new HashMap<>();
@@ -96,28 +100,31 @@ public class BBCodeEditor extends javax.swing.JFrame {
      */
     public BBCodeEditor() {
         super();
-        // This list needs to be manually kept in sync with designer
-        elementList.add(new AttackListFormatter(false)); //Angriffe
-        elementList.add(new AttackListFormatter(true)); //Angriffe (IGM)
-        elementList.add(new NoteListFormatter()); //Notizen
-        elementList.add(new VillageListFormatter()); //Dorflisten
-        elementList.add(new SosListFormatter()); //SOS-Anfragen
-        elementList.add(new ReportListFormatter()); //Kampfbericht
-        elementList.add(new TagListFormatter()); //Gruppen
-        elementList.add(new TroopListFormatter()); //Truppen
-        elementList.add(new KnownVillageListFormatter()); //Dorfgebäude
-        elementList.add(new PointStatsFormatter()); //Statistik (Punkte)
-        elementList.add(new KillStatsFormatter()); //Statistik (Angriff)
-        elementList.add(new DefStatsFormatter()); //Statistik (Verteidigung)
-        elementList.add(new WinnerLoserStatsFormatter()); //Statistik (Gewinner/Verlierer)
-        elementList.add(new FormListFormatter()); //Zeichnungen
-        elementList.add(new OverallReportStatsFormatter()); //Berichtauswertung (Zusammenfassung)
-        elementList.add(new AllyReportStatsFormatter()); //Berichtauswertung (Stämme)
-        elementList.add(new TribeReportStatsFormatter()); //Berichtauswertung (Spieler)
-        elementList.add(new MarkerListFormatter()); //Markierungen
 
         initComponents();
         buildSampleData();
+        
+        javax.swing.DefaultComboBoxModel jEditSelectModel = new javax.swing.DefaultComboBoxModel();
+        elementList.add(new AttackListFormatter(false)); jEditSelectModel.addElement(trans.get("Angriffe"));
+        elementList.add(new AttackListFormatter(true)); jEditSelectModel.addElement(trans.get("Angriffe_IGM"));
+        elementList.add(new NoteListFormatter()); jEditSelectModel.addElement(trans.get("Notizen"));
+        elementList.add(new VillageListFormatter()); jEditSelectModel.addElement(trans.get("Dorflisten"));
+        elementList.add(new SosListFormatter()); jEditSelectModel.addElement(trans.get("SOSAnfragen"));
+        elementList.add(new ReportListFormatter()); jEditSelectModel.addElement(trans.get("Kampfbericht"));
+        elementList.add(new TagListFormatter()); jEditSelectModel.addElement(trans.get("Gruppen"));
+        elementList.add(new TroopListFormatter()); jEditSelectModel.addElement(trans.get("Truppen"));
+        elementList.add(new KnownVillageListFormatter()); jEditSelectModel.addElement(trans.get("Dorfgebaeude"));
+        elementList.add(new PointStatsFormatter()); jEditSelectModel.addElement(trans.get("Statistik_Punkte"));
+        elementList.add(new KillStatsFormatter()); jEditSelectModel.addElement(trans.get("Statistik_Angriff"));
+        elementList.add(new DefStatsFormatter()); jEditSelectModel.addElement(trans.get("Statistik_Verteidigung"));
+        elementList.add(new WinnerLoserStatsFormatter()); jEditSelectModel.addElement(trans.get("Statistik_Gewinner_Verlierer"));
+        elementList.add(new FormListFormatter()); jEditSelectModel.addElement(trans.get("Zeichnungen"));
+        elementList.add(new OverallReportStatsFormatter()); jEditSelectModel.addElement(trans.get("Berichtauswertung_Zusammenfassung"));
+        elementList.add(new AllyReportStatsFormatter()); jEditSelectModel.addElement(trans.get("Berichtauswertung_Staemme"));
+        elementList.add(new TribeReportStatsFormatter()); jEditSelectModel.addElement(trans.get("Berichtauswertung_Spieler"));
+        elementList.add(new MarkerListFormatter()); jEditSelectModel.addElement(trans.get("Markierungen"));
+        
+        jComboBoxEditSelect.setModel(jEditSelectModel);
         jTextPane1.setBackground(Constants.DS_BACK_LIGHT);
 
         element = elementList.get(0);
@@ -208,13 +215,13 @@ public class BBCodeEditor extends javax.swing.JFrame {
         sampleNote.addVillage(sampleVillage1);
         sampleNote.addVillage(sampleVillage4);
         sampleNote.addVillage(sampleVillage5);
-        sampleNote.setNoteText("[u]Dies[/u] ist eine [b]Beispielnotiz[/b]");
+        sampleNote.setNoteText(trans.get("Beispielnotiz"));
         Note sampleNote2 = new Note();
         sampleNote2.setNoteSymbol(ImageManager.NOTE_SYMBOL_BALL_RED);
         sampleNote2.setTimestamp(System.currentTimeMillis());
         sampleNote2.addVillage(sampleVillage4);
         sampleNote2.addVillage(sampleVillage5);
-        sampleNote2.setNoteText("[u]Dies[/u] ist eine weitere [b]Beispielnotiz[/b]");
+        sampleNote2.setNoteText(trans.get("weitereBeispielnotiz"));
         sampleNotes.add(sampleNote);
         sampleNotes.add(sampleNote2);
         //sample SOS request
@@ -257,13 +264,13 @@ public class BBCodeEditor extends javax.swing.JFrame {
         sampleReport2.setWallBefore((byte) 20);
         sampleReports.add(sampleReport);
         sampleReports.add(sampleReport2);
-        Tag t = new Tag("Meine Gruppe", false);
+        Tag t = new Tag(trans.get("MeineGruppe"), false);
         t.setTagIcon(0);
         t.setTagColor(Color.RED);
-        Tag t2 = new Tag("Gruppe2", false);
+        Tag t2 = new Tag(trans.get("Gruppe2"), false);
         t2.setTagIcon(1);
         t2.setTagColor(Color.BLUE);
-        Tag t3 = new Tag("Noch eine Gruppe", false);
+        Tag t3 = new Tag(trans.get("NocheineGruppe"), false);
         t3.setTagIcon(5);
         t3.setTagColor(Color.GREEN);
         sampleTags.add(t);
@@ -318,7 +325,7 @@ public class BBCodeEditor extends javax.swing.JFrame {
         sampleStats.add(e2.generateStats(e2.getTimestamps()[0], e2.getTimestamps()[1]));
         //build form
         Rectangle r = new Rectangle();
-        r.setFormName("Beispielzeichnung");
+        r.setFormName(trans.get("Beispielzeichnung"));
         r.setDrawColor(Color.BLUE);
         r.setXPos(500);
         r.setYPos(500);
@@ -413,7 +420,7 @@ public class BBCodeEditor extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Vorschau"));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("Vorschau")));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(33, 150));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(33, 150));
 
@@ -431,8 +438,8 @@ public class BBCodeEditor extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        jApplyButton.setText("Schließen");
-        jApplyButton.setToolTipText("Beendet den BB-Editor. Änderungen werden während dem Editiervorgang automatisch gespeichert.");
+        jApplyButton.setText(trans.get("Schliessen"));
+        jApplyButton.setToolTipText(trans.get("BBBeendet"));
         jApplyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fireApplyBBTemplatesEvent(evt);
@@ -445,8 +452,8 @@ public class BBCodeEditor extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 10, 10);
         getContentPane().add(jApplyButton, gridBagConstraints);
 
-        jStandardButton.setText("Standard wiederherstellen");
-        jStandardButton.setToolTipText("Stellt den Standardwert für das gewählte Template her");
+        jStandardButton.setText(trans.get("Standardwiederherstellen"));
+        jStandardButton.setToolTipText(trans.get("Standard_Text"));
         jStandardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fireResetEvent(evt);
@@ -471,7 +478,7 @@ public class BBCodeEditor extends javax.swing.JFrame {
         infoPanel.setDirection(org.jdesktop.swingx.JXCollapsiblePane.Direction.LEFT);
         infoPanel.setInheritAlpha(false);
 
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Variablen"));
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("Variablen")));
 
         jVarsList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -497,7 +504,6 @@ public class BBCodeEditor extends javax.swing.JFrame {
 
         jPanelEditSelect.setLayout(new java.awt.BorderLayout(5, 0));
 
-        jComboBoxEditSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Angriffe", "Angriffe (IGM)", "Notizen", "Dorflisten", "SOS-Anfragen", "Kampfbericht", "Gruppen", "Truppen", "Dorfgebäude", "Statistik (Punkte)", "Statistik (Angriff)", "Statistik (Verteidigung)", "Statistik (Gewinner/Verlierer)", "Zeichnungen", "Berichtauswertung (Zusammenfassung)", "Berichtauswertung (Stämme)", "Berichtauswertung (Spieler)", "Markierungen" }));
         jComboBoxEditSelect.setMinimumSize(new java.awt.Dimension(66, 20));
         jComboBoxEditSelect.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -506,11 +512,11 @@ public class BBCodeEditor extends javax.swing.JFrame {
         });
         jPanelEditSelect.add(jComboBoxEditSelect, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setText("Export Template für");
+        jLabel1.setText(trans.get("ExportTemplate"));
         jPanelEditSelect.add(jLabel1, java.awt.BorderLayout.WEST);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ui/information.png"))); // NOI18N
-        jButton3.setToolTipText("Verfügbare Platzhalter");
+        jButton3.setToolTipText(trans.get("Platzhalter"));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fireShowTemplateVarsDialogEvent(evt);

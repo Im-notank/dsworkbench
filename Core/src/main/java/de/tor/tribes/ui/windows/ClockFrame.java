@@ -22,6 +22,9 @@ import de.tor.tribes.util.Constants;
 import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.JOptionPaneHelper;
 import de.tor.tribes.util.SystrayHelper;
+import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -33,7 +36,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.sound.sampled.AudioInputStream;
@@ -52,6 +54,8 @@ import org.jdom2.Element;
  */
 public class ClockFrame extends javax.swing.JFrame implements ActionListener {
 
+    private static Translator trans = TranslationManager.getTranslator("ui.windows.ClockFrame");
+    
     private static Logger logger = LogManager.getLogger("ClockFrame");
 
     @Override
@@ -99,6 +103,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
 
     private void removeTimer(TimerPanel pPanel, boolean pSave) {
         jTimerContainer.remove(pPanel);
+        pPanel.unregisterTimeZone();
         timers.remove(pPanel);
         storeTimers();
     }
@@ -142,10 +147,10 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
             cp.setForeground(new Color(red, green, blue));
             cp.setValue(millis);
         }
-
-        for (final TimerPanel p : timers.toArray(new TimerPanel[timers.size()])) {
+        
+        for (final TimerPanel p : timers.toArray(new TimerPanel[]{})) {
             if (p.isExpired()) {
-                SystrayHelper.showInfoMessage("Timer  '" + p.getName() + "' ist abgelaufen");
+                SystrayHelper.showInfoMessage(String.format(trans.get("istabgelaufen"), p.getName()));
                 //moved playing the sound to a new Thread because of graphic problems
                 new Thread(new Runnable() {
                     @Override
@@ -201,7 +206,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         try {
             File timerFile = new File("timers.xml");
             if (timerFile.exists()) {
-                String message = "Die folgenden Timer sind zwischenzeitlich abgelaufen:\n";
+                String message = trans.get("zwischenzeitlichabgelaufen");
                 long l = message.length();
                 Document d = JDomUtils.getDocument(timerFile);
                 for (Element e : (List<Element>) JDomUtils.getNodes(d, "timers/timer")) {
@@ -218,7 +223,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
                     }
                 }
                 if (message.length() > l) {
-                    JOptionPaneHelper.showWarningBox(this, message, "Abgelaufene Timer");
+                    JOptionPaneHelper.showWarningBox(this, message, trans.get("AbgelaufeneTimer"));
                     storeTimers();
                 }
             }
@@ -297,20 +302,20 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         jSpinner1.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MILLISECOND));
 
         jActivateTimerButton.setBackground(new java.awt.Color(239, 235, 223));
-        jActivateTimerButton.setText("Aktivieren");
+        jActivateTimerButton.setText(trans.get("Aktivieren"));
         jActivateTimerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireActivateTimerEvent(evt);
             }
         });
 
-        setTitle("Uhr");
+        setTitle(trans.get("Uhr"));
         setMinimumSize(new java.awt.Dimension(280, 75));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setBackground(new java.awt.Color(239, 235, 223));
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 36)); // NOI18N
-        jLabel1.setText("Lade...");
+        jLabel1.setText(trans.get("Lade"));
         jLabel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel1.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -335,7 +340,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jCheckBox1.setText("Immer im Vordergrund");
+        jCheckBox1.setText(trans.get("ImmerimVordergrund"));
         jCheckBox1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jCheckBox1.setMargin(new java.awt.Insets(5, 5, 5, 5));
         jCheckBox1.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -364,7 +369,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         jPanel3.add(dateTimeField1, gridBagConstraints);
 
-        jLabel2.setText("Zeit");
+        jLabel2.setText(trans.get("Zeit"));
         jLabel2.setMaximumSize(new java.awt.Dimension(80, 14));
         jLabel2.setMinimumSize(new java.awt.Dimension(80, 14));
         jLabel2.setPreferredSize(new java.awt.Dimension(80, 14));
@@ -376,7 +381,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jLabel2, gridBagConstraints);
 
-        jLabel3.setText("Sound");
+        jLabel3.setText(trans.get("Sound"));
         jLabel3.setMaximumSize(new java.awt.Dimension(80, 14));
         jLabel3.setMinimumSize(new java.awt.Dimension(80, 14));
         jLabel3.setPreferredSize(new java.awt.Dimension(80, 14));
@@ -387,7 +392,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jLabel3, gridBagConstraints);
 
-        jTestAlert.setText("Testen");
+        jTestAlert.setText(trans.get("Testen"));
         jTestAlert.setMaximumSize(new java.awt.Dimension(81, 23));
         jTestAlert.setMinimumSize(new java.awt.Dimension(81, 23));
         jTestAlert.setPreferredSize(new java.awt.Dimension(81, 23));
@@ -403,7 +408,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel3.add(jTestAlert, gridBagConstraints);
 
-        jButton1.setText("Timer erstellen");
+        jButton1.setText(trans.get("Timererstellen"));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fireCreateTimer(evt);
@@ -417,7 +422,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         jPanel3.add(jButton1, gridBagConstraints);
 
-        jLabel4.setText("Name");
+        jLabel4.setText(trans.get("Name"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -426,7 +431,8 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         jPanel3.add(jLabel4, gridBagConstraints);
 
-        jTimerName.setPrompt("Bitte Timername eingeben");
+        jTimerName.setToolTipText(trans.get("BitteTimernameeingeben"));
+        jTimerName.setPrompt(trans.get("BitteTimernameeingeben"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -435,6 +441,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 5, 5, 5);
         jPanel3.add(jTimerName, gridBagConstraints);
+        jTimerName.getAccessibleContext().setAccessibleDescription(trans.get("BitteTimernameeingeben"));
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -446,7 +453,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         getContentPane().add(jPanel2, gridBagConstraints);
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Aktive Timer"));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(trans.get("AktiveTimer")));
         jScrollPane1.setMinimumSize(new java.awt.Dimension(246, 150));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(246, 150));
 
@@ -462,7 +469,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        jButton2.setText("Alle Löschen");
+        jButton2.setText(trans.get("AlleLoeschen"));
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fireRemoveAllTimersEvent(evt);
@@ -475,7 +482,7 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(jButton2, gridBagConstraints);
 
-        jButton3.setText("Auswahl löschen");
+        jButton3.setText(trans.get("Auswahlloeschen"));
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fireRemoveSelectedTimersEvent(evt);
@@ -523,7 +530,7 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
             removeTimer(p, false);
         }
         storeTimers();
-        JOptionPaneHelper.showInformationBox(this, "Timer entfernt", "Alle Timer wurden entfernt.");
+        JOptionPaneHelper.showInformationBox(this, trans.get("Timerentfernt"), trans.get("AlleTimerwurdenentfernt"));
     }//GEN-LAST:event_fireRemoveAllTimersEvent
 
     private void fireRemoveSelectedTimersEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireRemoveSelectedTimersEvent
@@ -535,7 +542,7 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
             }
         }
         storeTimers();
-        JOptionPaneHelper.showInformationBox(this, "Timer entfernt", removed + " Timer wurden entfernt.");
+        JOptionPaneHelper.showInformationBox(this, trans.get("Timerentfernt"), removed + trans.get("Timerwurdenentfernt"));
     }//GEN-LAST:event_fireRemoveSelectedTimersEvent
 
     /**
@@ -578,12 +585,14 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
 class TimerThread extends Thread {
 
     private ClockFrame mParent;
-    private final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss:SSS");
+    private final SimpleDateFormat FORMAT = TimeManager.getSimpleDateFormat("HH:mm:ss:SSS");
 
     public TimerThread(ClockFrame pParent) {
         mParent = pParent;
         setName("ClockTimer");
         setDaemon(true);
+        
+        TimeManager.register(FORMAT);
     }
 
     public void setNotifyTime(long pTime) {
@@ -593,7 +602,7 @@ class TimerThread extends Thread {
     public void run() {
         while (true) {
             long currentTime = System.currentTimeMillis();
-            mParent.updateTime(FORMAT.format(new Date(currentTime)), (int) DateUtils.getFragmentInMilliseconds(new Date(), Calendar.SECOND));
+            mParent.updateTime(FORMAT.format(new Date(currentTime)), (int) (currentTime % 1000));
             if (mParent.isVisible()) {
                 mParent.repaint();
             } else {

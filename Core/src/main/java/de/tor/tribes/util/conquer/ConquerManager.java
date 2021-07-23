@@ -20,6 +20,7 @@ import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.ServerManager;
 import de.tor.tribes.types.Conquer;
+import de.tor.tribes.types.Layer;
 import de.tor.tribes.types.ext.Ally;
 import de.tor.tribes.types.ext.Barbarians;
 import de.tor.tribes.types.ext.Tribe;
@@ -64,8 +65,6 @@ public class ConquerManager extends GenericManager<Conquer> {
 
     ConquerManager() {
         super(false);
-        updateThread = new ConquerUpdateThread();
-        updateThread.start();
     }
 
     public void addConquer(Conquer c) {
@@ -116,6 +115,12 @@ public class ConquerManager extends GenericManager<Conquer> {
             //set update correct on error
             this.lastUpdate = 0;
         }
+        
+        if(updateThread == null) {
+            updateThread = new ConquerUpdateThread();
+            updateThread.start();
+        }
+        
         mergeWithWorldData();
         
         revalidate();
@@ -178,7 +183,7 @@ public class ConquerManager extends GenericManager<Conquer> {
         
         updateAcceptance();
         try {
-            MapPanel.getSingleton().getMapRenderer().initiateRedraw(MapRenderer.TAG_MARKER_LAYER);
+            MapPanel.getSingleton().getMapRenderer().initiateRedraw(Layer.VILLAGE_SYMBOLS);
         } catch (Exception ignored) {
         }
     }
@@ -220,10 +225,12 @@ public class ConquerManager extends GenericManager<Conquer> {
         try {
             if (lastUpdate == -1) {
                 //not yet loaded
+                logger.debug("Update not yet ready");
                 return;
             }
             String baseUrl = ServerManager.getServerURL(GlobalOptions.getSelectedServer());
             if (baseUrl == null) {//devel mode
+                logger.debug("no server url for server {}", GlobalOptions.getSelectedServer());
                 return;
             }
             if (System.currentTimeMillis() - lastUpdate > 1000 * 60 * 60 * 24) {
@@ -372,7 +379,7 @@ public class ConquerManager extends GenericManager<Conquer> {
     private void fireConquersChangedEvents() {
         revalidate(true);
         try {
-            MapPanel.getSingleton().getMapRenderer().initiateRedraw(MapRenderer.TAG_MARKER_LAYER);
+            MapPanel.getSingleton().getMapRenderer().initiateRedraw(Layer.VILLAGE_SYMBOLS);
         } catch (Exception e) {
             //failed to initialize redraw because renderer is still null
         }
@@ -393,12 +400,14 @@ class ConquerUpdateThread extends Thread {
     @Override
     public void run() {
         try {
+            logger.debug("Booting conquer Thread");
             while (true) {
                 ConquerManager.getSingleton().updateConquers();
+                logger.debug("Finished loading conquers");
                 Thread.sleep(FIVE_MINUTES);
             }
         } catch (Exception e) {
-            logger.debug("Exception in Conquer thread shutting it down", e);
+            logger.fatal("Exception in Conquer thread shutting it down", e);
         }
     }
 }

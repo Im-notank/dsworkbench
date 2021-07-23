@@ -16,7 +16,7 @@
 package de.tor.tribes.ui.panels;
 
 import de.tor.tribes.dssim.ui.DSWorkbenchSimulatorFrame;
-import de.tor.tribes.dssim.util.AStarResultReceiver;
+import de.tor.tribes.dssim.types.AStarResultReceiver;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.TroopAmountFixed;
 import de.tor.tribes.io.UnitHolder;
@@ -33,6 +33,8 @@ import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.bb.ReportListFormatter;
 import de.tor.tribes.util.report.ReportManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.troops.TroopsManager;
 import de.tor.tribes.util.troops.VillageTroopsHolder;
 import java.awt.*;
@@ -93,6 +95,8 @@ public class ReportTableTab extends javax.swing.JPanel implements ListSelectionL
     }
     private static Logger logger = LogManager.getLogger("ReportTableTab");
 
+    private static Translator trans = TranslationManager.getTranslator("ui.panels.ReportTableTab");
+    
     public enum TRANSFER_TYPE {
 
         CLIPBOARD_BB, ASTAR, CUT_TO_INTERNAL_CLIPBOARD, COPY_TO_INTERNAL_CLIPBOARD, FROM_INTERNAL_CLIPBOARD
@@ -114,9 +118,9 @@ public class ReportTableTab extends javax.swing.JPanel implements ListSelectionL
         jxReportTable.setDefaultRenderer(Village.class, new VillageCellRenderer());
         reportModel = new ReportManagerTableModel(ReportManager.DEFAULT_GROUP);
         jxReportTable.setModel(reportModel);
-        TableColumnExt statCol = jxReportTable.getColumnExt("Status");
+        TableColumnExt statCol = jxReportTable.getColumnExt(trans.getRaw("ui.models.ReportManagerTableModel.Status"));
         statCol.setCellRenderer(new EnumImageCellRenderer(EnumImageCellRenderer.LayoutStyle.FightReportStatus));
-        TableColumnExt miscCol = jxReportTable.getColumnExt("Sonstiges");
+        TableColumnExt miscCol = jxReportTable.getColumnExt(trans.getRaw("ui.models.ReportManagerTableModel.Sonstiges"));
         miscCol.setCellRenderer(new ReportWallCataCellRenderer());
         BufferedImage back = ImageUtils.createCompatibleBufferedImage(5, 5, BufferedImage.BITMASK);
         Graphics2D g = back.createGraphics();
@@ -274,7 +278,10 @@ public class ReportTableTab extends javax.swing.JPanel implements ListSelectionL
 
     public void updateSet() {
         reportModel.setReportSet(sReportSet);
-        UIHelper.initTableColums(jxReportTable, "Status", "Typ", "Sonstiges");
+        UIHelper.initTableColums(jxReportTable, 
+                trans.getRaw("ui.models.ReportManagerTableModel.Status"), 
+                trans.getRaw("ui.models.ReportManagerTableModel.Typ"), 
+                trans.getRaw("ui.models.ReportManagerTableModel.Sonstiges"));
         jScrollPane1.setViewportView(jxReportTable);
         jxReportTable.getTableHeader().setDefaultRenderer(new DefaultTableHeaderRenderer());
     }
@@ -499,9 +506,11 @@ public class ReportTableTab extends javax.swing.JPanel implements ListSelectionL
         if (!GlobalOptions.isOfflineMode()) {
             try {
                 if (!DSWorkbenchSimulatorFrame.getSingleton().isVisible()) {
-                    DSWorkbenchSimulatorFrame.getSingleton().setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-                    DSWorkbenchSimulatorFrame.getSingleton().showIntegratedVersion(DSWorkbenchSettingsDialog.getSingleton().getWebProxy(),GlobalOptions.getSelectedServer());
+                    DSWorkbenchSimulatorFrame.getSingleton().setVisible(true);
                 }
+                DSWorkbenchSimulatorFrame.getSingleton().toFront();
+                DSWorkbenchSimulatorFrame.getSingleton().requestFocus();
+                
                 Point coord = new Point(report.getTargetVillage().getX(), report.getTargetVillage().getY());
                 DSWorkbenchSimulatorFrame.getSingleton().insertValuesExternally(coord, values, this);
             } catch(Exception e) {

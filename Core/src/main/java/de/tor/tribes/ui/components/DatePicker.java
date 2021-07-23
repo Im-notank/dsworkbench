@@ -15,6 +15,9 @@
  */
 package de.tor.tribes.ui.components;
 
+import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -34,17 +37,27 @@ import org.apache.commons.lang3.time.DateUtils;
  * @author extremeCrazyCoder
  */
 public class DatePicker extends javax.swing.JPanel {
+    
+    private static Translator trans = TranslationManager.getTranslator("ui.compoents.DatePicker");
+    
     private static final Color LIGHT_GRAY = Color.LIGHT_GRAY;
     private static final Color GRAY = new Color(200, 200, 200);
     private static final Color BLACK = new Color(0, 0, 0);
-    private static final SimpleDateFormat monthAndYear = new SimpleDateFormat("MMMMM yyyy");
+    private static final SimpleDateFormat monthAndYear = TimeManager.getSimpleDateFormat(trans.get("MMMMMyyyy"));
     private static final int WEEKS_TO_SHOW = 6;
     
     private CrossedLabel daysInMonth[][];
     private Date datesInMonth[][]; //used for mapping labels with dates
     private Date selectedDate;
     private final Date originalDate;
-    private final String dayNames[] = { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" };
+    private final String dayNames[] = { 
+        trans.get("Mo"), 
+        trans.get("Di"), 
+        trans.get("Mi"), 
+        trans.get("Do"), 
+        trans.get("Fr"), 
+        trans.get("Sa"), 
+        trans.get("So") };
 
     /**
      * Creates new form DatePicker
@@ -55,6 +68,11 @@ public class DatePicker extends javax.swing.JPanel {
         originalDate = DateUtils.truncate(new Date(), Calendar.DATE);
         selectedDate = originalDate;
         init();
+        TimeManager.register(monthAndYear);
+    }
+    
+    void unregisterTimeZoneListener() {
+        TimeManager.unregister(monthAndYear);
     }
 
     public DatePicker(Date date) {
@@ -253,7 +271,7 @@ public class DatePicker extends javax.swing.JPanel {
         });
 
         jLabelMonth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelMonth.setText("Juli 2018");
+        jLabelMonth.setText(trans.get("Juli"));
 
         jButtonNext.setToolTipText("");
         jButtonNext.setMaximumSize(new java.awt.Dimension(20, 20));
@@ -270,13 +288,13 @@ public class DatePicker extends javax.swing.JPanel {
         jPanelMonthSelectionLayout.setHorizontalGroup(
             jPanelMonthSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMonthSelectionLayout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+                .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(jButtonPrevious, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addComponent(jLabelMonth)
                 .addGap(4, 4, 4)
                 .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanelMonthSelectionLayout.setVerticalGroup(
             jPanelMonthSelectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,14 +318,14 @@ public class DatePicker extends javax.swing.JPanel {
         jPanelBottom.setMinimumSize(new java.awt.Dimension(170, 50));
         jPanelBottom.setPreferredSize(new java.awt.Dimension(170, 50));
 
-        jButtonToday.setText("Heute");
+        jButtonToday.setText(trans.get("Heute"));
         jButtonToday.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fireTodayAction(evt);
             }
         });
 
-        jButtonOK.setText("OK");
+        jButtonOK.setText(trans.get("OK"));
         jButtonOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fireOkAcion(evt);
@@ -321,7 +339,7 @@ public class DatePicker extends javax.swing.JPanel {
             .addGroup(jPanelBottomLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonToday)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonOK)
                 .addContainerGap())
         );

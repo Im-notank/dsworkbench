@@ -15,6 +15,8 @@
  */
 package de.tor.tribes.ui.wiz;
 
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
@@ -33,6 +35,7 @@ import org.netbeans.spi.wizard.WizardPanelNavResult;
  */
 public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
     private static Logger logger = LogManager.getLogger("NetworkSettings");
+    private static Translator trans = TranslationManager.getTranslator("de.tor.tribes.ui.wiz.NetworkSettings");
 
     private WizardController wizCtrl;
     private Map currentSettings = null;
@@ -42,7 +45,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         initComponents();
         wizCtrl = pWizCtrl;
         currentSettings = map;
-        wizCtrl.setProblem("Bitte teste die Einstellungen um fortzufahren");
+        wizCtrl.setProblem(trans.get("test_before_continue"));
     }
 
     /** This method is called from within the constructor to
@@ -84,10 +87,9 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
 
         buttonGroup1.add(jDirectConnectOption);
         jDirectConnectOption.setSelected(true);
-        jDirectConnectOption.setText("Ich bin direkt mit dem Internet verbunden");
+        jDirectConnectOption.setText(trans.get("direct"));
         jDirectConnectOption.setMaximumSize(new java.awt.Dimension(259, 23));
         jDirectConnectOption.setMinimumSize(new java.awt.Dimension(259, 23));
-        jDirectConnectOption.setOpaque(false);
         jDirectConnectOption.setPreferredSize(new java.awt.Dimension(259, 23));
         jDirectConnectOption.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -105,8 +107,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         jPanel8.add(jDirectConnectOption, gridBagConstraints);
 
         buttonGroup1.add(jProxyConnectOption);
-        jProxyConnectOption.setText("Ich benutze einen Proxy für den Internetzugang");
-        jProxyConnectOption.setOpaque(false);
+        jProxyConnectOption.setText(trans.get("proxy"));
         jProxyConnectOption.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jProxyConnectOptionfireChangeConnectTypeEvent(evt);
@@ -122,7 +123,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyConnectOption, gridBagConstraints);
 
-        jProxyAdressLabel.setText("Proxy Adresse");
+        jProxyAdressLabel.setText(trans.get("proxy_addr"));
         jProxyAdressLabel.setMaximumSize(new java.awt.Dimension(100, 23));
         jProxyAdressLabel.setMinimumSize(new java.awt.Dimension(100, 23));
         jProxyAdressLabel.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -134,7 +135,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyAdressLabel, gridBagConstraints);
 
-        jProxyHost.setToolTipText("Adresse des Proxy Servers");
+        jProxyHost.setToolTipText(trans.get("proxy_addr_tooltip"));
         jProxyHost.setEnabled(false);
         jProxyHost.setMinimumSize(new java.awt.Dimension(6, 23));
         jProxyHost.setPreferredSize(new java.awt.Dimension(6, 23));
@@ -147,7 +148,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyHost, gridBagConstraints);
 
-        jProxyPortLabel.setText("Proxy Port");
+        jProxyPortLabel.setText(trans.get("proxy_port"));
         jProxyPortLabel.setMaximumSize(new java.awt.Dimension(70, 23));
         jProxyPortLabel.setMinimumSize(new java.awt.Dimension(70, 23));
         jProxyPortLabel.setPreferredSize(new java.awt.Dimension(70, 23));
@@ -159,7 +160,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyPortLabel, gridBagConstraints);
 
-        jProxyPort.setToolTipText("Port des Proxy Servers");
+        jProxyPort.setToolTipText(trans.get("proxy_port_tooltip"));
         jProxyPort.setEnabled(false);
         jProxyPort.setMaximumSize(new java.awt.Dimension(40, 23));
         jProxyPort.setMinimumSize(new java.awt.Dimension(40, 23));
@@ -173,8 +174,8 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyPort, gridBagConstraints);
 
-        jRefeshNetworkButton.setText("Testen");
-        jRefeshNetworkButton.setToolTipText("Netzwerkeinstellungen aktualisieren und prüfen");
+        jRefeshNetworkButton.setText(trans.get("test"));
+        jRefeshNetworkButton.setToolTipText(trans.get("test_tooltip"));
         jRefeshNetworkButton.setMaximumSize(new java.awt.Dimension(120, 23));
         jRefeshNetworkButton.setMinimumSize(new java.awt.Dimension(120, 23));
         jRefeshNetworkButton.setPreferredSize(new java.awt.Dimension(120, 23));
@@ -191,7 +192,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(15, 5, 0, 5);
         jPanel8.add(jRefeshNetworkButton, gridBagConstraints);
 
-        jLabel10.setText("Proxy Typ");
+        jLabel10.setText(trans.get("proxy_type"));
         jLabel10.setMaximumSize(new java.awt.Dimension(100, 23));
         jLabel10.setMinimumSize(new java.awt.Dimension(100, 23));
         jLabel10.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -204,7 +205,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         jPanel8.add(jLabel10, gridBagConstraints);
 
         jProxyTypeChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HTTP", "SOCKS" }));
-        jProxyTypeChooser.setToolTipText("Art des Proxy Servers");
+        jProxyTypeChooser.setToolTipText(trans.get("proxy_type_tooltip"));
         jProxyTypeChooser.setEnabled(false);
         jProxyTypeChooser.setMinimumSize(new java.awt.Dimension(100, 23));
         jProxyTypeChooser.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -215,7 +216,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyTypeChooser, gridBagConstraints);
 
-        jLabel11.setText("Benutzername");
+        jLabel11.setText(trans.get("proxy_user"));
         jLabel11.setMaximumSize(new java.awt.Dimension(100, 23));
         jLabel11.setMinimumSize(new java.awt.Dimension(100, 23));
         jLabel11.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -226,7 +227,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jLabel11, gridBagConstraints);
 
-        jProxyUser.setToolTipText("Benutzername zur Authentifizierung beim Proxy Server");
+        jProxyUser.setToolTipText(trans.get("proxy_user_tooltip"));
         jProxyUser.setEnabled(false);
         jProxyUser.setMaximumSize(new java.awt.Dimension(150, 23));
         jProxyUser.setMinimumSize(new java.awt.Dimension(150, 23));
@@ -240,7 +241,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jProxyUser, gridBagConstraints);
 
-        jLabel12.setText("Passwort");
+        jLabel12.setText(trans.get("proxy_pass"));
         jLabel12.setMaximumSize(new java.awt.Dimension(100, 23));
         jLabel12.setMinimumSize(new java.awt.Dimension(100, 23));
         jLabel12.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -251,7 +252,7 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel8.add(jLabel12, gridBagConstraints);
 
-        jProxyPassword.setToolTipText("Passwort zur Authentifizierung beim Proxy Server");
+        jProxyPassword.setToolTipText(trans.get("proxy_pass_tooltip"));
         jProxyPassword.setEnabled(false);
         jProxyPassword.setMaximumSize(new java.awt.Dimension(150, 23));
         jProxyPassword.setMinimumSize(new java.awt.Dimension(150, 23));
@@ -277,9 +278,9 @@ public class NetworkSettings extends javax.swing.JPanel implements WizardPanel {
         jScrollPane1.setMinimumSize(new java.awt.Dimension(400, 100));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(400, 100));
 
-        jTextPane1.setContentType("text/html");
         jTextPane1.setEditable(false);
-        jTextPane1.setText("<html>Die Netzwerkeinstellungen sind notwendig, falls du nicht direkt mit dem Internet verbunden bist. Dies ist oftmals in Firmennetzwerken oder Wohnheimen der Fall. Als Privatperson in einem Heimnetzwerk sollte man in der Regel direkt mit dem Internet verbunden sein. Klicke auf den Button <b>Testen</b>, um deine Einstellungen zu überprüfen und fortfahren zu können.</html>");
+        jTextPane1.setContentType("text/html"); // NOI18N
+        jTextPane1.setText(trans.get("main_text"));
         jScrollPane1.setViewportView(jTextPane1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -297,7 +298,7 @@ private void jDirectConnectOptionfireChangeConnectTypeEvent(java.awt.event.ItemE
     jProxyUser.setEnabled(jProxyConnectOption.isSelected());
     jProxyPassword.setEnabled(jProxyConnectOption.isSelected());
     jProxyTypeChooser.setEnabled(jProxyConnectOption.isSelected());
-    wizCtrl.setProblem("Bitte teste die Einstellungen um fortzufahren");
+    wizCtrl.setProblem(trans.get("test_before_continue"));
 }//GEN-LAST:event_jDirectConnectOptionfireChangeConnectTypeEvent
 
 private void jProxyConnectOptionfireChangeConnectTypeEvent(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jProxyConnectOptionfireChangeConnectTypeEvent
@@ -306,7 +307,7 @@ private void jProxyConnectOptionfireChangeConnectTypeEvent(java.awt.event.ItemEv
     jProxyUser.setEnabled(jProxyConnectOption.isSelected());
     jProxyPassword.setEnabled(jProxyConnectOption.isSelected());
     jProxyTypeChooser.setEnabled(jProxyConnectOption.isSelected());
-    wizCtrl.setProblem("Bitte teste die Einstellungen um fortzufahren");
+    wizCtrl.setProblem(trans.get("test_before_continue"));
 }//GEN-LAST:event_jProxyConnectOptionfireChangeConnectTypeEvent
 
 private void jRefeshNetworkButtonfireUpdateProxySettingsEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRefeshNetworkButtonfireUpdateProxySettingsEvent
@@ -314,7 +315,7 @@ private void jRefeshNetworkButtonfireUpdateProxySettingsEvent(java.awt.event.Mou
         try {
             Integer.parseInt(jProxyPort.getText());
         } catch (NumberFormatException nfe) {
-            wizCtrl.setProblem("Der Wert für den Port ist ungültig");
+            wizCtrl.setProblem(trans.get("port_invalid"));
             return;
         }
     }
@@ -350,11 +351,11 @@ private void jRefeshNetworkButtonfireUpdateProxySettingsEvent(java.awt.event.Mou
                 wizCtrl.setProblem(null);
                 result = true;
             } else {
-                wizCtrl.setProblem("Verbindung fehlgeschlagen. Bitte überprüfe deine Einstellungen");
+                wizCtrl.setProblem(trans.get("unable_to_connect"));
                 logger.error("no header");
             }
         } catch (Exception e) {
-            wizCtrl.setProblem("Verbindung fehlgeschlagen. Bitte überprüfe deine Einstellungen");
+            wizCtrl.setProblem(trans.get("unable_to_connect"));
             logger.error("exception", e);
         }
         return result;

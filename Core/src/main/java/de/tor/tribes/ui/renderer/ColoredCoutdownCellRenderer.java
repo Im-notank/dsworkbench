@@ -18,11 +18,7 @@ package de.tor.tribes.ui.renderer;
 import de.tor.tribes.util.Constants;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
@@ -80,9 +76,7 @@ public class ColoredCoutdownCellRenderer extends DefaultTableRenderer {
             }
             renderComponent.setOpaque(true);
             renderComponent.setBackground(color);
-            JPanel panel = new JPanel(new GridBagLayout());
-            panel.add(renderComponent, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, 1, new Insets(0, 0, 0, 0), 0, 0));
-            return panel;
+            return renderComponent;
         } catch (Exception e) {
             return c;
         }

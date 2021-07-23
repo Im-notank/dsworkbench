@@ -26,9 +26,12 @@ import de.tor.tribes.ui.renderer.MarkerCellRenderer;
 import de.tor.tribes.util.Constants;
 import de.tor.tribes.util.ImageUtils;
 import de.tor.tribes.util.JOptionPaneHelper;
+import de.tor.tribes.util.TimeManager;
 import de.tor.tribes.util.UIHelper;
 import de.tor.tribes.util.bb.MarkerListFormatter;
 import de.tor.tribes.util.mark.MarkerManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -39,8 +42,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -66,7 +68,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * @author Torridity
  */
 public class MarkerTableTab extends javax.swing.JPanel implements ListSelectionListener {
-
+    private static Translator trans = TranslationManager.getTranslator("ui.panels.MarkerTableTab");
     private static Logger logger = LogManager.getLogger("MarkerTableTab");
 
     public enum TRANSFER_TYPE {
@@ -94,7 +96,7 @@ public class MarkerTableTab extends javax.swing.JPanel implements ListSelectionL
         jxMarkerTable.setDefaultEditor(Color.class, editor);
         markerModel = new MarkerTableModel(MarkerManager.DEFAULT_GROUP);
         jxMarkerTable.setModel(markerModel);
-        TableColumnExt visibilityCol = jxMarkerTable.getColumnExt("Sichtbar");
+        TableColumnExt visibilityCol = jxMarkerTable.getColumnExt(trans.getRaw("ui.models.MarkerTableModel.Sichtbar"));
         visibilityCol.setCellRenderer(new CustomBooleanRenderer(CustomBooleanRenderer.LayoutStyle.VISIBLE_INVISIBLE));
         visibilityCol.setCellEditor(new CustomCheckBoxEditor(CustomBooleanRenderer.LayoutStyle.VISIBLE_INVISIBLE));
 
@@ -204,7 +206,7 @@ public class MarkerTableTab extends javax.swing.JPanel implements ListSelectionL
 
     public void updateSet() {
         markerModel.setMarkerSet(sMarkerSet);
-        UIHelper.initTableColums(jxMarkerTable, "Markierung", "Sichtbar");
+        UIHelper.initTableColums(jxMarkerTable, trans.getRaw("ui.models.MarkerTableModel.Markierung"), trans.getRaw("ui.models.MarkerTableModel.Sichtbar"));
         jScrollPane1.setViewportView(jxMarkerTable);
         jxMarkerTable.getTableHeader().setDefaultRenderer(new DefaultTableHeaderRenderer());
     }
@@ -400,12 +402,12 @@ public class MarkerTableTab extends javax.swing.JPanel implements ListSelectionL
 
             if (extended) {
                 buffer.append("\n[size=8]Erstellt am ");
-                buffer.append(new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(Calendar.getInstance().getTime()));
+                buffer.append(TimeManager.getSimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date()));
                 buffer.append(" mit DS Workbench ");
                 buffer.append(Constants.VERSION).append(Constants.VERSION_ADDITION + "[/size]\n");
             } else {
                 buffer.append("\nErstellt am ");
-                buffer.append(new SimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(Calendar.getInstance().getTime()));
+                buffer.append(TimeManager.getSimpleDateFormat("dd.MM.yy 'um' HH:mm:ss").format(new Date()));
                 buffer.append(" mit DS Workbench ");
                 buffer.append(Constants.VERSION).append(Constants.VERSION_ADDITION + "\n");
             }

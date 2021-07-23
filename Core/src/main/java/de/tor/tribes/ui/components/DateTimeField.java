@@ -16,6 +16,9 @@
 package de.tor.tribes.ui.components;
 
 import de.tor.tribes.util.ServerSettings;
+import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -33,10 +36,12 @@ import javax.swing.*;
  */
 public class DateTimeField extends javax.swing.JPanel {
 
+    private Translator trans = TranslationManager.getTranslator("ui.compoents.DateTimeField");
+    
     private DatePicker dp;
     private TimePicker tp;
     private JDialog dlg;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private SimpleDateFormat dateFormat = TimeManager.getSimpleDateFormat(trans.get("ddMMyyyy"));
     private SimpleDateFormat timeFormat;
     private boolean timeEnabled = true;
     private boolean dateEnabled = true;
@@ -47,20 +52,23 @@ public class DateTimeField extends javax.swing.JPanel {
      */
     public DateTimeField() {
         if(ServerSettings.getSingleton().isMillisArrival()) {
-            timeFormat = new SimpleDateFormat("HH:mm:ss:SSS");
+            timeFormat = TimeManager.getSimpleDateFormat(trans.get("HHmmssSSS"));
         } else {
-            timeFormat = new SimpleDateFormat("HH:mm:ss");
+            timeFormat = TimeManager.getSimpleDateFormat(trans.get("HHmmss"));
         }
         
         initComponents();
-        jDateField.setText(dateFormat.format(Calendar.getInstance().getTime()));
-        jTimeField.setText(timeFormat.format(Calendar.getInstance().getTime()));
+        jDateField.setText(dateFormat.format(new Date()));
+        jTimeField.setText(timeFormat.format(new Date()));
         //jDateField.setEditable(false);
         //jTimeField.setEditable(false);
         jChangeTime.setEnabled(timeEnabled);
         jTimeField.setEnabled(timeEnabled);
         jChangeDate.setEnabled(dateEnabled);
         jDateField.setEnabled(dateEnabled);
+        
+        TimeManager.register(timeFormat);
+        TimeManager.register(dateFormat);
     }
 
     public void setActionListener(ActionListener pListener) {
@@ -239,7 +247,7 @@ public class DateTimeField extends javax.swing.JPanel {
 
             return result.getTime();
         } catch (Exception e) {
-            Date now = Calendar.getInstance().getTime();
+            Date now = new Date();
             setDate(now);
             return now;
         }
@@ -258,6 +266,9 @@ public class DateTimeField extends javax.swing.JPanel {
             if (!dateEnabled) {
                 return;
             }
+            if(dp != null) {
+                dp.unregisterTimeZoneListener();
+            }
             try {
                 dp = new DatePicker(dateFormat.parse(jDateField.getText()));
             } catch (Exception e) {
@@ -267,7 +278,7 @@ public class DateTimeField extends javax.swing.JPanel {
             Point point = jDateField.getLocationOnScreen();
             point.setLocation(point.getX(), (point.getY() - 1.0D) + jDateField.getSize().getHeight());
             dlg = new JDialog(new JFrame(), true);
-            dlg.setTitle("Datum auswählen");
+            dlg.setTitle(trans.get("Datumauswaehlen"));
             dlg.setLocation(point);
             //dlg.setResizable(false);
             //dlg.setUndecorated(true);
@@ -290,7 +301,7 @@ public class DateTimeField extends javax.swing.JPanel {
             dlg = new JDialog(new JFrame(), true);
             tp.setParent(dlg);
             dlg.setLocation(point);
-            dlg.setTitle("Zeit auswählen");
+            dlg.setTitle(trans.get("Zeitauswaehlen"));
             // dlg.setResizable(false);
             dlg.setUndecorated(false);
             JPanel p = new JPanel();

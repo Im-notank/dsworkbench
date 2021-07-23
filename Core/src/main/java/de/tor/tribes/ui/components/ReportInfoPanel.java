@@ -22,7 +22,7 @@ import de.tor.tribes.types.FightReport;
  * @author Torridity
  */
 public class ReportInfoPanel extends javax.swing.JPanel {
-
+    
     /**
      * Creates new form ReportInfoPanel
      */

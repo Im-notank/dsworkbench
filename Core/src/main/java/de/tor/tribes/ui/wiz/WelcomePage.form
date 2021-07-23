@@ -43,7 +43,9 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;Du hast DS Workbench zum ersten Mal gestartet.&lt;br/&gt;&#xa;Um DS Workbench verwenden zu k&#xf6;nnen, m&#xfc;ssen einmalig einige Einstellungen durchgef&#xfc;hrt werden. DS Workbench wird dich nun durch diese ersten Schritte geleiten und dich dabei unterst&#xfc;tzen. Solltest du an einer Stelle nicht weiterkommen, frage einfach hier nach: https://forum.die-staemme.de/showthread.php?80831-DS-Workbench&lt;/html&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;main_text&quot;)&#xa;" type="code"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

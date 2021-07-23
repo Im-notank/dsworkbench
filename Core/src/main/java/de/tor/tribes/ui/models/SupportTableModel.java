@@ -22,6 +22,8 @@ import de.tor.tribes.types.SupportType;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.ImageManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.troops.SupportVillageTroopsHolder;
 import de.tor.tribes.util.troops.TroopsManager;
 import java.text.NumberFormat;
@@ -37,10 +39,12 @@ import javax.swing.table.AbstractTableModel;
  * @author Torridity
  */
 public class SupportTableModel extends AbstractTableModel {
-
+    private Translator trans = TranslationManager.getTranslator("ui.models.SupportTableModel");
+    
     public enum COL_CONTENT {
-
-        DIRECTION, TRIBE, VILLAGE, SPEAR, SWORD, AXE, ARCHER, SPY, LIGHT, MARCHER, HEAVY, RAM, CATA, KNIGHT, MILITIA, SNOB, OFF, DEF, DEF_CAV, DEF_ARCH, FARM
+        DIRECTION, TRIBE, VILLAGE,
+        SPEAR, SWORD, AXE, ARCHER, SPY, LIGHT, MARCHER, HEAVY, RAM, CATA, KNIGHT, MILITIA, SNOB,
+        OFF, DEF, DEF_CAV, DEF_ARCH, FARM
     }
     private NumberFormat nf = NumberFormat.getInstance();
     private HashMap<String, ImageIcon> columnIcons = null;
@@ -80,9 +84,9 @@ public class SupportTableModel extends AbstractTableModel {
         content.add(COL_CONTENT.TRIBE);
         content.add(COL_CONTENT.VILLAGE);
         columnIcons = new HashMap<>();
-        columnIcons.put("Richtung", null);
-        columnIcons.put("Spieler", null);
-        columnIcons.put("Dorf", null);
+        columnIcons.put(trans.get("Richtung"), null);
+        columnIcons.put(trans.get("Spieler"), null);
+        columnIcons.put(trans.get("Dorf"), null);
 
         for (UnitHolder pUnit : DataHolder.getSingleton().getUnits()) {
             switch (pUnit.getPlainName()) {
@@ -177,35 +181,35 @@ public class SupportTableModel extends AbstractTableModel {
         COL_CONTENT colContent = content.get(columnIndex);
         switch (colContent) {
             case DIRECTION:
-                return "Richtung";
+                return trans.get("Richtung");
             case TRIBE:
-                return "Spieler";
+                return trans.get("Spieler");
             case VILLAGE:
-                return "Dorf";
+                return trans.get("Dorf");
             case SPEAR:
-                return "Speerträger";
+                return trans.getRaw("io.UnitHolder.spear");
             case SWORD:
-                return "Schwertkämpfer";
+                return trans.getRaw("io.UnitHolder.sword");
             case AXE:
-                return "Axtkämpfer";
+                return trans.getRaw("io.UnitHolder.axe");
             case ARCHER:
-                return "Bogenschütze";
+                return trans.getRaw("io.UnitHolder.archer");
             case SPY:
-                return "Späher";
+                return trans.getRaw("io.UnitHolder.spy");
             case LIGHT:
-                return "Leichte Kavallerie";
+                return trans.getRaw("io.UnitHolder.light");
             case MARCHER:
-                return "Berittener Bogenschütze";
+                return trans.getRaw("io.UnitHolder.marcher");
             case HEAVY:
-                return "Schwere Kavallerie";
+                return trans.getRaw("io.UnitHolder.heavy");
             case RAM:
-                return "Ramme";
+                return trans.getRaw("io.UnitHolder.ram");
             case CATA:
-                return "Katapult";
+                return trans.getRaw("io.UnitHolder.catapult");
             case KNIGHT:
-                return "Paladin";
+                return trans.getRaw("io.UnitHolder.knight");
             case SNOB:
-                return "Adelsgeschlecht";
+                return trans.getRaw("io.UnitHolder.snob");
         }
         return null;
     }

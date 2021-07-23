@@ -24,7 +24,10 @@ import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.util.DSCalculator;
+import de.tor.tribes.util.TimeManager;
 import de.tor.tribes.util.conquer.ConquerManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,11 +38,35 @@ import javax.swing.table.AbstractTableModel;
  * @author Torridity
  */
 public class ConquerTableModel extends AbstractTableModel {
-
-    private Class[] types = new Class[]{Village.class, String.class, String.class, String.class, Tribe.class, Ally.class, Tribe.class, Ally.class, Integer.class, Double.class};
-    private String[] colNames = new String[]{"Dorf", "Dorfpunkte", "Kontinent", "Geadelt am", "Verlierer", "Stamm (Verlierer)", "Gewinner", "Stamm (Gewinner)", "Zustimmung", "Entfernung"};
+    private Translator trans = TranslationManager.getTranslator("ui.models.ConquerTableModel");
+    
+    private Class[] types = new Class[]{
+        Village.class, String.class, String.class,
+        String.class, Tribe.class, Ally.class,
+        Tribe.class, Ally.class, Integer.class,
+        Double.class
+    };
+    private String[] colNames = new String[]{
+        trans.get("Dorf"), 
+        trans.get("Dorfpunkte"), 
+        trans.get("Kontinent"),
+        trans.get("Geadeltam"), 
+        trans.get("Verlierer"), 
+        trans.get("StammVerlierer"),
+        trans.get("Gewinner"), 
+        trans.get("StammGewinner"), 
+        trans.get("Zustimmung"),
+        trans.get("Entfernung")
+    };
     private boolean[] editableColumns = new boolean[]{false, false, false, false, false, false, false, false, false, false};
-
+    
+    private SimpleDateFormat sdf;
+    
+    public ConquerTableModel() {
+        sdf = TimeManager.getSimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        TimeManager.register(sdf);
+    }
+    
     @Override
     public int getColumnCount() {
         return colNames.length;
@@ -88,8 +115,7 @@ public class ConquerTableModel extends AbstractTableModel {
                 return c.getVillage().getContinentString();
             }
             case 3: {
-                SimpleDateFormat f = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-                return f.format(new Date(c.getTimestamp() * 1000));//new Date( c.getTimestamp() * 1000);//f.format(new Date((long) c.getTimestamp() * 1000));
+                return sdf.format(new Date(c.getTimestamp() * 1000));
             }
             case 4: {
                 Tribe t = c.getLoser();

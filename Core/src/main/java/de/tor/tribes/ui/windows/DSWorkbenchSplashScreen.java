@@ -15,7 +15,6 @@
  */
 package de.tor.tribes.ui.windows;
 
-import de.tor.tribes.dssim.ui.DSWorkbenchSimulatorFrame;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.DataHolderListener;
 import de.tor.tribes.io.ServerManager;
@@ -26,13 +25,14 @@ import de.tor.tribes.ui.wiz.FirstStartWizard;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.GithubVersionCheck.UpdateInfo;
 import de.tor.tribes.util.ThreadDeadlockDetector.DefaultDeadlockListener;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.io.*;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -64,6 +64,8 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
     private static DSWorkbenchSplashScreen SINGLETON = null;
     private ThreadDeadlockDetector deadlockDetector = null;
 
+    private static Translator trans = TranslationManager.getTranslator("ui.windows.DSWorkbenchSplashScreen");
+    
     public static synchronized DSWorkbenchSplashScreen getSingleton() {
         if (SINGLETON == null) {
             SINGLETON = new DSWorkbenchSplashScreen();
@@ -107,14 +109,14 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
         jLabel1 = new javax.swing.JLabel();
         jStatusOutput = new javax.swing.JProgressBar();
 
-        jProfileDialog.setTitle("Profile");
+        jProfileDialog.setTitle(trans.get("Profile"));
         jProfileDialog.setModal(true);
         jProfileDialog.setUndecorated(true);
 
         jScrollPane2.setViewportView(jTree1);
 
         jButton1.setBackground(new java.awt.Color(239, 235, 223));
-        jButton1.setText("Profil auswählen");
+        jButton1.setText(trans.get("Profilauswaehlen"));
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -154,7 +156,7 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
         jStatusOutput.setIndeterminate(true);
         jStatusOutput.setMinimumSize(new java.awt.Dimension(10, 20));
         jStatusOutput.setPreferredSize(new java.awt.Dimension(146, 20));
-        jStatusOutput.setString("Lade Einstellungen...");
+        jStatusOutput.setString(trans.get("LadeEinstellungen"));
         jStatusOutput.setStringPainted(true);
         getContentPane().add(jStatusOutput, java.awt.BorderLayout.SOUTH);
 
@@ -169,12 +171,12 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
         } catch (Exception ignored) {
         }
         if (profile == null) {
-            JOptionPaneHelper.showWarningBox(jProfileDialog, "Bitte eine Profil auswählen.", "Bitte wählen");
+            JOptionPaneHelper.showWarningBox(jProfileDialog, trans.get("BitteeineProfilauswaehlen"), trans.get("Bittewaehlen"));
         } else {
             String server = profile.getServerId();
             if (ServerManager.getServerURL(server) == null) {
                 //no world data update any longer
-                JOptionPaneHelper.showWarningBox(jProfileDialog, "Der Server des gewählten Profils scheint nicht mehr verfügbar zu sein. Es wird keine Aktualisierung der Weltdaten mehr stattfinden.", "Server nicht verfügbar.");
+                JOptionPaneHelper.showWarningBox(jProfileDialog, trans.get("DerServerdesgewahlten"), trans.get("Servernichtverfuegbar"));
             }
             GlobalOptions.setSelectedServer(server);
             GlobalOptions.setSelectedProfile(profile);
@@ -211,6 +213,14 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
 
                 //first start wizard
                 if (!new File("./hfsw").exists()) {
+                    logger.debug("Starting language selection");
+                    LanguageSelection langSelect = new LanguageSelection(this, true);
+                    langSelect.setLocationRelativeTo(this);
+                    langSelect.setVisible(true);
+                    logger.debug("Awaiting language selection");
+                    GlobalOptions.addProperty("ui.language", langSelect.getSelected());
+                    logger.debug("Selected Language: {}", langSelect.getSelected());
+                    
                     logger.debug(" - Initializing first start wizard");
                     Map result = new HashMap<>();
 
@@ -227,8 +237,7 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
                     logger.debug(" - Wizard has finished");
                     if (result == null) {
                         logger.warn(" - Wizard returned no result. Startup will fail.");
-                        JOptionPaneHelper.showWarningBox(self, "Du musst die grundlegenden Einstellungen zumindest einmalig durchführen,\n"
-                                + "um DS Workbench verwenden zu können. Bitte starte DS Workbench neu.", "Abbruch");
+                        JOptionPaneHelper.showWarningBox(self, trans.get("grundlegendenEinstellungen"), trans.get("Abbruch"));
                         return HIDE_RESULT.ERROR;
                     } else {
                         logger.debug("Wizard result: " + result);
@@ -302,7 +311,7 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
                     }
                 });
                 List<Object> path = new LinkedList<>();
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode("Profile");
+                DefaultMutableTreeNode root = new DefaultMutableTreeNode(trans.get("Profile"));
                 long selectedProfile = GlobalOptions.getProperties().getLong("selected.profile");
                 path.add(root);
                 for (String server : servers) {
@@ -372,7 +381,7 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
             UpdateInfo info = GithubVersionCheck.getUpdateInformation();
             switch (info.getStatus()) {
                 case UPDATE_AVAILABLE:
-                    NotifierFrame.doNotification("Eine neue DS Workbench Version ist verfügbar. Klick den grünen Punkt oben links, um auf die Download Seite zu gelangen. ", NotifierFrame.NOTIFY_UPDATE);
+                    NotifierFrame.doNotification(trans.get("DSWorkbenchVersion"), NotifierFrame.NOTIFY_UPDATE);
                 default:
                     logger.info("No update available or update check failed.");
             }
@@ -385,13 +394,8 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
             
             // <editor-fold defaultstate="collapsed" desc=" Init HelpSystem ">
             if (!Constants.DEBUG) {
-                GlobalOptions.getHelpBroker().enableHelpKey(DSWorkbenchSimulatorFrame.getSingleton().getRootPane(), "pages.astar", GlobalOptions.getHelpBroker().getHelpSet());
                 GlobalOptions.getHelpBroker().enableHelpKey(DSWorkbenchMainFrame.getSingleton().getRootPane(), "index", GlobalOptions.getHelpBroker().getHelpSet());
             }
-            // </editor-fold>
-
-            // <editor-fold defaultstate="collapsed" desc=" Init A*Star Servers ">
-            ServerManager.giveSimulatorServerList();
             // </editor-fold>
             
             t.stopRunning();
@@ -456,17 +460,22 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        TranslationManager.setWorkbenchBoot(true);
         File runningIndicator = new File("runningFile");
         if (runningIndicator.exists()) {
-            int answer = JOptionPaneHelper.showQuestionConfirmBox(null, "Es scheint so als ob DSWorkbench noch laufen würde "
-                    + "oder nicht korrekt geschlossen wurde. Dennoch öffnen?", "Absturz?", "Nein", "Ja");
-            
+            try {
+                GlobalOptions.loadProperties(true);
+                GlobalDefaults.initialize();
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(DSWorkbenchSplashScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
+            int answer = JOptionPaneHelper.showQuestionConfirmBox(null, trans.get("DSWorkbenchnochlaufenwuerde"), trans.get("Absturz"), trans.get("Nein"), trans.get("Ja"));
+
             if(answer == JOptionPane.NO_OPTION) {
                 System.exit(0);
             }
         }
         
-        Locale.setDefault(Locale.GERMAN);
         int mode = -1;
         int minimal = 0;
         boolean ssd = false;
@@ -497,7 +506,6 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
         GlobalOptions.setMinimalVersion(minimal == 1);
 
         try {
-            GlobalDefaults.initialize();
             GlobalOptions.initialize();
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -542,9 +550,9 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
     @Override
     public void fireDataLoadedEvent(boolean pSuccess) {
         if (pSuccess) {
-            jStatusOutput.setString("Daten geladen");
+            jStatusOutput.setString(trans.get("Datengeladen"));
         } else {
-            jStatusOutput.setString("Download fehlgeschlagen");
+            jStatusOutput.setString(trans.get("Downloadfehlgeschlagen"));
         }
     }
 }

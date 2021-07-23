@@ -18,6 +18,8 @@ package de.tor.tribes.ui.components;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.util.BrowserInterface;
 import de.tor.tribes.util.GlobalOptions;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -33,6 +35,9 @@ import org.jdesktop.swingx.painter.MattePainter;
  */
 public class WelcomePanel extends JXPanel {
 
+    
+    private Translator trans = TranslationManager.getTranslator("ui.components.WelcomePanel");
+    
     private HashMap<JXLabel, String> welcomeTooltipMap = new HashMap<>();
     private BufferedImage back = null;
 
@@ -40,11 +45,11 @@ public class WelcomePanel extends JXPanel {
     public WelcomePanel() {
         initComponents();
         setOpaque(true);
-        welcomeTooltipMap.put(jxHelpLabel, "<html> <h2 style='color:#953333; font-weight: bold;'>Integrierte Hilfe</h2> DS Workbench bietet eine umfangreiche Hilfe, die du im Programm jederzeit &uuml;ber <strong>F1</strong> aufrufen kannst. Dabei wird versucht, das passende Hilfethema f&uuml;r die Ansicht, in der du dich gerade befindest, auszuw&auml;hlen. Es schadet aber auch nicht, einfach mal so in der Hilfe zu st&ouml;bern um neue Funktionen zu entdecken. Einsteiger sollten in jedem Fall die ersten drei Kapitel der Wichtigen Grundlagen gelesen haben.</html>");
-        welcomeTooltipMap.put(jxCommunityLabel, "<html> <h2 style='color:#953333; font-weight: bold;'>Die DS Workbench Community</h2> Nat&uuml;rlich gibt es neben dir noch eine Vielzahl anderer Spieler, die DS Workbench regelm&auml;&szlig;ig und intensiv benutzen. Einen perfekten Anlaufpunkt f&uuml;r alle Benutzer bietet das DS Workbench Forum, wo man immer jemanden trifft mit dem man Erfahrungen austauschen und wo man Fragen stellen kann.</html>");
-        welcomeTooltipMap.put(jxIdeaLabel, "<html> <h2 style='color:#953333; font-weight: bold;'>Verbesserungen und Ideen </h2> Gibt es irgendwas wo du meinst, dass es in DS Workbench fehlt und was anderen Benutzern auch helfen k&ouml;nnte? Hast du eine Idee, wie man DS Workbench verbessern oder die Handhabung vereinfachen k&ouml;nnte? Dann bietet dieser Bereich im DS Workbench Forum die perfekte Anlaufstelle f&uuml;r dich. Trau dich und hilf mit, DS Workbench  zu verbessern. </html>");
-        welcomeTooltipMap.put(jxFacebookLabel, "<html> <h2 style='color:#953333; font-weight: bold;'>DS Workbench @ Facebook</h2> Nat&uuml;rlich geh&ouml;rt es heutzutage fast zum guten Ton, bei Facebook in irgendeiner Art und Weise vertreten zu sein. Auch DS Workbench hat eine eigene Facebook Seite, mit deren Hilfe ihr euch jederzeit &uuml;ber aktuelle News oder Geschehnisse im Zusammenhang mit DS Workbench informieren k&ouml;nnt.</html>");
-        welcomeTooltipMap.put(jContentLabel, "<html> <h2 style='color:#953333'>Willkommen bei DS Workbench</h2> Wenn du diese Seite siehst, dann hast du DS Workbench erfolgreich installiert und die ersten Schritte ebenso erfolgreich gemeistert. Eigentlich steht nun einer unbeschwerten Angriffsplanung und -durchf&uuml;hrung nichts mehr im Wege. Erlaube mir trotzdem kurz auf einige Dinge hinzuweisen, die dir m&ouml;glicherweise beim <b>Umgang mit DS Workbench helfen</b> oder aber dir die M&ouml;glichkeit geben, einen wichtigen Teil zur <b>Weiterentwicklung und stetigen Verbesserung</b> dieses Programms beizutragen. Fahre einfach mit der Maus &uuml;ber eins der vier Symbole in den Ecken, um hilfreiche und interessante Informationen rund um DS Workbench zu erfahren. Klicke auf ein Symbol, um direkt zum entsprechenden Ziel zu gelangen. Die Eintr&auml;ge findest du sp&auml;ter auch im Hauptmen&uuml; unter 'Sonstiges'. <br> <h3 style='color:#953333'> Nun aber viel Spa&szlig; mit DS Workbench.</h3> </html>");
+        welcomeTooltipMap.put(jxHelpLabel, trans.get("help_help"));
+        welcomeTooltipMap.put(jxCommunityLabel, trans.get("community_help"));
+        welcomeTooltipMap.put(jxIdeaLabel, trans.get("idea_help"));
+        welcomeTooltipMap.put(jxFacebookLabel, trans.get("facebook_help"));
+        welcomeTooltipMap.put(jContentLabel, trans.get("WillkommenbeiDSWorkbench"));
         try {
             back = ImageIO.read(WelcomePanel.class.getResource("/images/c.gif"));
         } catch (Exception ignored) {
@@ -78,7 +83,7 @@ public class WelcomePanel extends JXPanel {
         jWelcomePane.setOpaque(false);
         jWelcomePane.setLayout(new java.awt.GridBagLayout());
 
-        jContentLabel.setText("<html>\n<h2 style=\"color:#953333\">Willkommen bei DS Workbench </h2>\n<p>Wenn du diese Seite siehst, dann hast du DS Workbench erfolgreich installiert und die ersten Schritte ebenso erfolgreich gemeistert. Eigentlich steht nun einer unbeschwerten Angriffsplanung und -durchf&uuml;hrung nichts mehr im Wege. \nErlaube mir trotzdem kurz auf einige Dinge hinzuweisen, die dir m&ouml;glicherweise beim <b>Umgang mit DS Workbench helfen</b> oder aber dir die M&ouml;glichkeit geben, einen wichtigen Teil zur <b>Weiterentwicklung und stetigen Verbesserung</b> dieses Programms beizutragen. \n Fahre einfach mit der Maus &uuml;ber eins der vier Symbole in den Ecken, um hilfreiche und interessante Informationen rund um DS Workbench zu erfahren. Klicke auf ein Symbol, um direkt zum entsprechenden Ziel zu gelangen. <br>\n<h3 style=\"color:#953333\"> Nun aber viel Spa&szlig; mit DS Workbench.</h3>\n</html>");
+        jContentLabel.setText(trans.get("WillkommenbeiDSWorkbench"));
         jContentLabel.setMinimumSize(new java.awt.Dimension(300, 300));
         jContentLabel.setPreferredSize(new java.awt.Dimension(300, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -169,8 +174,8 @@ public class WelcomePanel extends JXPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
         jWelcomePane.add(jxFacebookLabel, gridBagConstraints);
 
-        jDisableWelcome.setText("Willkommensseite beim nächsten Start nicht mehr anzeigen");
-        jDisableWelcome.setOpaque(false);
+        jDisableWelcome.setText(trans.get("disable_next")
+        );
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -179,9 +184,9 @@ public class WelcomePanel extends JXPanel {
 
         jxCloseLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
         jxCloseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jxCloseLabel.setText("Danke, ich möchte DS Workbench nun verwenden.");
+        jxCloseLabel.setText(trans.get("DankeDSWorkbenchverwenden"));
         jxCloseLabel.setEnabled(false);
-        jxCloseLabel.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jxCloseLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jxCloseLabel.setMaximumSize(new java.awt.Dimension(319, 40));
         jxCloseLabel.setMinimumSize(new java.awt.Dimension(319, 40));
         jxCloseLabel.setPreferredSize(new java.awt.Dimension(319, 40));

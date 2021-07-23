@@ -17,15 +17,12 @@ package de.tor.tribes.ui.renderer;
 
 import de.tor.tribes.util.Constants;
 import de.tor.tribes.util.ServerSettings;
+import de.tor.tribes.util.TimeManager;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 
@@ -34,19 +31,23 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
  */
 public class ColoredDateCellRenderer extends DefaultTableRenderer {
 
-    private SimpleDateFormat specialFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss.SSS");
+    private final SimpleDateFormat specialFormat;
     private static final int MINUTE = (1000 * 60);
 
     public ColoredDateCellRenderer() {
         super();
-        if (!ServerSettings.getSingleton().isMillisArrival()) {
-            specialFormat = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+        if (ServerSettings.getSingleton().isMillisArrival()) {
+            specialFormat = TimeManager.getSimpleDateFormat("dd.MM.yy HH:mm:ss.SSS");
+        } else {
+            specialFormat = TimeManager.getSimpleDateFormat("dd.MM.yy HH:mm:ss");
         }
+        TimeManager.register(specialFormat);
     }
 
     public ColoredDateCellRenderer(String pPattern) {
-        this();
-        specialFormat = new SimpleDateFormat(pPattern);
+        super();
+        specialFormat = TimeManager.getSimpleDateFormat(pPattern);
+        TimeManager.register(specialFormat);
     }
 
     @Override
@@ -100,9 +101,7 @@ public class ColoredDateCellRenderer extends DefaultTableRenderer {
             }
             renderComponent.setOpaque(true);
             renderComponent.setBackground(color);
-            JPanel panel = new JPanel(new GridBagLayout());
-            panel.add(renderComponent, new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, 1, new Insets(0, 0, 0, 0), 0, 0));
-            return panel;
+            return renderComponent;
         } catch (Exception e) {
             return c;
         }
