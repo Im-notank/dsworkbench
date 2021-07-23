@@ -218,7 +218,7 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
                     langSelect.setLocationRelativeTo(this);
                     langSelect.setVisible(true);
                     logger.debug("Awaiting language selection");
-                    GlobalOptions.addProperty("language", langSelect.getSelected());
+                    GlobalOptions.addProperty("ui.language", langSelect.getSelected());
                     logger.debug("Selected Language: {}", langSelect.getSelected());
                     
                     logger.debug(" - Initializing first start wizard");

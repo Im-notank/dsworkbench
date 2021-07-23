@@ -495,6 +495,11 @@ ui.components.VillageSelectionPanel.Expertenansicht=Expertenansicht
 
 ui.components.WelcomePanel.WillkommenbeiDSWorkbench=<html><h2 style="color:#953333">Willkommen bei DS Workbench </h2><p>Wenn du diese Seite siehst, dann hast du DS Workbench erfolgreich installiert und die ersten Schritte ebenso erfolgreich gemeistert. Eigentlich steht nun einer unbeschwerten Angriffsplanung und -durchf\u00fchrung nichts mehr im Wege. Erlaube mir trotzdem kurz auf einige Dinge hinzuweisen, die dir m\u00f6glicherweise beim <b>Umgang mit DS Workbench helfen</b> oder aber dir die M\u00f6glichkeit geben, einen wichtigen Teil zur <b>Weiterentwicklung und stetigen Verbesserung</b> dieses Programms beizutragen. Fahre einfach mit der Maus \u00fcber eins der vier Symbole in den Ecken, um hilfreiche und interessante Informationen rund um DS Workbench zu erfahren. Klicke auf ein Symbol, um direkt zum entsprechenden Ziel zu gelangen. <br><h3 style="color:#953333"> Nun aber viel Spa\u00df; mit DS Workbench.</h3></html>
 ui.components.WelcomePanel.DankeDSWorkbenchverwenden=Danke, ich m\u00f6chte DS Workbench nun verwenden.
+ui.components.WelcomePanel.disable_next=Willkommensseite beim nächsten Start nicht mehr anzeigen
+ui.components.WelcomePanel.help_help=<html> <h2 style='color:#953333; font-weight: bold;'>Integrierte Hilfe</h2> DS Workbench bietet eine umfangreiche Hilfe, die du im Programm jederzeit &uuml;ber <strong>F1</strong> aufrufen kannst. Dabei wird versucht, das passende Hilfethema f&uuml;r die Ansicht, in der du dich gerade befindest, auszuw&auml;hlen. Es schadet aber auch nicht, einfach mal so in der Hilfe zu st&ouml;bern um neue Funktionen zu entdecken. Einsteiger sollten in jedem Fall die ersten drei Kapitel der Wichtigen Grundlagen gelesen haben.</html>
+ui.components.WelcomePanel.community_help=<html> <h2 style='color:#953333; font-weight: bold;'>Die DS Workbench Community</h2> Nat&uuml;rlich gibt es neben dir noch eine Vielzahl anderer Spieler, die DS Workbench regelm&auml;&szlig;ig und intensiv benutzen. Einen perfekten Anlaufpunkt f&uuml;r alle Benutzer bietet das DS Workbench Forum, wo man immer jemanden trifft mit dem man Erfahrungen austauschen und wo man Fragen stellen kann.</html>
+ui.components.WelcomePanel.idea_help=<html> <h2 style='color:#953333; font-weight: bold;'>Verbesserungen und Ideen </h2> Gibt es irgendwas wo du meinst, dass es in DS Workbench fehlt und was anderen Benutzern auch helfen k&ouml;nnte? Hast du eine Idee, wie man DS Workbench verbessern oder die Handhabung vereinfachen k&ouml;nnte? Dann bietet dieser Bereich im DS Workbench Forum die perfekte Anlaufstelle f&uuml;r dich. Trau dich und hilf mit, DS Workbench  zu verbessern. </html>
+ui.components.WelcomePanel.facebook_help=<html> <h2 style='color:#953333; font-weight: bold;'>DS Workbench @ Facebook</h2> Nat&uuml;rlich geh&ouml;rt es heutzutage fast zum guten Ton, bei Facebook in irgendeiner Art und Weise vertreten zu sein. Auch DS Workbench hat eine eigene Facebook Seite, mit deren Hilfe ihr euch jederzeit &uuml;ber aktuelle News oder Geschehnisse im Zusammenhang mit DS Workbench informieren k&ouml;nnt.</html>
 
 ui.wiz.tap.TAPWelcomePanel.WillkommenbeimDSWorkbenchTaktikplaner=<html>Willkommen beim DS Workbench Taktikplaner.<br/>In den folgenden Schritten kannst du dir entweder einen Angriffs- oder einen Verteidigungsplan erstellen lassen. W\u00e4hle bitte zuerst aus, welche Art von Plan du erstellen m\u00f6chtest.</html>
 ui.wiz.tap.TAPWelcomePanel.Angriffsplann=<html><b>Willkommen beim DS Workbench Taktikplaner.</b><br/><br/> Du hast die Angriffsplanung gew\u00e4hlt. Diese erlaubt es dir, Angriffe in gro\u00dfen Mengen zu erstellen. Dabei bietet er dir die M\u00f6glichkeit, Abschick- und Ankunftzeiten nach deinen W\u00fcnschen zu gestalten. Bitte beachte aber auch: Der automatische Angriffsplaner ist <b>NICHT</b> daf\u00fcr geeignet, die perfekten Angriffspl\u00e4ne inklusive Adelungen zu erstellen. F\u00fcr die Planung von Adelungen verwende bitte den manuellen Angriffsplaner.</html>
@@ -893,10 +898,10 @@ ui.UnitOrderBuilder.Schliessen=Schlie\u00dfen
 ui.LayerOrderConfigurationFrame.Informationen=Informationen
 ui.LayerOrderConfigurationFrame.Schliessen=Schlie\u00dfen
 ui.LayerOrderConfigurationFrame.generalInformation=<html>Im oberen Bereich sind alle Ebenen aufgef&uuml;hrt, die DS Workbench im Hauptfenster zeichnen kann. Dabei werden <b>dunkelgraue</b> Ebenen gezeichnet, w&auml;hrend <b>hellgraue</b> Ebenen ausgeblendet sind und so keinerlei Aufwand (Speicher, CPU) verursachen.<br/> Fahre mit der Maus &uuml;ber die Symbole der einzelnen Ebenen, um Hinweise zu den Ebenen zu erhalten. Mit gedr&uuml;ckter Maustaste kannst du die Position der einzelnen Ebenen verschieben, wobei eine Position weiter links die Ebene in den Hintergrund verschiebt, w&auml;hrend eine Position weiter rechts die Ebene weiter im Vordergrund platziert.<br/>Eine Besonderheit bilden die Ebenen 'D&ouml;rfer' und 'Markierungen'. Diese Ebenen sind zum einen miteinander verbunden, zum anderen bestimmen sie, welche Ebenen sichtbar und welche unsichtbar sind, da Ebenen links (unterhalb) dieser Ebenen nicht gezeichnet werden.</html>
-ui.LayerOrderConfigurationFrame.MARKERS=<html><b>Markierungen</b><br/>Diese Ebene enthält Farbmarkierungen von Spielern und St&auml;mmen. Sie ist immer sichtbar, kann jedoch entweder unterhalb oder oberhalb der Dorfebene gezeichnet werden, wodurch Markierungen deutlicher dargestellt werden k&ouml;nnen.<br/><br/><img src='{warnURL}'/>&nbsp;Diese Ebene ist mit der Ebene 'D&ouml;rfer verbunden. Ebenen links (unterhalb) einer dieser beiden Ebenen werden nicht gezeichnet.</html>
+ui.LayerOrderConfigurationFrame.MARKERS=<html><b>Markierungen</b><br/>Diese Ebene enth\u00E4lt Farbmarkierungen von Spielern und St&auml;mmen. Sie ist immer sichtbar, kann jedoch entweder unterhalb oder oberhalb der Dorfebene gezeichnet werden, wodurch Markierungen deutlicher dargestellt werden k&ouml;nnen.<br/><br/><img src='{warnURL}'/>&nbsp;Diese Ebene ist mit der Ebene 'D&ouml;rfer verbunden. Ebenen links (unterhalb) einer dieser beiden Ebenen werden nicht gezeichnet.</html>
 ui.LayerOrderConfigurationFrame.VILLAGES=<html><b>D&ouml;rfer</b><br/>Die Dorfebene enth&auml;lt alle Dorfgrafiken. Sie ist immer sichtbar und bestimmt, welche anderen Ebenen sichtbar sind. Alle Ebenen die sich links (unterhalb) der Dorfebene befinden, werden <u>nicht</u> gezeichnet.<br/><br/><img src='{warnURL}'/>&nbsp;Diese Ebene ist mit der Ebene 'Markierungen' verbunden. Ebenen links (unterhalb) einer dieser beiden Ebenen werden nicht gezeichnet.</html>
 ui.LayerOrderConfigurationFrame.DRAWINGS=<html><b>Zeichnungen</b><br/>Diese Ebene enth&auml;lt alle Zeichnungen (Kreise, Rechtecke, usw.) die auf der Hauptkarte eingezeichnet sind.<br/><br/><img src='{warnURL}'/>&nbsp;Wenn du viele transparente Zeichnungen oder Freihandzeichnungen verwendest, k&ouml;nnte das Zeichnen dieser Ebene sehr aufw&auml;ndig sein. Wenn du Performanceprobleme bemerkst, versuch diese Ebene auszublenden.</html>
-ui.LayerOrderConfigurationFrame.VILLAGE_SYMBOLS=<html><b>Dorfsymbole</b><br/>Diese Ebene enth&auml;lt Symbole mit deinen einzelne D&ouml;rfer markiert sind. Dies sind z.B. Gruppenmarkierungen oder Markierungen von kürzlich geadelten D&ouml;rfern.</html>
+ui.LayerOrderConfigurationFrame.VILLAGE_SYMBOLS=<html><b>Dorfsymbole</b><br/>Diese Ebene enth&auml;lt Symbole mit deinen einzelne D&ouml;rfer markiert sind. Dies sind z.B. Gruppenmarkierungen oder Markierungen von k\u00FCrzlich geadelten D&ouml;rfern.</html>
 ui.LayerOrderConfigurationFrame.TROOP_DENSITY=<html><b>Truppendichte</b><br/>Diese Ebene zeigt im unteren Bereich der D&ouml;rfer auf der Karte Balken an, welche die Truppenmenge im entsprechenden Dorf repr&auml;sentieren. Diese Balken werden nat&uuml;rlich nur f&uuml;r D&ouml;rfer angezeigt, zu denen DS Workbench auch Truppeninformationen besitzt. Diese k&ouml;nnen &uuml;ber den Import von InGame-Informationen oder &uuml;ber Berichte eingelesen werden.<br/><br/><img src='{warnURL}'/>&nbsp;Sind Truppeninformationen zu vielen D&ouml;rfern vorhanden, so kann das Zeichnen dieser Ebene, sehr aufw&auml;ndig sein. Wenn du Performanceprobleme bemerkst, versuch diese Ebene auszublenden.</html>
 ui.LayerOrderConfigurationFrame.NOTES_MARKER=<html><b>Notizmarkierungen</b><br/>Diese Ebene stellt Markierungen von Notizen dar. Sind einem Dorf Notizen zugeordnet und sind f&uuml;r diese Notizen Kartenmarkierungen eingestellt, so werden die auf der Hauptkarte angezeigt wenn diese Ebene eingeblendet ist.</html>
 ui.LayerOrderConfigurationFrame.ATTACKS=<html><b>Angriffe</b><br/>Diese Ebene stellt Angriffe, die sich in Befehlspl&auml;nen befinden, auf der Hauptkarte dar, sofern die Angriffe eingezeichnet werden sollen. In den DS Workbench Einstellungen unter 'Befehle' kann man weitere Eigenschaften dieser sog. Befehlsvektoren festlegen (z.B. Aktuelle Truppenposition anzeigen oder die Laufrichtung einzeichnen)<br/><br/><img src='{warnURL}'/>&nbsp;In der Regel wird empfohlen, diese Ebene auszublenden. Dies dient zum einen der &Uuml;bersichtlichkeit, zum anderen ist das Zeichnen dieser Ebene, besonders wenn Truppenposition und Laufrichtung eingezeichnet werden, sehr aufw&auml;ndig.</html>
@@ -2264,7 +2269,7 @@ types.Layer.VILLAGE_SYMBOLS=Dorfsymbole
 types.Layer.TROOP_DENSITY=Truppendichte
 types.Layer.NOTES_MARKER=Notizmarkierungen
 types.Layer.ATTACKS=Angriffe
-types.Layer.SUPPORTS=Unterstützungen
+types.Layer.SUPPORTS=Unterst\u00FCtzungen
 types.Layer.DRAWINGS=Zeichnungen
 types.Layer.CHURCH_RADIUS=Kirchenradien
 types.Layer.WATCHTOWER_RADIUS=Wachturmradien
@@ -2340,4 +2345,46 @@ ui.panels.AttackTableTab.KeinAngriffsbefehlgefunden=Kein g\u00fcltiger Angriffsb
 ui.panels.AttackTableTab.BefehlRetimeruebertragen=Befehl in Retimer \u00fcbertragen
 ui.panels.AttackTableTab.Herkunft_=Herkunft:
 ui.panels.AttackTableTab.Ziel_=Ziel:
+
+de.tor.tribes.ui.wiz.WelcomePage.main_text=<html>Du hast DS Workbench zum ersten Mal gestartet.<br/>Um DS Workbench verwenden zu k\u00F6nnen, m\u00FCssen einmalig einige Einstellungen durchgef\u00FChrt werden. DS Workbench wird dich nun durch diese ersten Schritte geleiten und dich dabei unterst\u00FCtzen. Solltest du an einer Stelle nicht weiterkommen, frage einfach hier nach: https://forum.die-staemme.de/showthread.php?80831-DS-Workbench</html>
+
+de.tor.tribes.ui.wiz.FirstStartWizard.welcome-id=Willkommen
+de.tor.tribes.ui.wiz.FirstStartWizard.network-id=Netzwerkeinstellungen
+de.tor.tribes.ui.wiz.FirstStartWizard.server-id=Servereinstellungen
+de.tor.tribes.ui.wiz.FirstStartWizard.finish-id=Fertig
+
+de.tor.tribes.ui.wiz.NetworkSettings.main_text=<html>Die Netzwerkeinstellungen sind notwendig, falls du nicht direkt mit dem Internet verbunden bist. Dies ist oftmals in Firmennetzwerken oder Wohnheimen der Fall. Als Privatperson in einem Heimnetzwerk sollte man in der Regel direkt mit dem Internet verbunden sein. Klicke auf den Button <b>Testen</b>, um deine Einstellungen zu \u00FCberpr\u00FCfen und fortfahren zu k\u00F6nnen.</html>
+de.tor.tribes.ui.wiz.NetworkSettings.direct=Ich bin direkt mit dem Internet verbunden
+de.tor.tribes.ui.wiz.NetworkSettings.proxy=Ich benutze einen Proxy f\u00FCr den Internetzugang
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_addr=Proxy Adresse
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_port=Proxy Port
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_type=Proxy Typ
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_user=Benutzername
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_pass=Passwort
+de.tor.tribes.ui.wiz.NetworkSettings.test=Testen
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_addr_tooltip=Adresse des Proxy Servers
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_port_tooltip=Port des Proxy Servers
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_type_tooltip=Art des Proxy Servers
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_user_tooltip=Benutzername zur Authentifizierung beim Proxy Server
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_pass_tooltip=Passwort zur Authentifizierung beim Proxy Server
+de.tor.tribes.ui.wiz.NetworkSettings.test_tooltip=Netzwerkeinstellungen aktualisieren und pr\u00FCfen
+de.tor.tribes.ui.wiz.NetworkSettings.test_before_continue=Bitte teste die Einstellungen um fortzufahren
+de.tor.tribes.ui.wiz.NetworkSettings.port_invalid=Der Wert f\u00FCr den Port ist ung\u00FCltig
+de.tor.tribes.ui.wiz.NetworkSettings.unable_to_connect=Verbindung fehlgeschlagen. Bitte \u00FCberpr\u00FCfe deine Einstellungen
+
+de.tor.tribes.ui.wiz.ServerSettings.main_text=<html>In diesem letzten Schritt wird der Server auf dem du spielst und dein Name im Spiel festgelegt. Prinzipiell kannst du DS Workbench f\u00FCr beliebig viele Server und mit jedem Spielernamen benutzen, einen Zugriff auf die eigentlichen DS-Accounts hast du dadurch jedoch nicht. Vielmehr dient dies dazu, um z.B. gleichzeitig UV-Accounts in DS Workbench zu verwenden oder f\u00FCr einen Mitspieler Angriffe zu planen.</html>
+de.tor.tribes.ui.wiz.ServerSettings.server=Server
+de.tor.tribes.ui.wiz.ServerSettings.playerName=Spielername
+de.tor.tribes.ui.wiz.ServerSettings.select=W\u00E4hlen
+de.tor.tribes.ui.wiz.ServerSettings.please_select=-Bitte w\u00E4hlen-
+de.tor.tribes.ui.wiz.ServerSettings.please_select_server=-Bitte Server w\u00E4hlen-
+de.tor.tribes.ui.wiz.ServerSettings.unable_to_find_servers=Keine Server gefunden. Bitte versuch es sp\u00E4ter noch einmal.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_server_and_player=Bitte w\u00E4hle einen Server und Spielernamen.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_server=Bitte einen Server ausw\u00E4hlen
+de.tor.tribes.ui.wiz.ServerSettings.problem_no_players_found=Keine Spieler gefunden. Versuch es bitte sp\u00E4ter noch einmal.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_player=Bitte einen Spielernamen w\u00E4hlen
+de.tor.tribes.ui.wiz.ServerSettings.problem_downloading=Fehler beim Download der Spielerdaten
+de.tor.tribes.ui.wiz.ServerSettings.problem_downloading_server=Fehler beim Herunterladen der Serverinformationen.\nBitte versuch es sp\u00E4ter nochmal.
+
+de.tor.tribes.ui.wiz.FinishPage.main_text=<html>Herzlichen Gl\u00FCckwunsch, die grundlegenden Einstellungen von DS Workbench ist nun abgeschlossen. Mit einem Klick auf <b>Fertig</b> wird DS Workbench mit den gew\u00E4hlten Einstellungen gestartet. M\u00F6chtest du daran noch etwas \u00E4ndern, so kannst du entweder \u00FCber <b>Zur\u00FCck</b> auf die entsprechende Seite wechseln, oder sp\u00E4ter direkt in DS Workbench im Hauptmen\u00FC, welches im unteren Bild zu erkennen ist, auf alle Einstellungen zugreifen.</html>
 

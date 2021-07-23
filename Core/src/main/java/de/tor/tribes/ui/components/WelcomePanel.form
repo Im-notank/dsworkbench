@@ -120,8 +120,9 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="jDisableWelcome">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Willkommensseite beim n&#xe4;chsten Start nicht mehr anzeigen"/>
-            <Property name="opaque" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;disable_next&quot;)&#xa;" type="code"/>
+            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

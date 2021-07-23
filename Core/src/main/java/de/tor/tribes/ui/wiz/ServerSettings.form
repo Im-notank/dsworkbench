@@ -52,9 +52,11 @@
       <SubComponents>
         <Component class="javax.swing.JTextPane" name="jTextPane1">
           <Properties>
-            <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
             <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="&lt;html&gt;In diesem letzten Schritt wird der Server auf dem du spielst und dein Name im Spiel festgelegt.&#xa;Prinzipiell kannst du DS Workbench f&#xfc;r beliebig viele Server und mit jedem Spielernamen benutzen, einen Zugriff auf die eigentlichen DS-Accounts hast du dadurch jedoch nicht. &#xa;Vielmehr dient dies dazu, um z.B. gleichzeitig UV-Accounts in DS Workbench zu verwenden oder f&#xfc;r einen Mitspieler Angriffe zu planen.&lt;/html&gt;"/>
+            <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;main_text&quot;)" type="code"/>
+            </Property>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[400, 400]"/>
             </Property>
@@ -90,7 +92,9 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Server"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;server&quot;)" type="code"/>
+            </Property>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 14]"/>
             </Property>
@@ -130,7 +134,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Spielername"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;playerName&quot;)" type="code"/>
+            </Property>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[100, 14]"/>
             </Property>
@@ -170,7 +176,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="jSelectServerButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="W&#xe4;hlen"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="trans.get(&quot;select&quot;)" type="code"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fireSelectServerEvent"/>

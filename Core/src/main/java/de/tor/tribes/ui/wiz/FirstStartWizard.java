@@ -15,6 +15,8 @@
  */
 package de.tor.tribes.ui.wiz;
 
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.util.Map;
 import javax.swing.JComponent;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +30,7 @@ import org.netbeans.spi.wizard.WizardPanelProvider;
  * @author Torridity
  */
 public class FirstStartWizard extends WizardPanelProvider {
+    private static Translator trans = TranslationManager.getTranslator("de.tor.tribes.ui.wiz.FirstStartWizard");
 
     private static Logger logger = LogManager.getLogger("Wizard");
     private static final String ID_WELCOME = "welcome-id";
@@ -38,7 +41,7 @@ public class FirstStartWizard extends WizardPanelProvider {
     public FirstStartWizard() {
         super("DS Workbench - Erster Start",
                 new String[]{ID_WELCOME, ID_NETWORK,  ID_SERVER, ID_FINISH},
-                new String[]{"Willkommen", "Netzwerkeinstellungen", "Servereinstellungen", "Fertig"});
+                new String[]{trans.get(ID_WELCOME), trans.get(ID_NETWORK), trans.get(ID_SERVER), trans.get(ID_FINISH)});
     }
 
     @Override

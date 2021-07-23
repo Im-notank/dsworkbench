@@ -495,6 +495,11 @@ ui.components.VillageSelectionPanel.Expertenansicht=Expert view
 
 ui.components.WelcomePanel.WillkommenbeiDSWorkbench=<html><h2 style="color:#953333"> Welcome to DS Workbench </h2> <p> If you see this page, then you have successfully installed DS Workbench and mastered the first steps just as successfully. Actually nothing stands in the way of carefree attack planning and execution. Nevertheless, allow me to briefly point out a few things that may help you <b> using DS Workbench </b> or give you the opportunity to play an important part in the <b> further development and continuous improvement </ b > Contribute to this program. Simply move the mouse over one of the four symbols in the corners to find out helpful and interesting information about DS Workbench. Click on an icon to go directly to the corresponding destination. <br> <h3 style = "color: # 953333"> Now have fun; with DS Workbench. </h3> </html>
 ui.components.WelcomePanel.DankeDSWorkbenchverwenden=Thanks, I want to use DS Workbench now.
+ui.components.WelcomePanel.disable_next=Do not show the welcome page again the next time you start
+ui.components.WelcomePanel.help_help=<html> <h2 style = 'color: # 953333; font-weight: bold;'> Integrated help </h2> DS Workbench offers extensive help that you can call up in the program at any time using <strong> F1 </strong>. An attempt is made to select the appropriate help topic for the view you are currently in. But it doesn't hurt to just rummage through the help to discover new functions. Beginners should definitely read the first three chapters of the Important Basics. </html>
+ui.components.WelcomePanel.community_help=<html> <h2 style = 'color: # 953333; font-weight: bold;'> The DS Workbench Community </h2> Of course there are a number of other players besides you who use DS Workbench regularly and intensively. The DS Workbench Forum offers a perfect starting point for all users, where you can always meet someone with whom you can exchange experiences and ask questions. </html>
+ui.components.WelcomePanel.idea_help=<html> <h2 style = 'color: # 953333; font-weight: bold; '> Improvements and ideas </h2> Is there anything you think is missing in DS Workbench and which could also help other users? Do you have an idea how to improve DS Workbench or simplify the handling? Then this area in the DS Workbench Forum is the perfect contact point for you. Have the courage and help improve DS Workbench. </html>
+ui.components.WelcomePanel.facebook_help=<html> <h2 style = 'color: # 953333; font-weight: bold; '> DS Workbench @ Facebook </h2> Of course it is almost a good thing these days to be represented in some way on Facebook. DS Workbench also has its own Facebook page, which you can use to inform yourself about current news or events in connection with DS Workbench at any time. </html>
 
 ui.wiz.tap.TAPWelcomePanel.WillkommenbeimDSWorkbenchTaktikplaner=<html> Welcome to the DS Workbench Tactic Planner. <br/> In the following steps you can have either an attack or a defense plan drawn up. Please select first which type of plan you would like to create. </html>
 ui.wiz.tap.TAPWelcomePanel.Angriffsplann=<html> <b> Welcome to the DS Workbench Tactic Planner. </b> <br/> <br/> You have chosen attack planning. This allows you to create attacks in large quantities. He offers you the opportunity to arrange the sending and arrival times according to your wishes. But please also note: The automatic attack planner is <b> NOT </b> suitable for creating the perfect attack plans including ennobling. Please use the manual attack planner to plan evictions. </html>
@@ -2340,4 +2345,46 @@ ui.panels.AttackTableTab.KeinAngriffsbefehlgefunden=No valid attack command foun
 ui.panels.AttackTableTab.BefehlRetimeruebertragen=Transfer command to retimer 
 ui.panels.AttackTableTab.Herkunft_=Origin:
 ui.panels.AttackTableTab.Ziel_=Target:
+
+de.tor.tribes.ui.wiz.WelcomePage.main_text=<html> You have started DS Workbench for the first time. <br/> In order to be able to use DS Workbench, some settings have to be made once. DS Workbench will now guide you through these first steps and support you in doing so. If you get stuck at one point, just ask here: https://forum.die-staemme.de/showthread.php?80831-DS-Workbench </html> 
+
+de.tor.tribes.ui.wiz.FirstStartWizard.welcome-id=Welcome
+de.tor.tribes.ui.wiz.FirstStartWizard.network-id=Network-settings
+de.tor.tribes.ui.wiz.FirstStartWizard.server-id=Server-settings
+de.tor.tribes.ui.wiz.FirstStartWizard.finish-id=Finished
+
+de.tor.tribes.ui.wiz.NetworkSettings.main_text=<html> The network settings are necessary if you are not directly connected to the internet. This is often the case in corporate networks or dormitories. As a private person in a home network, you should generally be connected directly to the Internet. Click on the <b> Test </b> button to check your settings and to be able to continue. </html> 
+de.tor.tribes.ui.wiz.NetworkSettings.direct=I am directly connected to the internet 
+de.tor.tribes.ui.wiz.NetworkSettings.proxy=I use a proxy for internet access 
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_addr=Proxy address
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_port=Proxy port
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_type=Proxy type
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_user=Username
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_pass=Password
+de.tor.tribes.ui.wiz.NetworkSettings.test=Try
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_addr_tooltip=Address of the proxy server
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_port_tooltip=Port of the proxy server
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_type_tooltip=Type of proxy server
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_user_tooltip=Username for authentication with the proxy server
+de.tor.tribes.ui.wiz.NetworkSettings.proxy_pass_tooltip=Password for authentication with the proxy server 
+de.tor.tribes.ui.wiz.NetworkSettings.test_tooltip=Update and check network settings
+de.tor.tribes.ui.wiz.NetworkSettings.test_before_continue=Please test the settings to continue
+de.tor.tribes.ui.wiz.NetworkSettings.port_invalid=The value for the port is invalid
+de.tor.tribes.ui.wiz.NetworkSettings.unable_to_connect=Connection Failed. Please check your settings
+
+de.tor.tribes.ui.wiz.ServerSettings.main_text=<html> In this last step, the server you are playing on and your name are set in the game. In principle, you can use DS Workbench for any number of servers and with any player name, but this does not give you access to the actual DS accounts. Rather, this is used, for example, to use UV accounts in DS Workbench at the same time or to plan attacks for a fellow player. </html>
+de.tor.tribes.ui.wiz.ServerSettings.server=Server
+de.tor.tribes.ui.wiz.ServerSettings.playerName=Playername
+de.tor.tribes.ui.wiz.ServerSettings.select=Select
+de.tor.tribes.ui.wiz.ServerSettings.please_select=-Please select-
+de.tor.tribes.ui.wiz.ServerSettings.please_select_server=-Please select your server-
+de.tor.tribes.ui.wiz.ServerSettings.unable_to_find_servers=No servers found. Please try again later.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_server_and_player=Please choose a server and player name.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_server=Please select a server
+de.tor.tribes.ui.wiz.ServerSettings.problem_no_players_found=No players found. Please try again later.
+de.tor.tribes.ui.wiz.ServerSettings.problem_select_player=Please choose a player name
+de.tor.tribes.ui.wiz.ServerSettings.problem_downloading=Error downloading player data
+de.tor.tribes.ui.wiz.ServerSettings.problem_downloading_server=Error downloading server information.\nPlease try again later. 
+
+de.tor.tribes.ui.wiz.FinishPage.main_text=<html> Congratulations, the basic settings of DS Workbench are now complete. Click on <b> Done </b> to start DS Workbench with the selected settings. If you would like to change something, you can either switch to the corresponding page via <b> Back </b>, or later directly in DS Workbench in the main menu, which you can find in the picture below recognize is to access all settings. </html>
 
