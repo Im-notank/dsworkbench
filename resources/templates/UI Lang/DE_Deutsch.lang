@@ -2281,7 +2281,6 @@ dssim.ui.DSWorkbenchSimulatorFrame.ItemKnightTitle=Paladin mit Items
 ui.panels.AttackTableTab.Befehlgewaehlt=Befehl gew\u00e4hlt
 ui.panels.AttackTableTab.Befehlegewaehlt=Befehle gew\u00e4hlt
 ui.panels.AttackTableTab.KeinBefehlgewaehlt=Kein Befehl gew\u00e4hlt
-ui.panels.AttackTableTab.MaximalZehn=Es k\u00f6nnen maximal 10 Timer gleichzeitig erstellt werden.
 ui.panels.AttackTableTab.WievieleSekunden=Wieviele Sekunden vor dem Befehl soll der Alarm abgespielt werden?
 ui.panels.AttackTableTab.Timererstellt=Timer erstellt.
 ui.panels.AttackTableTab.UngueltigeSekundenangabe=Ung\u00fcltige Sekundenangabe

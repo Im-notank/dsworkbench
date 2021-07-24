@@ -260,11 +260,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 }
             }
 
-            if (selection.size() > 10) {
-                showInfo(trans.get("MaximalZehn"));
-                return;
-            }
-
             String result = JOptionPane.showInputDialog(this, trans.get("WievieleSekunden"), 30);
             if (result != null) {
                 try {
