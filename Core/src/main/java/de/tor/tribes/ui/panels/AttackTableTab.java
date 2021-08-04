@@ -1264,10 +1264,9 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     }
 
     public void cleanup() {
-        List<ManageableType> elements = AttackManager.getSingleton().getAllElements(sAttackPlan);
+        List<Attack> elements = AttackManager.getSingleton().getAllElements(sAttackPlan);
         List<Attack> toRemove = new LinkedList<>();
-        for (ManageableType t : elements) {
-            Attack a = (Attack) t;
+        for (Attack a : elements) {
             if (a.getSendTime().getTime() < System.currentTimeMillis()) {
                 toRemove.add(a);
             }

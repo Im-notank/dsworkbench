@@ -117,10 +117,10 @@ public class LinkedTag extends Tag {
     public void updateVillageList() {
         //TODO find a better way for that (maybe whith implementation of real Dynamic groups)
         clearTaggedVillages();
-        List<ManageableType> elements = TagManager.getSingleton().getAllElements();
+        List<Tag> elements = TagManager.getSingleton().getAllElements();
         List<Tag> lTags = new ArrayList<>();
-        for (ManageableType t : elements) {
-            lTags.add((Tag) t);
+        for (Tag t : elements) {
+            lTags.add(t);
         }
         Collections.sort(lTags, Tag.SIZE_ORDER);
         ScriptEngineManager factory = new ScriptEngineManager();

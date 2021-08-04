@@ -198,7 +198,7 @@ public class AttackManager extends GenericManager<Attack> {
         removeAllElementsFromGroup(MANUAL_ATTACK_PLAN);
     }
 
-    public List<ManageableType> getDoItYourselfAttacks() {
+    public List<Attack> getDoItYourselfAttacks() {
         return getAllElements(MANUAL_ATTACK_PLAN);
     }
 }

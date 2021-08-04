@@ -40,7 +40,7 @@ public abstract class GenericManager<C extends ManageableType> {
     public static final String DEFAULT_GROUP = "default";
     private String alternateDefaultGroupName = null;
     private List<GenericManagerListener> listeners = new ArrayList<>();
-    private HashMap<String, List<ManageableType>> managedElementGroups = new HashMap<>();
+    private HashMap<String, List<C>> managedElementGroups = new HashMap<>();
     private boolean groupable = false;
     private boolean valid = true;
 
@@ -92,7 +92,7 @@ public abstract class GenericManager<C extends ManageableType> {
 
     public void initialize() {
         managedElementGroups.clear();
-        managedElementGroups.put(DEFAULT_GROUP, new ArrayList<ManageableType>());
+        managedElementGroups.put(DEFAULT_GROUP, new ArrayList<>());
     }
 
     public Iterator<String> getGroupIterator() {
@@ -112,7 +112,7 @@ public abstract class GenericManager<C extends ManageableType> {
     public boolean addGroup(String pGroup) {
         boolean changed = false;
         if (groupable && !managedElementGroups.containsKey(pGroup)) {
-            managedElementGroups.put(pGroup, new ArrayList<ManageableType>());
+            managedElementGroups.put(pGroup, new ArrayList<>());
             changed = true;
         }
         if (changed) {
@@ -127,11 +127,11 @@ public abstract class GenericManager<C extends ManageableType> {
      * @param pGroup
      * @return
      */
-    public List<ManageableType> removeGroup(String pGroup) {
-        List<ManageableType> result = null;
+    public List<C> removeGroup(String pGroup) {
+        List<C> result = null;
         boolean changed = false;
         if (groupable && pGroup != null && !pGroup.equals(DEFAULT_GROUP)) {
-            List<ManageableType> removedList = managedElementGroups.remove(pGroup);
+            List<C> removedList = managedElementGroups.remove(pGroup);
             if (removedList != null) {
                 result = removedList;
                 changed = true;
@@ -141,7 +141,7 @@ public abstract class GenericManager<C extends ManageableType> {
             fireDataChangedEvents();
         }
 
-        return (result != null) ? result : new ArrayList<ManageableType>();
+        return (result != null) ? result : new ArrayList<>();
     }
 
     /**
@@ -154,7 +154,7 @@ public abstract class GenericManager<C extends ManageableType> {
     public boolean renameGroup(String pOldName, String pNewName) {
         boolean changed = false;
         if (groupable) {
-            List<ManageableType> elementsInOldGroup = managedElementGroups.get(pOldName);
+            List<C> elementsInOldGroup = managedElementGroups.get(pOldName);
             if (elementsInOldGroup != null) {
                 managedElementGroups.remove(pOldName);
                 managedElementGroups.put(pNewName, elementsInOldGroup);
@@ -209,7 +209,7 @@ public abstract class GenericManager<C extends ManageableType> {
     public List<ManageableType> getAllElementsFromAllGroups() {
         List<ManageableType> allElements = new LinkedList<>();
         for (String group : getGroups()) {
-            List<ManageableType> elementsInGroup = getAllElements(group);
+            List<C> elementsInGroup = getAllElements(group);
             Collections.addAll(allElements, elementsInGroup.toArray(new ManageableType[elementsInGroup.size()]));
         }
         return allElements;
@@ -233,7 +233,7 @@ public abstract class GenericManager<C extends ManageableType> {
      *
      * @return
      */
-    public List<ManageableType> getAllElements() {
+    public List<C> getAllElements() {
         return getAllElements(DEFAULT_GROUP);
     }
 
@@ -243,7 +243,7 @@ public abstract class GenericManager<C extends ManageableType> {
      * @param pGroup
      * @return
      */
-    public List<ManageableType> getAllElements(String pGroup) {
+    public List<C> getAllElements(String pGroup) {
         if (managedElementGroups.containsKey(pGroup)) {
             return Collections.unmodifiableList(managedElementGroups.get(pGroup));
         }
@@ -302,7 +302,7 @@ public abstract class GenericManager<C extends ManageableType> {
             return;
         }
         
-        List<ManageableType> elems;
+        List<C> elems;
         if (!groupable || pGroup == null) {
             elems = managedElementGroups.get(DEFAULT_GROUP);
         } else {

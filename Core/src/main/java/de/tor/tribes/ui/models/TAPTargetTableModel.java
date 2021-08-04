@@ -50,16 +50,15 @@ public class TAPTargetTableModel extends AbstractTableModel {
     }
 
     public void addRow(final Village pVillage, boolean pFake, int pAmount) {
-        Object result = IterableUtils.find(elements,
-            (Object o) -> ((TAPAttackTargetElement) o).getVillage().equals(pVillage)
+        TAPAttackTargetElement result = IterableUtils.find(elements,
+            (o) -> o.getVillage().equals(pVillage)
         );
 
         if (result == null) {
             elements.add(new TAPAttackTargetElement(pVillage, pFake, pAmount));
         } else {
-            TAPAttackTargetElement resultElem = (TAPAttackTargetElement) result;
-            resultElem.setAttacks(pAmount);
-            resultElem.setFake(pFake);
+            result.setAttacks(pAmount);
+            result.setFake(pFake);
         }
         fireTableDataChanged();
     }
@@ -69,25 +68,23 @@ public class TAPTargetTableModel extends AbstractTableModel {
     }
 
     public void increaseRowCount(final Village pVillage) {
-        Object result = IterableUtils.find(elements,
-            (Object o) -> ((TAPAttackTargetElement) o).getVillage().equals(pVillage)
+        TAPAttackTargetElement result = IterableUtils.find(elements,
+            (o) -> o.getVillage().equals(pVillage)
         );
 
         if (result != null) {
-            TAPAttackTargetElement resultElem = (TAPAttackTargetElement) result;
-            resultElem.addAttack();
+            result.addAttack();
             fireTableDataChanged();
         }
     }
 
     public void decreaseRowCount(final Village pVillage) {
-        Object result = IterableUtils.find(elements,
-            (Object o) -> ((TAPAttackTargetElement) o).getVillage().equals(pVillage)
+        TAPAttackTargetElement result = IterableUtils.find(elements,
+            (o) -> o.getVillage().equals(pVillage)
         );
 
         if (result != null) {
-            TAPAttackTargetElement resultElem = (TAPAttackTargetElement) result;
-            resultElem.removeAttack();
+            result.removeAttack();
             fireTableDataChanged();
         }
     }

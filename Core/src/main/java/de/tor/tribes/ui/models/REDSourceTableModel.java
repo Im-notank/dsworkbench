@@ -41,8 +41,8 @@ public class REDSourceTableModel extends AbstractTableModel {
     private final List<VillageMerchantInfo> elements = new LinkedList<>();
     
     public void addRow(final Village pVillage, int pStash, int pWood, int pClay, int pIron, int pAvailableMerchants, int pMerchants, int pAvailableFarm, int pOverallFarm, VillageMerchantInfo.Direction pDirection) {
-        Object result = IterableUtils.find(elements,
-            (Object o) -> ((VillageMerchantInfo) o).getVillage().equals(pVillage)
+        VillageMerchantInfo result = IterableUtils.find(elements,
+            (o) -> o.getVillage().equals(pVillage)
         );
         
         if (result == null) {
@@ -50,16 +50,15 @@ public class REDSourceTableModel extends AbstractTableModel {
             vmi.setDirection(pDirection);
             elements.add(vmi);
         } else {
-            VillageMerchantInfo resultElem = (VillageMerchantInfo) result;
-            resultElem.setWoodStock(pWood);
-            resultElem.setClayStock(pClay);
-            resultElem.setIronStock(pIron);
-            resultElem.setStashCapacity(pStash);
-            resultElem.setAvailableMerchants(pAvailableMerchants);
-            resultElem.setOverallMerchants(pMerchants);
-            resultElem.setAvailableFarm(pAvailableFarm);
-            resultElem.setOverallFarm(pOverallFarm);
-            resultElem.setDirection(pDirection);
+            result.setWoodStock(pWood);
+            result.setClayStock(pClay);
+            result.setIronStock(pIron);
+            result.setStashCapacity(pStash);
+            result.setAvailableMerchants(pAvailableMerchants);
+            result.setOverallMerchants(pMerchants);
+            result.setAvailableFarm(pAvailableFarm);
+            result.setOverallFarm(pOverallFarm);
+            result.setDirection(pDirection);
         }
         fireTableDataChanged();
     }

@@ -628,9 +628,8 @@ public class VillageSupportFrame extends javax.swing.JFrame implements ActionLis
             Iterator<String> plans = AttackManager.getSingleton().getGroupIterator();
             while (plans.hasNext()) {
                 String planId = plans.next();
-                List<ManageableType> plan = AttackManager.getSingleton().getAllElements(planId);
-                for (ManageableType e : plan) {
-                    Attack a = (Attack) e;
+                List<Attack> plan = AttackManager.getSingleton().getAllElements(planId);
+                for (Attack a : plan) {
                     if (a.getSource().equals(village) && a.getType() == Attack.SUPPORT_TYPE) {
                         usages++;
                     }

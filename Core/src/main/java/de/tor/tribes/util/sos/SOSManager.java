@@ -101,11 +101,9 @@ public class SOSManager extends GenericManager<SOSRequest> {
       return null;
     }
 
-    Object result = IterableUtils.find(getAllElements(),
-        (Object o) -> ((SOSRequest) o).getDefender().equals(pTribe)
+    return IterableUtils.find(getAllElements(),
+        (o) -> o.getDefender().equals(pTribe)
     );
-
-    return (SOSRequest) result;
   }
 
   public void addRequest(SOSRequest pRequest) {

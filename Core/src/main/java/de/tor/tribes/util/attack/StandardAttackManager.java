@@ -73,32 +73,28 @@ public class StandardAttackManager extends GenericManager<StandardAttack> {
     }
 
     public StandardAttack getElementByName(final String pName) {
-        Object result = IterableUtils.find(getAllElements(),
-                (Object o) -> ((StandardAttack) o).getName().equals(pName)
+        return IterableUtils.find(getAllElements(),
+            (o) -> o.getName().equals(pName)
         );
-
-        return (StandardAttack) result;
     }
 
     public StandardAttack getElementByIcon(final int pIcon) {
-        Object result = IterableUtils.find(getAllElements(),
-            (Object o) -> ((StandardAttack) o).getIcon() == pIcon
+        return IterableUtils.find(getAllElements(),
+            (o) -> o.getIcon() == pIcon
         );
-
-        return (StandardAttack) result;
     }
 
     public boolean containsElementByName(final String pName) {
-        Object result = IterableUtils.find(getAllElements(),
-            (Object o) -> ((StandardAttack) o).getName().equals(pName)
+        StandardAttack result = IterableUtils.find(getAllElements(),
+            (o) -> o.getName().equals(pName)
         );
 
         return result != null;
     }
 
     public boolean containsElementByIcon(final int pIcon) {
-        Object result = IterableUtils.find(getAllElements(),
-            (Object o) -> ((StandardAttack) o).getIcon() == pIcon
+        StandardAttack result = IterableUtils.find(getAllElements(),
+            (o) -> o.getIcon() == pIcon
         );
 
         return result != null;

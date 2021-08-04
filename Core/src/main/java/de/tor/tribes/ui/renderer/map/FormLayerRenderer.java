@@ -32,9 +32,8 @@ public class FormLayerRenderer extends AbstractDirectLayerRenderer {
         if (!pSettings.isLayerVisible()) {
             return;
         }
-        List<ManageableType> elems = FormManager.getSingleton().getAllElements();
-        for (ManageableType t : elems) {
-            AbstractForm form = (AbstractForm) t;
+        List<AbstractForm> elems = FormManager.getSingleton().getAllElements();
+        for (AbstractForm form : elems) {
             form.renderForm(pG2d);
         }
     }

@@ -91,9 +91,8 @@ public class AttackLayerRenderer extends AbstractDirectLayerRenderer {
         boolean showAttackMovement = GlobalOptions.getProperties().getBoolean("attack.movement");
         while (keys.hasNext()) {
             String plan = keys.next();
-            List<ManageableType> elements = AttackManager.getSingleton().getAllElements(plan);
-            for (ManageableType element : elements) {
-                Attack attack = (Attack) element;
+            List<Attack> elements = AttackManager.getSingleton().getAllElements(plan);
+            for (Attack attack : elements) {
                 //go through all attacks
                 //render if shown on map or if either source or target are visible
                 if (attack.isShowOnMap() && (attack.getSource().isVisibleOnMap() || attack.getTarget().isVisibleOnMap())) {

@@ -82,7 +82,7 @@ public class TroopsManager extends GenericManager<VillageTroopsHolder> {
     }
 
     @Override
-    public List<ManageableType> removeGroup(String pGroup) {
+    public List<VillageTroopsHolder> removeGroup(String pGroup) {
         return new LinkedList<>();
     }
 
@@ -127,12 +127,12 @@ public class TroopsManager extends GenericManager<VillageTroopsHolder> {
     }
 
     @Override
-    public List<ManageableType> getAllElements() {
+    public List<VillageTroopsHolder> getAllElements() {
         return getAllElements(getDefaultGroupName());
     }
 
     @Override
-    public List<ManageableType> getAllElements(String pGroup) {
+    public List<VillageTroopsHolder> getAllElements(String pGroup) {
         HashMap<Village, VillageTroopsHolder> set = managedElementGroups.get(pGroup);
         if (set == null) {
             return new LinkedList<>();
@@ -141,7 +141,7 @@ public class TroopsManager extends GenericManager<VillageTroopsHolder> {
         if (values == null) {
             return new LinkedList<>();
         }
-        return Collections.unmodifiableList(Arrays.asList(set.values().toArray(new ManageableType[set.size()])));
+        return Collections.unmodifiableList(Arrays.asList(set.values().toArray(new VillageTroopsHolder[set.size()])));
     }
 
     public boolean hasInformation(TROOP_TYPE pType) {

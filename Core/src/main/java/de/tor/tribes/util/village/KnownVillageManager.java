@@ -240,9 +240,9 @@ public class KnownVillageManager extends GenericManager<KnownVillage> {
     }
 
     public KnownVillage getKnownVillage(Village pVillage) {
-        List<ManageableType> elements = getAllElements();
-        for (ManageableType elm : elements) {
-            if (((KnownVillage) elm).getVillage().equals(pVillage)) {
+        List<KnownVillage> elements = getAllElements();
+        for (KnownVillage elm : elements) {
+            if (elm.getVillage().equals(pVillage)) {
                 return (KnownVillage) elm;
             }
         }
