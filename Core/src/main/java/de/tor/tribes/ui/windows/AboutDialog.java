@@ -89,7 +89,7 @@ public class AboutDialog extends javax.swing.JDialog {
         getContentPane().add(jLabelWeb, gridBagConstraints);
 
         jLabelWebLink.setForeground(new java.awt.Color(0, 51, 255));
-        jLabelWebLink.setText("https://github.com/extremeCrazyCoder");
+        jLabelWebLink.setText("https://github.com/extremeCrazyCoder/dsworkbench");
         jLabelWebLink.setToolTipText("");
         jLabelWebLink.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -216,20 +216,16 @@ private void fireDebugOnEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                AboutDialog dialog = new AboutDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            AboutDialog dialog = new AboutDialog(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

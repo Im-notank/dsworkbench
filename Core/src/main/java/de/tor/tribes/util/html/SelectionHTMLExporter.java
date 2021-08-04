@@ -271,7 +271,7 @@ public class SelectionHTMLExporter {
 
         // <editor-fold defaultstate="collapsed" desc=" build footer">
         String foot = FOOTER;
-        foot = foot.replace(VERSION, Double.toString(Constants.VERSION) + Constants.VERSION_ADDITION);
+        foot = foot.replace(VERSION, Constants.VERSION + Constants.VERSION_ADDITION);
 
         SimpleDateFormat f = TimeManager.getSimpleDateFormat("dd.MM.yyyy 'um' HH:mm:ss 'Uhr'");
 

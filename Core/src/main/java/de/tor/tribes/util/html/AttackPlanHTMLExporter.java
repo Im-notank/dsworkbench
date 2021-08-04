@@ -411,7 +411,7 @@ public class AttackPlanHTMLExporter {
             result = result.replace(SERVER, "-");
         }
         //replace version
-        result = result.replace(VERSION, Double.toString(Constants.VERSION) + Constants.VERSION_ADDITION);
+        result = result.replace(VERSION, Constants.VERSION + Constants.VERSION_ADDITION);
         //replace creation date
         SimpleDateFormat f = TimeManager.getSimpleDateFormat("dd.MM.yyyy 'um' HH:mm:ss 'Uhr'");
         result = result.replace(CREATION_DATE, f.format(new Date(System.currentTimeMillis())));

@@ -6,7 +6,7 @@
     <artifactId>dsworkbench</artifactId>
     <name>DSWorkbench</name>
     <packaging>pom</packaging>
-    <version>4.1</version>
+    <version>${revision}</version>
 
     <description>
         Parent project for DS Workbench. The project contains two modules: core and plugins which are put together
@@ -17,6 +17,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <release.version>${project.version}</release.version>
+        <revision>4.1.1</revision>
     </properties>
 
     <repositories>

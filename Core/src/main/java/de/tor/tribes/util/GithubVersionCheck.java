@@ -34,7 +34,7 @@ import org.json.JSONObject;
 public final class GithubVersionCheck {
     private static final Logger LOGGER = LogManager.getLogger("GithubVersionCheck");
 
-    private static final String API_URL = "https://api.github.com/repos/torridity/dsworkbench/releases/latest";
+    private static final String API_URL = "https://api.github.com/repos/extremeCrazyCoder/dsworkbench/releases/latest";
 
     public static class UpdateInfo {
 
@@ -105,7 +105,7 @@ public final class GithubVersionCheck {
             JSONObject latestRelease = new JSONObject(new String(result.toByteArray()));
             String latestTagName = (String) latestRelease.get("tag_name");
 
-            String ownVersion = Double.toString(Constants.VERSION) + Constants.VERSION_ADDITION;
+            String ownVersion = Constants.VERSION + Constants.VERSION_ADDITION;
             if (ownVersion.equals(latestTagName)) {
                 //no update available
                 return UpdateInfo.factoryNoUpdateAvailableInfo();
