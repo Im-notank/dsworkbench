@@ -302,39 +302,35 @@ public class RetimerCalculationPanel extends WizardPage {
         jCalculateButton.setEnabled(false);
 
         setBusy(true);
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    RETSourceElement[] filtered = RetimerSourceFilterPanel.getSingleton().getFilteredElements();
-                    Attack[] attacks = RetimerDataPanel.getSingleton().getAttacks();
-                    for (Attack a : attacks) {
-                        notifyStatusUpdate(trans.get("BrechneRetimes") + a.getSource().getFullName() + " -> " + a.getTarget().getFullName());
-                        for (RETSourceElement element : filtered) {
-                            if (!element.isIgnored()) {
-                                notifyStatusUpdate(trans.get("TesteHerkunftsdorf") + element.getVillage().getFullName());
-                                VillageTroopsHolder holder = TroopsManager.getSingleton().getTroopsForVillage(element.getVillage(), TroopsManager.TROOP_TYPE.OWN);
-                                if (holder == null && Constants.DEBUG) {
-                                    holder = TroopHelper.getRandomOffVillageTroops(element.getVillage());
-                                }
-                                if (holder != null) {
-                                    List<Attack> retimesForVillage = getRetimesForVillage(a, holder);
-                                    CollectionUtils.addAll(retimes, retimesForVillage.toArray(new Attack[retimesForVillage.size()]));
-                                } else {
-                                    notifyStatusUpdate(trans.get("KeineTruppenDorf") + element.getVillage() + trans.get("gefunden"));
-                                }
-                            } else {
-                                notifyStatusUpdate(trans.get("Dorf") + element.getVillage() + trans.get("wirdignoriert"));
+        new Thread(() -> {
+            try {
+                RETSourceElement[] filtered = RetimerSourceFilterPanel.getSingleton().getFilteredElements();
+                Attack[] attacks = RetimerDataPanel.getSingleton().getAttacks();
+                for (Attack a : attacks) {
+                    notifyStatusUpdate(trans.get("BrechneRetimes") + a.getSource().getFullName() + " -> " + a.getTarget().getFullName());
+                    for (RETSourceElement element : filtered) {
+                        if (!element.isIgnored()) {
+                            notifyStatusUpdate(trans.get("TesteHerkunftsdorf") + element.getVillage().getFullName());
+                            VillageTroopsHolder holder = TroopsManager.getSingleton().getTroopsForVillage(element.getVillage(), TroopsManager.TROOP_TYPE.OWN);
+                            if (holder == null && Constants.DEBUG) {
+                                holder = TroopHelper.getRandomOffVillageTroops(element.getVillage());
                             }
+                            if (holder != null) {
+                                List<Attack> retimesForVillage = getRetimesForVillage(a, holder);
+                                CollectionUtils.addAll(retimes, retimesForVillage.toArray(new Attack[retimesForVillage.size()]));
+                            } else {
+                                notifyStatusUpdate(trans.get("KeineTruppenDorf") + element.getVillage() + trans.get("gefunden"));
+                            }
+                        } else {
+                            notifyStatusUpdate(trans.get("Dorf") + element.getVillage() + trans.get("wirdignoriert"));
                         }
                     }
-                } catch (Exception e) {
-                    logger.error("Failed to calculate retimes", e);
-                    notifyStatusUpdate(trans.get("InternerFehler"));
-                } finally {
-                    notifyCalculationFinished();
                 }
+            } catch (Exception e) {
+                logger.error("Failed to calculate retimes", e);
+                notifyStatusUpdate(trans.get("InternerFehler"));
+            } finally {
+                notifyCalculationFinished();
             }
         }).start();
     }
@@ -398,13 +394,7 @@ public class RetimerCalculationPanel extends WizardPage {
         try {
             StyledDocument doc = jTextPane1.getStyledDocument();
             doc.insertString(doc.getLength(), "(" + dateFormat.format(new Date(System.currentTimeMillis())) + ") " + pMessage + "\n", doc.getStyle("Info"));
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    scroll();
-                }
-            });
+            SwingUtilities.invokeLater(this::scroll);
         } catch (BadLocationException ignored) {
         }
     }

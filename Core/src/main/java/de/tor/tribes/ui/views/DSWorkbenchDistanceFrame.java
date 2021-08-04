@@ -42,7 +42,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -106,32 +105,20 @@ public class DSWorkbenchDistanceFrame extends AbstractDSWorkbenchFrame implement
         centerPanel.setChildComponent(jPanel2);
         unitBox = new JComboBox();
         unitBox.setRenderer(new UnitListCellRenderer());
-        unitBox.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                cellRenderer.setUnit((UnitHolder) unitBox.getSelectedItem());
-                jDistanceTable.repaint();
-            }
+        unitBox.addItemListener((ItemEvent e) -> {
+            cellRenderer.setUnit((UnitHolder) unitBox.getSelectedItem());
+            jDistanceTable.repaint();
         });
         buildMenu();
         jDistanceTable.setModel(new DistanceTableModel());
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
         KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK, false);
         capabilityInfoPanel1.addActionListener(this);
-        jDistanceTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchDistanceFrame.getSingleton().actionPerformed(new ActionEvent(jDistanceTable, 0, "Delete"));
-            }
+        jDistanceTable.registerKeyboardAction((ActionEvent e) -> {
+            DSWorkbenchDistanceFrame.getSingleton().actionPerformed(new ActionEvent(jDistanceTable, 0, "Delete"));
         }, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        jDistanceTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchDistanceFrame.getSingleton().actionPerformed(new ActionEvent(jDistanceTable, 0, "Paste"));
-            }
+        jDistanceTable.registerKeyboardAction((ActionEvent e) -> {
+            DSWorkbenchDistanceFrame.getSingleton().actionPerformed(new ActionEvent(jDistanceTable, 0, "Paste"));
         }, "Paste", paste, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         jDistanceTable.getActionMap().put("find", new AbstractAction() {
 

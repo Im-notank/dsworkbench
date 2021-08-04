@@ -24,8 +24,7 @@ import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
@@ -102,13 +101,9 @@ public class SOSManager extends GenericManager<SOSRequest> {
       return null;
     }
 
-    Object result = CollectionUtils.find(getAllElements(), new Predicate() {
-
-      @Override
-      public boolean evaluate(Object o) {
-        return ((SOSRequest) o).getDefender().equals(pTribe);
-      }
-    });
+    Object result = IterableUtils.find(getAllElements(),
+        (Object o) -> ((SOSRequest) o).getDefender().equals(pTribe)
+    );
 
     return (SOSRequest) result;
   }

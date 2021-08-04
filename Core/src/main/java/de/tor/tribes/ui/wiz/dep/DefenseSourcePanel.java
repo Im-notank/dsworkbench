@@ -94,28 +94,17 @@ public class DefenseSourcePanel extends WizardPage {
 
         jXCollapsiblePane1.setLayout(new BorderLayout());
         jXCollapsiblePane1.add(jInfoScrollPane, BorderLayout.CENTER);
-        villageSelectionPanel = new VillageSelectionPanel(new VillageSelectionPanel.VillageSelectionPanelListener() {
-
-            @Override
-            public void fireVillageSelectionEvent(Village[] pSelection) {
-                addVillages(pSelection);
-            }
-        });
+        villageSelectionPanel = new VillageSelectionPanel(this::addVillages);
 
         villageSelectionPanel.enableSelectionElement(VillageSelectionPanel.SELECTION_ELEMENT.ALLY, false);
         villageSelectionPanel.enableSelectionElement(VillageSelectionPanel.SELECTION_ELEMENT.TRIBE, false);
         jPanel1.add(villageSelectionPanel, BorderLayout.CENTER);
 
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Paste")) {
-                    pasteFromClipboard();
-                } else if (e.getActionCommand().equals("Delete")) {
-                    deleteSelection();
-                }
-
+        ActionListener listener = (ActionEvent e) -> {
+            if (e.getActionCommand().equals("Paste")) {
+                pasteFromClipboard();
+            } else if (e.getActionCommand().equals("Delete")) {
+                deleteSelection();
             }
         };
 
@@ -317,13 +306,7 @@ public class DefenseSourcePanel extends WizardPage {
         } else {
             jTableScrollPane.setViewportView(jVillageTable);
             jPanel2.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel2.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel2::updateUI);
         }
     }//GEN-LAST:event_fireViewChangeEvent
 

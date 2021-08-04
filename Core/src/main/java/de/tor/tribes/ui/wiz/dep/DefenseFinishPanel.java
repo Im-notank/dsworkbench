@@ -335,13 +335,7 @@ public class DefenseFinishPanel extends WizardPage {
         } else {
             jResultScrollPane.setViewportView(jxResultsTable);
             jPanel4.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel4.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel4::updateUI);
         }
     }//GEN-LAST:event_fireChangeViewEvent
 

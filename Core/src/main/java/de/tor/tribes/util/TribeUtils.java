@@ -24,7 +24,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 
 /**
  *
@@ -39,12 +38,9 @@ public class TribeUtils {
         final String filter = pFilter.toLowerCase();
 
         if (filter.length() > 0) {
-            CollectionUtils.filter(input, new Predicate() {
-                @Override
-                public boolean evaluate(Object o) {
-                    return ((Tribe) o).getName().toLowerCase().contains(filter);
-                }
-            });
+            CollectionUtils.filter(input,
+                (o) -> o.getName().toLowerCase().contains(filter)
+            );
         }
 
         if (pComparator != null) {

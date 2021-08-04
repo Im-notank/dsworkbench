@@ -630,13 +630,7 @@ public class AttackFinishPanel extends WizardPage {
             changeExpertView();
             jPanel5.add(overviewPanel, BorderLayout.CENTER);
 
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel5.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel5::updateUI);
         }
     }//GEN-LAST:event_fireViewStateChangeEvent
 
@@ -844,13 +838,7 @@ public class AttackFinishPanel extends WizardPage {
     }
 
     private void focusSubmit() {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                jButton1.requestFocusInWindow();
-            }
-        });
+        SwingUtilities.invokeLater(jButton1::requestFocusInWindow);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jAttackedTargets;

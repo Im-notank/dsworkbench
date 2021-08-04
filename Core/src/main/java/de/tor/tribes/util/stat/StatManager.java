@@ -22,7 +22,6 @@ import de.tor.tribes.types.ext.NoAlly;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.util.GlobalOptions;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,13 +64,7 @@ public class StatManager {
         }
         data = new HashMap<>();
         monitoredAllies = new LinkedList<>();
-        File[] allyDirs = new File(dataPath).listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isDirectory();
-            }
-        });
+        File[] allyDirs = new File(dataPath).listFiles(File::isDirectory);
 
         logger.debug(" * Loading stats from '" + dataPath + "'");
         for (File allyDir : allyDirs) {
@@ -106,13 +99,7 @@ public class StatManager {
 
     private HashMap<Integer, TribeStatsElement> readTribeStats(File pStatDir) {
         HashMap<Integer, TribeStatsElement> tribeStats = new HashMap<>();
-        File[] tribeStatDirs = pStatDir.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
+        File[] tribeStatDirs = pStatDir.listFiles(File::isFile);
 
         for (File tribeStatFile : tribeStatDirs) {
             try {

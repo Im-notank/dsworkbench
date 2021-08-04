@@ -18,7 +18,6 @@ package de.tor.tribes.dssim.editor;
 import de.tor.tribes.util.Constants;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -39,12 +38,9 @@ public class TechLevelCellEditor extends AbstractCellEditor implements TableCell
             model.addElement(i);
         }
         mEditor.setModel(model);
-        mEditor.addItemListener(new ItemListener() {
-
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    fireEditingStopped();
-                }
+        mEditor.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                fireEditingStopped();
             }
         });
     }

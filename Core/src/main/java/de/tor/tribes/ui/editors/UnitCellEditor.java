@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -67,13 +66,9 @@ public class UnitCellEditor extends DefaultCellEditor {
         }
         comboComponent.setBorder(BorderFactory.createEmptyBorder());
         comboComponent.setModel(model);
-        comboComponent.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    stopCellEditing();
-                }
+        comboComponent.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                stopCellEditing();
             }
         });
 

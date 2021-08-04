@@ -31,7 +31,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -136,17 +135,13 @@ public class MarkerManager extends GenericManager<Marker> {
     @Override
     public String[] getGroups() {
         String[] groups = super.getGroups();
-        Arrays.sort(groups, new Comparator<String>() {
-
-            @Override
-            public int compare(String o1, String o2) {
-                if (o1.equals(DEFAULT_GROUP)) {
-                    return -1;
-                } else if (o2.equals(DEFAULT_GROUP)) {
-                    return 1;
-                } else {
-                    return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
-                }
+        Arrays.sort(groups, (String o1, String o2) -> {
+            if (o1.equals(DEFAULT_GROUP)) {
+                return -1;
+            } else if (o2.equals(DEFAULT_GROUP)) {
+                return 1;
+            } else {
+                return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
             }
         });
         return groups;

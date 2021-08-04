@@ -17,7 +17,6 @@ package de.tor.tribes.ui.tree;
 
 import de.tor.tribes.types.ext.Ally;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -44,13 +43,9 @@ public class AllyNode extends DefaultMutableTreeNode {
     @Override
     public void insert(MutableTreeNode child, int index) {
         super.insert(child, index);
-        Collections.sort(this.children, new Comparator() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                return o1.toString().compareToIgnoreCase(o2.toString());
-            }
-        });
+        Collections.sort(this.children,
+            (Object o1, Object o2) -> o1.toString().compareToIgnoreCase(o2.toString())
+        );
         //recalc elem count
     }
 

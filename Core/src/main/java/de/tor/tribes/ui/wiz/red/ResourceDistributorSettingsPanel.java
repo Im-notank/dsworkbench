@@ -36,7 +36,6 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.sort.TableSortController;
 import org.netbeans.spi.wizard.Wizard;
@@ -85,26 +84,18 @@ public class ResourceDistributorSettingsPanel extends WizardPage {
         SlashComparator splitComparator = new SlashComparator();
         sorter.setComparator(3, splitComparator);
         sorter.setComparator(4, splitComparator);
-        ActionListener actionListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Delete")) {
-                    removeSelection();
-                }
+        ActionListener actionListener = (ActionEvent e) -> {
+            if (e.getActionCommand().equals("Delete")) {
+                removeSelection();
             }
         };
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
         jDataTable.registerKeyboardAction(actionListener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         capabilityInfoPanel1.addActionListener(actionListener);
 
-        jDataTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    jStatusLabel.setText(jDataTable.getSelectedRowCount() + trans.get("Eintraggewaehlt"));
-                }
+        jDataTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting()) {
+                jStatusLabel.setText(jDataTable.getSelectedRowCount() + trans.get("Eintraggewaehlt"));
             }
         });
 

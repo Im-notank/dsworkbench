@@ -23,8 +23,7 @@ import de.tor.tribes.util.xml.JDomUtils;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.jdom2.Element;
 
@@ -67,12 +66,8 @@ public class DefenseInformation {
             //impossible
         }
         if (allowed) {
-            Object result = CollectionUtils.find(defenses, new Predicate() {
-
-                @Override
-                public boolean evaluate(Object o) {
-                    return ((Defense) o).getSupporter().equals(pSource);
-                }
+            Object result = IterableUtils.find(defenses, (o) -> {
+                return ((Defense) o).getSupporter().equals(pSource);
             });
             if (result == null || pMultiUse) {
                 defenses.add(new Defense(this, pSource, pUnit));

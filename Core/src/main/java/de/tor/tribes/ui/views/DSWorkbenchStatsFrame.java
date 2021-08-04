@@ -40,7 +40,6 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.time.DateUtils;
 import org.jdesktop.swingx.JXButton;
@@ -107,36 +106,28 @@ public class DSWorkbenchStatsFrame extends AbstractDSWorkbenchFrame implements A
         jAlwaysOnTopBox.setSelected(GlobalOptions.getProperties().getBoolean("stats.frame.alwaysOnTop"));
             setAlwaysOnTop(jAlwaysOnTopBox.isSelected());
         
-        jAllyList.addListSelectionListener(new ListSelectionListener() {
-            
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                List allySelection = jAllyList.getSelectedValuesList();
-                jTribeList.clearSelection();
-                List<Tribe> tribes = new LinkedList<>();
-                for (Object o : allySelection) {
-                    Tribe[] tribesForAlly = StatManager.getSingleton().getMonitoredTribes((Ally) o);
-                    for (Tribe t : tribesForAlly) {
-                        if (!tribes.contains(t)) {
-                            tribes.add(t);
-                        }
+        jAllyList.addListSelectionListener((ListSelectionEvent e) -> {
+            List allySelection = jAllyList.getSelectedValuesList();
+            jTribeList.clearSelection();
+            List<Tribe> tribes = new LinkedList<>();
+            for (Object o : allySelection) {
+                Tribe[] tribesForAlly = StatManager.getSingleton().getMonitoredTribes((Ally) o);
+                for (Tribe t : tribesForAlly) {
+                    if (!tribes.contains(t)) {
+                        tribes.add(t);
                     }
-                    Collections.sort(tribes);
-                    DefaultListModel<Tribe> model = new DefaultListModel<>();
-                    for (Tribe t : tribes) {
-                        model.addElement(t);
-                    }
-                    jTribeList.setModel(model);
                 }
+                Collections.sort(tribes);
+                DefaultListModel<Tribe> model = new DefaultListModel<>();
+                for (Tribe t : tribes) {
+                    model.addElement(t);
+                }
+                jTribeList.setModel(model);
             }
         });
         
-        jTribeList.addListSelectionListener(new ListSelectionListener() {
-            
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                fireUpdateChartEvent(null);
-            }
+        jTribeList.addListSelectionListener((ListSelectionEvent e) -> {
+            fireUpdateChartEvent(null);
         });
         
         Calendar c = Calendar.getInstance();
@@ -385,13 +376,7 @@ public class DSWorkbenchStatsFrame extends AbstractDSWorkbenchFrame implements A
         theChartPanel.setMouseWheelEnabled(true);
         jChartPanel.add(theChartPanel);
         
-        SwingUtilities.invokeLater(new Runnable() {
-            
-            @Override
-            public void run() {
-                jChartPanel.updateUI();
-            }
-        });
+        SwingUtilities.invokeLater(jChartPanel::updateUI);
         
     }
     
@@ -863,13 +848,7 @@ public class DSWorkbenchStatsFrame extends AbstractDSWorkbenchFrame implements A
             List tribeSelection = jTribeList.getSelectedValuesList();
             if (tribeSelection == null) {
                 jChartPanel.removeAll();
-                SwingUtilities.invokeLater(new Runnable() {
-                    
-                    @Override
-                    public void run() {
-                        jChartPanel.updateUI();
-                    }
-                });
+                SwingUtilities.invokeLater(jChartPanel::updateUI);
                 
                 return;
             }
@@ -890,13 +869,7 @@ public class DSWorkbenchStatsFrame extends AbstractDSWorkbenchFrame implements A
             List tribeSelection = jTribeList.getSelectedValuesList();
             if (tribeSelection == null || tribeSelection.isEmpty()) {
                 jChartPanel.removeAll();
-                SwingUtilities.invokeLater(new Runnable() {
-                    
-                    @Override
-                    public void run() {
-                        jChartPanel.updateUI();
-                    }
-                });
+                SwingUtilities.invokeLater(jChartPanel::updateUI);
                 
                 return;
             }

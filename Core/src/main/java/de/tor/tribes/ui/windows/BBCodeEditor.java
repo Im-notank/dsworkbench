@@ -58,7 +58,6 @@ import de.tor.tribes.util.bb.TribeReportStatsFormatter;
 import de.tor.tribes.util.bb.TroopListFormatter;
 import de.tor.tribes.util.bb.VillageListFormatter;
 import de.tor.tribes.util.bb.WinnerLoserStatsFormatter;
-import de.tor.tribes.util.interfaces.BBChangeListener;
 import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.troops.VillageTroopsHolder;
@@ -129,13 +128,7 @@ public class BBCodeEditor extends javax.swing.JFrame {
 
         element = elementList.get(0);
 
-        bBPanel2.setBBChangeListener(new BBChangeListener() {
-
-            @Override
-            public void fireBBChangedEvent() {
-                updatePreview();
-            }
-        });
+        bBPanel2.setBBChangeListener(this::updatePreview);
 
         fireExportTypeChangedEvent(new ItemEvent(jApplyButton, 0, null, ItemEvent.SELECTED));
 

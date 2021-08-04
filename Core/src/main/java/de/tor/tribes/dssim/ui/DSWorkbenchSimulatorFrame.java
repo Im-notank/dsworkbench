@@ -200,12 +200,8 @@ public class DSWorkbenchSimulatorFrame extends AbstractDSWorkbenchFrame {
         jResultTable.setModel(ResultTableModel.getSingleton());
         jResultTable.setCellSelectionEnabled(false);
         jResultTable.setRowSelectionAllowed(true);
-        jResultTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateResultSelection();
-            }
+        jResultTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            updateResultSelection();
         });
 
         Dimension dim = new Dimension(jScrollPane1.getWidth(), DataHolder.getSingleton().getUnits().size() * 20 + 20 + 1);
@@ -1696,11 +1692,8 @@ public class DSWorkbenchSimulatorFrame extends AbstractDSWorkbenchFrame {
         logger.debug("setting up UI");
         SimulatorTableModel.getSingleton().reset();
         ResultTableModel.getSingleton().reset();
-        SimulatorTableModel.getSingleton().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                updatePop();
-            }
+        SimulatorTableModel.getSingleton().addTableModelListener((TableModelEvent e) -> {
+            updatePop();
         });
         if (DataHolder.getSingleton().getUnitByPlainName("archer") != null) {
             sim = new NewSimulator();

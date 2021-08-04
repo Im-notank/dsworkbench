@@ -59,12 +59,8 @@ public class TroopFilterDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSelectedFilters();
-            }
+        ActionListener listener = (ActionEvent e) -> {
+            removeSelectedFilters();
         };
         capabilityInfoPanel3.addActionListener(listener);
 

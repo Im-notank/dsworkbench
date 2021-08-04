@@ -643,17 +643,13 @@ public class VillageSupportFrame extends javax.swing.JFrame implements ActionLis
     private void calculateForce() {
         UnitHolder[] units = DataHolder.getSingleton().getUnits().toArray(new UnitHolder[]{});
         //sort units descending
-        Arrays.sort(units, new Comparator<UnitHolder>() {
-
-            @Override
-            public int compare(UnitHolder o1, UnitHolder o2) {
-                if (o1.getSpeed() == o2.getSpeed()) {
-                    return 0;
-                } else if (o1.getSpeed() < o2.getSpeed()) {
-                    return 1;
-                } else {
-                    return -1;
-                }
+        Arrays.sort(units, (UnitHolder o1, UnitHolder o2) -> {
+            if (o1.getSpeed() == o2.getSpeed()) {
+                return 0;
+            } else if (o1.getSpeed() < o2.getSpeed()) {
+                return 1;
+            } else {
+                return -1;
             }
         });
 

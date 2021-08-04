@@ -27,12 +27,10 @@ import de.tor.tribes.ui.components.JOutlookBar;
 import de.tor.tribes.ui.components.WelcomePanel;
 import de.tor.tribes.ui.panels.MapPanel;
 import de.tor.tribes.ui.panels.MinimapPanel;
-import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.ui.views.*;
 import de.tor.tribes.ui.wiz.red.ResourceDistributorWizard;
 import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;
 import de.tor.tribes.util.*;
-import de.tor.tribes.util.ServerSettings.ServerSettingsListener;
 import de.tor.tribes.util.attack.AttackManager;
 import de.tor.tribes.util.attack.StandardAttackManager;
 import de.tor.tribes.util.conquer.ConquerManager;
@@ -63,7 +61,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -194,161 +191,157 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
     capabilityInfoPanel1.addActionListener(MapPanel.getSingleton());
 
     // <editor-fold defaultstate="collapsed" desc=" Add global KeyListener ">
-    Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-
-      @Override
-      public void eventDispatched(AWTEvent event) {
+    Toolkit.getDefaultToolkit().addAWTEventListener((AWTEvent event) -> {
         if (event.getID() == KeyEvent.KEY_PRESSED) {
-          KeyEvent e = (KeyEvent) event;
-          if (DSWorkbenchMainFrame.getSingleton().isActive()) {
-            //move shortcuts
-            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-              scroll(0.0, 2.0);
-            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-              scroll(0.0, -2.0);
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-              scroll(-2.0, 0.0);
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-              scroll(2.0, 0.0);
-            } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //shot minimap tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_AXE);
-            } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack axe tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_RAM);
-            } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack ram tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SNOB);
-            } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack snob tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SPY);
-            } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack sword tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_LIGHT);
-            } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack light tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_HEAVY);
-            } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
-              //attack heavy tool shortcut
-              MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SWORD);
-            } else if ((e.getKeyCode() == KeyEvent.VK_S) && e.isControlDown() && !e.isAltDown()) {
-              //search frame shortcut
-              DSWorkbenchSearchFrame.getSingleton().setVisible(!DSWorkbenchSearchFrame.getSingleton().isVisible());
+            KeyEvent e = (KeyEvent) event;
+            if (DSWorkbenchMainFrame.getSingleton().isActive()) {
+                //move shortcuts
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    scroll(0.0, 2.0);
+                } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    scroll(0.0, -2.0);
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    scroll(-2.0, 0.0);
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    scroll(2.0, 0.0);
+                } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //shot minimap tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_AXE);
+                } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack axe tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_RAM);
+                } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack ram tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SNOB);
+                } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack snob tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SPY);
+                } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack sword tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_LIGHT);
+                } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack light tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_HEAVY);
+                } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isShiftDown() && !e.isControlDown() && !e.isAltDown()) {
+                    //attack heavy tool shortcut
+                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SWORD);
+                } else if ((e.getKeyCode() == KeyEvent.VK_S) && e.isControlDown() && !e.isAltDown()) {
+                    //search frame shortcut
+                    DSWorkbenchSearchFrame.getSingleton().setVisible(!DSWorkbenchSearchFrame.getSingleton().isVisible());
+                }
             }
-          }
-
-          //misc shortcuts
-          if ((e.getKeyCode() == KeyEvent.VK_0) && e.isAltDown()) {
-            //no tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
-          } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //measure tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MEASURE);
-          } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //mark tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MARK);
-          } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //tag tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_TAG);
-          } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //attack ingame tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SUPPORT);
-          } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //attack ingame tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SELECTION);
-          } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //attack ingame tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_RADAR);
-          } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //attack ingame tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_INGAME);
-          } else if ((e.getKeyCode() == KeyEvent.VK_8) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            //res ingame tool shortcut
-            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SEND_RES_INGAME);
-          } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
-            //move minimap tool shortcut
-            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MOVE);
-          } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
-            //zoom minimap tool shortcut
-            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ZOOM);
-          } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
-            //shot minimap tool shortcut
-            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SHOT);
-          } else if ((e.getKeyCode() == KeyEvent.VK_T) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
-            //search time shortcut
-            ClockFrame.getSingleton().setVisible(!ClockFrame.getSingleton().isVisible());
-          } else if ((e.getKeyCode() == KeyEvent.VK_S) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-            planMapshot();
-          } else if (e.getKeyCode() == KeyEvent.VK_F2) {
-            DSWorkbenchAttackFrame.getSingleton().setVisible(!DSWorkbenchAttackFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F3) {
-            DSWorkbenchMarkerFrame.getSingleton().setVisible(!DSWorkbenchMarkerFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F4) {
-            DSWorkbenchTroopsFrame.getSingleton().setVisible(!DSWorkbenchTroopsFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F5) {
-            DSWorkbenchRankFrame.getSingleton().setVisible(!DSWorkbenchRankFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F6) {
-            DSWorkbenchFormFrame.getSingleton().setVisible(!DSWorkbenchFormFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F7) {
-            if (ServerSettings.getSingleton().isChurch()) {
-              DSWorkbenchChurchFrame.getSingleton().setVisible(!DSWorkbenchChurchFrame.getSingleton().isVisible());
+            
+            //misc shortcuts
+            if ((e.getKeyCode() == KeyEvent.VK_0) && e.isAltDown()) {
+                //no tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
+            } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //measure tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MEASURE);
+            } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //mark tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MARK);
+            } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //tag tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_TAG);
+            } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //attack ingame tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SUPPORT);
+            } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //attack ingame tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SELECTION);
+            } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //attack ingame tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_RADAR);
+            } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //attack ingame tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_INGAME);
+            } else if ((e.getKeyCode() == KeyEvent.VK_8) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                //res ingame tool shortcut
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SEND_RES_INGAME);
+            } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
+                //move minimap tool shortcut
+                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MOVE);
+            } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
+                //zoom minimap tool shortcut
+                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ZOOM);
+            } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
+                //shot minimap tool shortcut
+                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SHOT);
+            } else if ((e.getKeyCode() == KeyEvent.VK_T) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
+                //search time shortcut
+                ClockFrame.getSingleton().setVisible(!ClockFrame.getSingleton().isVisible());
+            } else if ((e.getKeyCode() == KeyEvent.VK_S) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
+                planMapshot();
+            } else if (e.getKeyCode() == KeyEvent.VK_F2) {
+                DSWorkbenchAttackFrame.getSingleton().setVisible(!DSWorkbenchAttackFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F3) {
+                DSWorkbenchMarkerFrame.getSingleton().setVisible(!DSWorkbenchMarkerFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F4) {
+                DSWorkbenchTroopsFrame.getSingleton().setVisible(!DSWorkbenchTroopsFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F5) {
+                DSWorkbenchRankFrame.getSingleton().setVisible(!DSWorkbenchRankFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F6) {
+                DSWorkbenchFormFrame.getSingleton().setVisible(!DSWorkbenchFormFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F7) {
+                if (ServerSettings.getSingleton().isChurch()) {
+                    DSWorkbenchChurchFrame.getSingleton().setVisible(!DSWorkbenchChurchFrame.getSingleton().isVisible());
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_F8) {
+                DSWorkbenchConquersFrame.getSingleton().setVisible(!DSWorkbenchConquersFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F9) {
+                DSWorkbenchNotepad.getSingleton().setVisible(!DSWorkbenchNotepad.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F10) {
+                DSWorkbenchTagFrame.getSingleton().setVisible(!DSWorkbenchTagFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F11) {
+                DSWorkbenchStatsFrame.getSingleton().setVisible(!DSWorkbenchStatsFrame.getSingleton().isVisible());
+            } else if (e.getKeyCode() == KeyEvent.VK_F12) {
+                DSWorkbenchSettingsDialog.getSingleton().setVisible(true);
+            } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 1
+                centerROI(0);
+            } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 2
+                centerROI(1);
+            } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 3
+                centerROI(2);
+            } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 4
+                centerROI(3);
+            } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 5
+                centerROI(4);
+            } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 6
+                centerROI(5);
+            } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 7
+                centerROI(6);
+            } else if ((e.getKeyCode() == KeyEvent.VK_8) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 8
+                centerROI(7);
+            } else if ((e.getKeyCode() == KeyEvent.VK_9) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 9
+                centerROI(8);
+            } else if ((e.getKeyCode() == KeyEvent.VK_0) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
+                //ROI 10
+                centerROI(9);
+            } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                jMapPanelHolder.requestFocusInWindow();
+                MapPanel.getSingleton().setSpaceDown(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                jMapPanelHolder.requestFocusInWindow();
+                MapPanel.getSingleton().setShiftDown(true);
             }
-          } else if (e.getKeyCode() == KeyEvent.VK_F8) {
-            DSWorkbenchConquersFrame.getSingleton().setVisible(!DSWorkbenchConquersFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F9) {
-            DSWorkbenchNotepad.getSingleton().setVisible(!DSWorkbenchNotepad.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F10) {
-            DSWorkbenchTagFrame.getSingleton().setVisible(!DSWorkbenchTagFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F11) {
-            DSWorkbenchStatsFrame.getSingleton().setVisible(!DSWorkbenchStatsFrame.getSingleton().isVisible());
-          } else if (e.getKeyCode() == KeyEvent.VK_F12) {
-            DSWorkbenchSettingsDialog.getSingleton().setVisible(true);
-          } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 1
-            centerROI(0);
-          } else if ((e.getKeyCode() == KeyEvent.VK_2) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 2
-            centerROI(1);
-          } else if ((e.getKeyCode() == KeyEvent.VK_3) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 3
-            centerROI(2);
-          } else if ((e.getKeyCode() == KeyEvent.VK_4) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 4
-            centerROI(3);
-          } else if ((e.getKeyCode() == KeyEvent.VK_5) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 5
-            centerROI(4);
-          } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 6
-            centerROI(5);
-          } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 7
-            centerROI(6);
-          } else if ((e.getKeyCode() == KeyEvent.VK_8) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 8
-            centerROI(7);
-          } else if ((e.getKeyCode() == KeyEvent.VK_9) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 9
-            centerROI(8);
-          } else if ((e.getKeyCode() == KeyEvent.VK_0) && e.isControlDown() && e.isAltDown() && !e.isShiftDown()) {
-            //ROI 10
-            centerROI(9);
-          } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            jMapPanelHolder.requestFocusInWindow();
-            MapPanel.getSingleton().setSpaceDown(true);
-          } else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-            jMapPanelHolder.requestFocusInWindow();
-            MapPanel.getSingleton().setShiftDown(true);
-          }
         } else if (event.getID() == KeyEvent.KEY_RELEASED) {
-          KeyEvent e = (KeyEvent) event;
-          if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            MapPanel.getSingleton().setSpaceDown(false);
-          } else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-            MapPanel.getSingleton().setShiftDown(false);
-          }
+            KeyEvent e = (KeyEvent) event;
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                MapPanel.getSingleton().setSpaceDown(false);
+            } else if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+                MapPanel.getSingleton().setShiftDown(false);
+            }
         }
-      }
     }, AWTEvent.KEY_EVENT_MASK);
         // </editor-fold>
 
@@ -393,12 +386,9 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
     jDisplayWatchtower.setSelected(GlobalOptions.getProperties().getBoolean("show.watchtower"));
     jDisplayChurch.setEnabled(ServerSettings.getSingleton().isChurch());
     jDisplayWatchtower.setEnabled(ServerSettings.getSingleton().isWatchtower());
-    ServerSettings.getSingleton().addListener(new ServerSettingsListener() {
-        @Override
-        public void fireServerSettingsChanged() {
-            jDisplayChurch.setEnabled(ServerSettings.getSingleton().isChurch());
-            jDisplayWatchtower.setEnabled(ServerSettings.getSingleton().isWatchtower());
-        }
+    ServerSettings.getSingleton().addListener(() -> {
+        jDisplayChurch.setEnabled(ServerSettings.getSingleton().isChurch());
+        jDisplayWatchtower.setEnabled(ServerSettings.getSingleton().isWatchtower());
     });
     int r = GlobalOptions.getProperties().getInt("radar.size");
     int hour = r / 60;
@@ -680,28 +670,24 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
     }
     super.setVisible(v);
     final boolean vis = v;
-    SwingUtilities.invokeLater(new Runnable() {
-
-      @Override
-      public void run() {
+    SwingUtilities.invokeLater(() -> {
         setupRibbon();
 
         if (vis) {
-          //only if set to visible
-          
-          //start ClipboardWatch
-          ClipboardWatch.getSingleton();
-          //draw map the first time
-          refreshMap();
-          showReminder();
-          if (!GlobalOptions.isMinimal() && !Boolean.parseBoolean(GlobalOptions.getProperty("no.welcome"))) {
-            setGlassPane(new WelcomePanel());
-            getGlassPane().setVisible(true);
-          } else {
-            glasspaneVisible = false;
-          }
+            //only if set to visible
+            
+            //start ClipboardWatch
+            ClipboardWatch.getSingleton();
+            //draw map the first time
+            refreshMap();
+            showReminder();
+            if (!GlobalOptions.isMinimal() && !Boolean.parseBoolean(GlobalOptions.getProperty("no.welcome"))) {
+                setGlassPane(new WelcomePanel());
+                getGlassPane().setVisible(true);
+            } else {
+                glasspaneVisible = false;
+            }
         }
-      }
     });
 
     File runningIndicator = new File("runningFile");

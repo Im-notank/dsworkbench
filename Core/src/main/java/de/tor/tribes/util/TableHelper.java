@@ -18,7 +18,6 @@ package de.tor.tribes.util;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
@@ -195,13 +194,9 @@ public class TableHelper {
             }
         }
 
-        Collections.sort(sortedOjs, new Comparator<Object>() {
-
-            @Override
-            public int compare(Object o1, Object o2) {
-                return o1.toString().compareTo(o2.toString());
-            }
-        });
+        Collections.sort(sortedOjs, 
+            (Object o1, Object o2) -> o1.toString().compareTo(o2.toString())
+        );
 
         int v = 0;
         cnt = 0;

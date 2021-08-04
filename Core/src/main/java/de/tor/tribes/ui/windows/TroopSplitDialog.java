@@ -56,23 +56,15 @@ public class TroopSplitDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSplitEnty();
-            }
+        ActionListener listener = (ActionEvent e) -> {
+            removeSplitEnty();
         };
         capabilityInfoPanel3.addActionListener(listener);
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
         jTroopsPerSplitList.registerKeyboardAction(listener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        jSavedSplitsList.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSavedSplit();
-            }
+        jSavedSplitsList.registerKeyboardAction((ActionEvent e) -> {
+            removeSavedSplit();
         }, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         CollapseExpandTrigger trigger = new CollapseExpandTrigger();
         trigger.addMouseListener(new MouseAdapter() {

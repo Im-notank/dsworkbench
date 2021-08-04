@@ -40,9 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -110,22 +108,14 @@ public class DSWorkbenchRankFrame extends AbstractDSWorkbenchFrame implements Ac
         centerPanel.setChildComponent(jXRankPanel);
         buildMenu();
         capabilityInfoPanel1.addActionListener(this);
-        jRankTabPane.getModel().addChangeListener(new ChangeListener() {
-            
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                RankTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.updateTab();
-                }
+        jRankTabPane.getModel().addChangeListener((ChangeEvent e) -> {
+            RankTableTab activeTab = getActiveTab();
+            if (activeTab != null) {
+                activeTab.updateTab();
             }
         });
-        jXColumnList.addListSelectionListener(new ListSelectionListener() {
-            
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateFilter();
-            }
+        jXColumnList.addListSelectionListener((ListSelectionEvent e) -> {
+            updateFilter();
         });
         setGlassPane(jxSearchPane);
         // <editor-fold defaultstate="collapsed" desc=" Init HelpSystem ">

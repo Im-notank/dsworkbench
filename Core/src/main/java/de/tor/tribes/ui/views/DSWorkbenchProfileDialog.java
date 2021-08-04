@@ -292,19 +292,16 @@ public class DSWorkbenchProfileDialog extends javax.swing.JDialog {
 
         GlobalOptions.setSelectedServer(selectedServer);
         
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                setName("PlayerLoadThread");
-                try {
-                    logger.debug("Start loading from server");
-                    jAccountTribeBox.setModel(new DefaultComboBoxModel(new String[] {"Lade...."}));
-                    boolean ret = DataHolder.getSingleton().loadData(true);
-                    logger.debug("Data loaded " + ((ret) ? "successfully" : "with errors"));
-                    FireLoadPlayerFinished();
-                } catch (Exception e) {
-                    logger.error("Failed loading data", e);
-                }
+        Thread t = new Thread(() -> {
+            setName("PlayerLoadThread");
+            try {
+                logger.debug("Start loading from server");
+                jAccountTribeBox.setModel(new DefaultComboBoxModel(new String[] {"Lade...."}));
+                boolean ret = DataHolder.getSingleton().loadData(true);
+                logger.debug("Data loaded " + ((ret) ? "successfully" : "with errors"));
+                FireLoadPlayerFinished();
+            } catch (Exception e) {
+                logger.error("Failed loading data", e);
             }
         });
         logger.debug("Starting update thread");
@@ -326,12 +323,8 @@ public class DSWorkbenchProfileDialog extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                DSWorkbenchProfileDialog.getSingleton().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            DSWorkbenchProfileDialog.getSingleton().setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1416,12 +1416,7 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 break;
             case BROWSER_LINK:
                 //use own thread against blocking of render thread
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sendAttacksToBrowser();
-                    }
-                }).start();
+                new Thread(this::sendAttacksToBrowser).start();
                 break;
             case FILE_HTML:
                 copyHTMLToFileEvent();

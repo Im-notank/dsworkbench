@@ -196,12 +196,8 @@ public class UnitParserFrame extends javax.swing.JFrame {
         /*
          * Create and display the form
          */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                new UnitParserFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new UnitParserFrame().setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

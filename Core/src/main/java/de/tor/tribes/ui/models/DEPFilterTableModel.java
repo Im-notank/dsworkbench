@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 
 /**
  *
@@ -52,13 +51,9 @@ public class DEPFilterTableModel extends AbstractTableModel {
 
     public void addRow(final SupportSourceElement pElement, boolean pCheck) {
 
-        Object result = CollectionUtils.find(elements, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((SupportSourceElement) o).getVillage().equals(pElement.getVillage());
-            }
-        });
+        Object result = CollectionUtils.find(elements,
+            (Object o) -> ((SupportSourceElement) o).getVillage().equals(pElement.getVillage())
+        );
 
         if (result == null) {
             elements.add(pElement);

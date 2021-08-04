@@ -56,12 +56,8 @@ public class FormConfigFrame extends javax.swing.JFrame {
         initComponents();
         mTextColorChooser = new ColorChooser(Color.BLACK);
         mDrawColorChooser = new ColorChooser(Color.WHITE);
-        ActionListener l = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateValues();
-            }
+        ActionListener l = (ActionEvent e) -> {
+            updateValues();
         };
         mDrawColorChooser.addActionListener(l);
         mTextColorChooser.addActionListener(l);

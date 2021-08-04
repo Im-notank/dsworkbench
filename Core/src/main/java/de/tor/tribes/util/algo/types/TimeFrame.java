@@ -303,12 +303,9 @@ public class TimeFrame {
         }
       }
     }
-    Collections.sort(ranges, new Comparator<Range<Long>>() {
-      @Override
-      public int compare(Range<Long> o1, Range<Long> o2) {
-        return o1.getMinimum().compareTo(o2.getMinimum());
-      }
-    });
+    Collections.sort(ranges,
+      (Range<Long> o1, Range<Long> o2) -> o1.getMinimum().compareTo(o2.getMinimum())
+    );
     return ranges;
   }
 
@@ -382,12 +379,9 @@ public class TimeFrame {
         }
       }
     }
-    Collections.sort(ranges, new Comparator<Range<Long>>() {
-      @Override
-      public int compare(Range<Long> o1, Range<Long> o2) {
-        return o1.getMinimum().compareTo(o2.getMinimum());
-      }
-    });
+    Collections.sort(ranges,
+      (Range<Long> o1, Range<Long> o2) -> o1.getMinimum().compareTo(o2.getMinimum())
+    );
     return ranges;
   }
 

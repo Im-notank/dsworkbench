@@ -25,7 +25,6 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.JOptionPaneHelper;
 import de.tor.tribes.util.tag.TagManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -54,12 +53,8 @@ public class VillageTagFrame extends javax.swing.JFrame implements GenericManage
     VillageTagFrame() {
         initComponents();
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        jTagsList.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteTags();
-            }
+        jTagsList.registerKeyboardAction((ActionEvent e) -> {
+            deleteTags();
         }, "Delete", delete, JComponent.WHEN_FOCUSED);
 
     }

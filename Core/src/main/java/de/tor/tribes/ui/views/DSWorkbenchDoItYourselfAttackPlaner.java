@@ -260,13 +260,9 @@ public class DSWorkbenchDoItYourselfAttackPlaner extends AbstractDSWorkbenchFram
 
         jSourceVillage.setValue(new Point(500, 500));
         jTargetVillage.setValue(new Point(500, 500));
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                jSourceVillage.updateUI();
-                jTargetVillage.updateUI();
-            }
+        SwingUtilities.invokeLater(() -> {
+            jSourceVillage.updateUI();
+            jTargetVillage.updateUI();
         });
 
     }

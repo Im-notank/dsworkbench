@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -200,13 +199,7 @@ public class VillageSelectionPanel extends javax.swing.JPanel{
                     }
 
                     ContinentVillageSelection[] result = map.values().toArray(new ContinentVillageSelection[map.size()]);
-                    Arrays.sort(result, new Comparator<ContinentVillageSelection>() {
-
-                        @Override
-                        public int compare(ContinentVillageSelection o1, ContinentVillageSelection o2) {
-                            return String.CASE_INSENSITIVE_ORDER.compare(o1.toString(), o2.toString());
-                        }
-                    });
+                    Arrays.sort(result, (ContinentVillageSelection o1, ContinentVillageSelection o2) -> String.CASE_INSENSITIVE_ORDER.compare(o1.toString(), o2.toString()));
                     return result;
                 }
 

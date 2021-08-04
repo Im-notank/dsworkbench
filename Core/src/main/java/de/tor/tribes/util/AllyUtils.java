@@ -20,7 +20,6 @@ import de.tor.tribes.types.ext.*;
 import java.util.*;
 import java.util.Map.Entry;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 
 /**
  *
@@ -38,13 +37,7 @@ public class AllyUtils {
         CollectionUtils.addAll(allies, DataHolder.getSingleton().getAllies().values());
 
         if (filter.length() > 0) {
-            CollectionUtils.filter(allies, new Predicate() {
-
-                @Override
-                public boolean evaluate(Object o) {
-                    return pFilter.length() == 0 || ((Ally) o).getName().toLowerCase().contains(filter) || ((Ally) o).getTag().toLowerCase().contains(filter);
-                }
-            });
+            CollectionUtils.filter(allies, (Object o) -> pFilter.length() == 0 || ((Ally) o).getName().toLowerCase().contains(filter) || ((Ally) o).getTag().toLowerCase().contains(filter));
         }
 
         if (pComparator != null) {
@@ -82,13 +75,7 @@ public class AllyUtils {
         } else if (pAlly.equals(NoAlly.getSingleton())) {
             List<Tribe> tribes = new LinkedList<>();
             CollectionUtils.addAll(tribes, DataHolder.getSingleton().getTribes().values());
-            CollectionUtils.filter(tribes, new Predicate() {
-
-                @Override
-                public boolean evaluate(Object o) {
-                    return ((Tribe) o).getAlly() == null || ((Tribe) o).getAlly().equals(NoAlly.getSingleton());
-                }
-            });
+            CollectionUtils.filter(tribes, (Object o) -> ((Tribe) o).getAlly() == null || ((Tribe) o).getAlly().equals(NoAlly.getSingleton()));
             result = tribes.toArray(new Tribe[tribes.size()]);
         } else {
             result = pAlly.getTribes();

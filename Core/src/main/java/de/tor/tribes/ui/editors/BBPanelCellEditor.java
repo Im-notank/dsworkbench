@@ -17,14 +17,12 @@ package de.tor.tribes.ui.editors;
 
 import de.tor.tribes.ui.panels.BBPanel;
 import de.tor.tribes.ui.views.DSWorkbenchNotepad;
-import de.tor.tribes.util.interfaces.BBChangeListener;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -51,11 +49,7 @@ public class BBPanelCellEditor extends AbstractCellEditor implements TableCellEd
     private JDialog dlg = null;
 
     public BBPanelCellEditor(JTextField pF) {
-        editor = new BBPanel(new BBChangeListener() {
-            @Override
-            public void fireBBChangedEvent() {
-            }
-        });
+        editor = new BBPanel();
     }
 
     @Override
@@ -106,22 +100,16 @@ public class BBPanelCellEditor extends AbstractCellEditor implements TableCellEd
         
         //register save shortcut
         KeyStroke save = KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK, false);
-        ok.registerKeyboardAction(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dlg.setVisible(false);
-                fireEditingStopped();
-            }
+        ok.registerKeyboardAction((ActionEvent e) -> {
+            dlg.setVisible(false);
+            fireEditingStopped();
         }, "Save", save, JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         dlg.getContentPane().add(p, BorderLayout.SOUTH);
         dlg.pack();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                dlg.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            dlg.setVisible(true);
         });
     }
 }

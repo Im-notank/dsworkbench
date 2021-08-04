@@ -40,7 +40,6 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
@@ -90,22 +89,14 @@ public class ResourceDistributorFinishPanel extends WizardPage {
         jDistributionTable.setDefaultRenderer(StorageStatus.class, new StorageCellRenderer());
         jDistributionTable.setDefaultRenderer(VillageMerchantInfo.Direction.class, new EnumImageCellRenderer(EnumImageCellRenderer.LayoutStyle.TradeDirection));
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        jTransportsTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteSelection();
-            }
+        jTransportsTable.registerKeyboardAction((ActionEvent e) -> {
+            deleteSelection();
         }, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 
-        jTransportsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    showInfo(jTransportsTable.getSelectedRowCount() + trans.get("Transportgewaehlt"));
-                }
+        jTransportsTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting()) {
+                showInfo(jTransportsTable.getSelectedRowCount() + trans.get("Transportgewaehlt"));
             }
         });
 
@@ -448,14 +439,11 @@ public class ResourceDistributorFinishPanel extends WizardPage {
     }//GEN-LAST:event_fireShowHideInfoEvent
 
     private void fireTransferSelectionToBrowserEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireTransferSelectionToBrowserEvent
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    transferToBrowser();
-                } catch(Exception e) {
-                    logger.warn("Error transfering to Browser", e);
-                }
+        new Thread(() -> {
+            try {
+                transferToBrowser();
+            } catch(Exception e) {
+                logger.warn("Error transfering to Browser", e);
             }
         }).start();
     }//GEN-LAST:event_fireTransferSelectionToBrowserEvent
@@ -697,13 +685,7 @@ public class ResourceDistributorFinishPanel extends WizardPage {
     }
 
     protected void focusSubmit() {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                jButton1.requestFocusInWindow();
-            }
-        });
+        SwingUtilities.invokeLater(jButton1::requestFocusInWindow);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

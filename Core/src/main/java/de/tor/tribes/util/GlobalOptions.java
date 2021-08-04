@@ -32,7 +32,6 @@ import de.tor.tribes.util.roi.ROIManager;
 import de.tor.tribes.util.sos.SOSManager;
 import de.tor.tribes.util.stat.StatManager;
 import de.tor.tribes.util.tag.TagManager;
-import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.troops.TroopsManager;
 import de.tor.tribes.util.village.KnownVillageManager;
 import java.io.File;

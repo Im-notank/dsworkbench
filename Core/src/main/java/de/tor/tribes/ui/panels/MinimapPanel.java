@@ -22,7 +22,6 @@ import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.*;
 import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.MinimapListener;
-import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.ui.windows.MinimapZoomFrame;
 import de.tor.tribes.util.Constants;
@@ -47,7 +46,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -334,37 +332,31 @@ public class MinimapPanel extends javax.swing.JPanel implements GenericManagerLi
             }
         });
 
-        addMouseWheelListener(
-                new MouseWheelListener() {
-
-                    @Override
-                    public void mouseWheelMoved(MouseWheelEvent e) {
-
-                        if (iCurrentView != ID_MINIMAP) {
-                            return;
-                        }
-                        iCurrentCursor += e.getWheelRotation();
-                        if (iCurrentCursor == ImageManager.CURSOR_DEFAULT + e.getWheelRotation()) {
-                            if (e.getWheelRotation() < 0) {
-                                iCurrentCursor = ImageManager.CURSOR_SHOT;
-                            } else {
-                                iCurrentCursor = ImageManager.CURSOR_MOVE;
-                            }
-                        } else if (iCurrentCursor < ImageManager.CURSOR_MOVE) {
-                            iCurrentCursor = ImageManager.CURSOR_DEFAULT;
-                        } else if (iCurrentCursor > ImageManager.CURSOR_SHOT) {
-                            iCurrentCursor = ImageManager.CURSOR_DEFAULT;
-                        }
-                        if (iCurrentCursor != ImageManager.CURSOR_ZOOM) {
-                            if (MinimapZoomFrame.getSingleton().isVisible()) {
-                                MinimapZoomFrame.getSingleton().setVisible(false);
-                            }
-                        } else {
-                            MinimapZoomFrame.getSingleton().setVisible(true);
-                        }
-                        setCurrentCursor(iCurrentCursor);
-                    }
-                });
+        addMouseWheelListener((MouseWheelEvent e) -> {
+            if (iCurrentView != ID_MINIMAP) {
+                return;
+            }
+            iCurrentCursor += e.getWheelRotation();
+            if (iCurrentCursor == ImageManager.CURSOR_DEFAULT + e.getWheelRotation()) {
+                if (e.getWheelRotation() < 0) {
+                    iCurrentCursor = ImageManager.CURSOR_SHOT;
+                } else {
+                    iCurrentCursor = ImageManager.CURSOR_MOVE;
+                }
+            } else if (iCurrentCursor < ImageManager.CURSOR_MOVE) {
+                iCurrentCursor = ImageManager.CURSOR_DEFAULT;
+            } else if (iCurrentCursor > ImageManager.CURSOR_SHOT) {
+                iCurrentCursor = ImageManager.CURSOR_DEFAULT;
+            }
+            if (iCurrentCursor != ImageManager.CURSOR_ZOOM) {
+                if (MinimapZoomFrame.getSingleton().isVisible()) {
+                    MinimapZoomFrame.getSingleton().setVisible(false);
+                }
+            } else {
+                MinimapZoomFrame.getSingleton().setVisible(true);
+            }
+            setCurrentCursor(iCurrentCursor);
+        });
 
     }
 
@@ -639,7 +631,7 @@ public class MinimapPanel extends javax.swing.JPanel implements GenericManagerLi
                     if (m != null) {
                         marks.put(a, m);
                     }
-                    dataset.setValue(a.getTag(), new Double((double) v / (double) overallVillages * 100));
+                    dataset.setValue(a.getTag(), (double) v / (double) overallVillages * 100);
                 } else {
                     rest += perc;
                 }
@@ -667,7 +659,7 @@ public class MinimapPanel extends javax.swing.JPanel implements GenericManagerLi
                     if (m != null) {
                         marks.put(t, m);
                     }
-                    dataset.setValue(t.getName(), new Double((double) v / (double) overallVillages * 100));
+                    dataset.setValue(t.getName(), (double) v / (double) overallVillages * 100);
                 } else {
                     rest += perc;
                 }

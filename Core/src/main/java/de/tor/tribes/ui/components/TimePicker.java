@@ -21,7 +21,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -253,11 +252,8 @@ public class TimePicker extends javax.swing.JPanel {
         }
         expandButton.setFont(smallFont);
         expandButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        expandButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addMinuteLabels(!minutesExpanded);
-            }
+        expandButton.addActionListener((ActionEvent e) -> {
+            addMinuteLabels(!minutesExpanded);
         });
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = elemsPerRow - 1;
@@ -267,13 +263,7 @@ public class TimePicker extends javax.swing.JPanel {
         gbc.weighty = 1;
         jPanelMinute.add(expandButton, gbc);
         
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                jPanelMinute.updateUI();
-            }
-        });
+        SwingUtilities.invokeLater(jPanelMinute::updateUI);
         updateSize();
     }
 

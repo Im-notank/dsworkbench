@@ -42,7 +42,6 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.netbeans.spi.wizard.*;
 
@@ -80,38 +79,26 @@ public class RetimerDataPanel extends WizardPage {
 
         KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK, false);
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        ActionListener panelListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Paste")) {
-                    pasteFromClipboard();
-                } else if (e.getActionCommand().equals("Delete")) {
-                    deleteSelection();
-                }
+        ActionListener panelListener = (ActionEvent e) -> {
+            if (e.getActionCommand().equals("Paste")) {
+                pasteFromClipboard();
+            } else if (e.getActionCommand().equals("Delete")) {
+                deleteSelection();
             }
         };
         jAttacksTable.registerKeyboardAction(panelListener, "Paste", paste, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         jAttacksTable.registerKeyboardAction(panelListener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         capabilityInfoPanel1.addActionListener(panelListener);
 
-        jAttacksTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int selectedRows = jAttacksTable.getSelectedRowCount();
-                if (selectedRows != 0) {
-                    jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
-                }
+        jAttacksTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            int selectedRows = jAttacksTable.getSelectedRowCount();
+            if (selectedRows != 0) {
+                jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
             }
         });
 
-        ChangeListener cl = new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                recalculateArriveTime();
-            }
+        ChangeListener cl = (ChangeEvent e) -> {
+            recalculateArriveTime();
         };
         
         jSourceCoord = new de.tor.tribes.ui.components.CoordinateSpinner();
@@ -131,12 +118,8 @@ public class RetimerDataPanel extends WizardPage {
         
         jSourceCoord.addChangeListener(cl);
         jTargetCoord.addChangeListener(cl);
-        jArriveTime.setActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                recalculateArriveTime();
-            }
+        jArriveTime.setActionListener((ActionEvent e) -> {
+            recalculateArriveTime();
         });
 
         jInfoTextPane.setText(GENERAL_INFO);

@@ -22,7 +22,6 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,12 +66,9 @@ public class LanguageSelection extends javax.swing.JDialog {
         
         JButton btn = new JButton(new StretchIcon(imgName));
         btn.setPreferredSize(new Dimension(150, 100));
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selected = languageName;
-                updateSelection();
-            }
+        btn.addActionListener((ActionEvent e) -> {
+            selected = languageName;
+            updateSelection();
         });
         getContentPane().add(btn, new GridBagConstraints(column, row, 1, 1, 1, 1, 0, 1, new Insets(0, 0, 0, 0), 0, 0));
     }

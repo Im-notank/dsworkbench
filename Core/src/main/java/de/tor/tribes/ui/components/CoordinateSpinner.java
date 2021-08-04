@@ -21,7 +21,6 @@ import de.tor.tribes.ui.models.CoordinateSpinnerModel;
 import de.tor.tribes.util.CoordinateFormatter;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -83,31 +82,27 @@ public class CoordinateSpinner extends JSpinner {
              */
             String min = Integer.toString(Integer.MIN_VALUE);
             ftf.setColumns(4 + 2 * min.length());
-            ftf.addPropertyChangeListener("value", new PropertyChangeListener() {
-
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    try {
-                        String text = ftf.getText();
-                        int comma = text.indexOf('|');
-                        int open = text.indexOf('(');
-                        int close = text.indexOf(')');
-                        if (comma < 0 || open < 0 || close < 0) {
-                            ftf.select(0, text.length());
+            ftf.addPropertyChangeListener("value", (PropertyChangeEvent evt) -> {
+                try {
+                    String text = ftf.getText();
+                    int comma = text.indexOf('|');
+                    int open = text.indexOf('(');
+                    int close = text.indexOf(')');
+                    if (comma < 0 || open < 0 || close < 0) {
+                        ftf.select(0, text.length());
+                    } else {
+                        String digit;
+                        int number;
+                        if (model.getField() == CoordinateSpinnerModel.FIELD_X) {
+                            digit = text.substring(open + 1, comma).trim();
+                            number = text.indexOf(digit);
                         } else {
-                            String digit;
-                            int number;
-                            if (model.getField() == CoordinateSpinnerModel.FIELD_X) {
-                                digit = text.substring(open + 1, comma).trim();
-                                number = text.indexOf(digit);
-                            } else {
-                                digit = text.substring(comma + 1, close).trim();
-                                number = text.lastIndexOf(digit);
-                            }
-                            ftf.select(number, number + digit.length());
+                            digit = text.substring(comma + 1, close).trim();
+                            number = text.lastIndexOf(digit);
                         }
-                    } catch (StringIndexOutOfBoundsException ignored) {
+                        ftf.select(number, number + digit.length());
                     }
+                } catch (StringIndexOutOfBoundsException ignored) {
                 }
             });
 

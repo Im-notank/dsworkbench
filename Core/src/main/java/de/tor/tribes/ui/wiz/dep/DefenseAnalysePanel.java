@@ -84,13 +84,9 @@ public class DefenseAnalysePanel extends WizardPage {
         overviewPanel = new VillageOverviewMapPanel();
         jPanel6.add(overviewPanel, BorderLayout.CENTER);
 
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Delete")) {
-                    deleteSelection();
-                }
+        ActionListener listener = (ActionEvent e) -> {
+            if (e.getActionCommand().equals("Delete")) {
+                deleteSelection();
             }
         };
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
@@ -328,13 +324,7 @@ public class DefenseAnalysePanel extends WizardPage {
         } else {
             jTableScrollPane.setViewportView(jxAttacksTable);
             jPanel6.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel6.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel6::updateUI);
         }
     }//GEN-LAST:event_fireChangeViewEvent
 

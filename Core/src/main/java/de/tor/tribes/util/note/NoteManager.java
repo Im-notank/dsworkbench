@@ -26,7 +26,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,17 +56,13 @@ public class NoteManager extends GenericManager<Note> {
     @Override
     public String[] getGroups() {
         String[] groups = super.getGroups();
-        Arrays.sort(groups, new Comparator<String>() {
-
-            @Override
-            public int compare(String o1, String o2) {
-                if (o1.equals(DEFAULT_GROUP)) {
-                    return -1;
-                } else if (o2.equals(DEFAULT_GROUP)) {
-                    return 1;
-                } else {
-                    return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
-                }
+        Arrays.sort(groups, (String o1, String o2) -> {
+            if (o1.equals(DEFAULT_GROUP)) {
+                return -1;
+            } else if (o2.equals(DEFAULT_GROUP)) {
+                return 1;
+            } else {
+                return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
             }
         });
         return groups;

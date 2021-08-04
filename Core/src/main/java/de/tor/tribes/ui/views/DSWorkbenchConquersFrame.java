@@ -114,12 +114,8 @@ public class DSWorkbenchConquersFrame extends AbstractDSWorkbenchFrame implement
             }
         });
 
-        jXColumnList.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateFilter();
-            }
+        jXColumnList.addListSelectionListener((ListSelectionEvent e) -> {
+            updateFilter();
         });
         // <editor-fold defaultstate="collapsed" desc=" Init HelpSystem ">
         if (!Constants.DEBUG) {

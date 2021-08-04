@@ -54,7 +54,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.netbeans.spi.wizard.*;
 
@@ -94,13 +93,10 @@ public class SupportRefillSettingsPanel extends WizardPage implements ActionList
         jVillageTable.registerKeyboardAction(SupportRefillSettingsPanel.this, "BBCopy", bbCopy, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         capabilityInfoPanel1.addActionListener(SupportRefillSettingsPanel.this);
         
-        jVillageTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int selectedRows = jVillageTable.getSelectedRowCount();
-                if (selectedRows != 0) {
-                    jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
-                }
+        jVillageTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            int selectedRows = jVillageTable.getSelectedRowCount();
+            if (selectedRows != 0) {
+                jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
             }
         });
 
@@ -527,12 +523,7 @@ public class SupportRefillSettingsPanel extends WizardPage implements ActionList
         } else {
             jTableScrollPane.setViewportView(jVillageTable);
             jPanel2.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    jPanel2.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel2::updateUI);
         }
     }//GEN-LAST:event_fireViewStateChangeEvent
 

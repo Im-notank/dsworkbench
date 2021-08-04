@@ -45,7 +45,6 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.netbeans.spi.wizard.*;
 
@@ -77,13 +76,7 @@ public class SupportRefillTargetPanel extends WizardPage {
         jVillageTable.setModel(new REFTargetTableModel());
         jXCollapsiblePane1.setLayout(new BorderLayout());
         jXCollapsiblePane1.add(jInfoScrollPane, BorderLayout.CENTER);
-        villageSelectionPanel = new VillageSelectionPanel(new VillageSelectionPanel.VillageSelectionPanelListener() {
-
-            @Override
-            public void fireVillageSelectionEvent(Village[] pSelection) {
-                addVillages(pSelection);
-            }
-        });
+        villageSelectionPanel = new VillageSelectionPanel(this::addVillages);
 
         jVillageTable.setHighlighters(HighlighterFactory.createAlternateStriping(Constants.DS_ROW_A, Constants.DS_ROW_B));
         jVillageTable.getTableHeader().setDefaultRenderer(new DefaultTableHeaderRenderer());
@@ -96,29 +89,21 @@ public class SupportRefillTargetPanel extends WizardPage {
 
         KeyStroke paste = KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK, false);
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        ActionListener panelListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getActionCommand().equals("Paste")) {
-                    pasteFromClipboard();
-                } else if (e.getActionCommand().equals("Delete")) {
-                    deleteSelection();
-                }
+        ActionListener panelListener = (ActionEvent e) -> {
+            if (e.getActionCommand().equals("Paste")) {
+                pasteFromClipboard();
+            } else if (e.getActionCommand().equals("Delete")) {
+                deleteSelection();
             }
         };
         jVillageTable.registerKeyboardAction(panelListener, "Paste", paste, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         jVillageTable.registerKeyboardAction(panelListener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         capabilityInfoPanel1.addActionListener(panelListener);
 
-        jVillageTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int selectedRows = jVillageTable.getSelectedRowCount();
-                if (selectedRows != 0) {
-                    jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
-                }
+        jVillageTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            int selectedRows = jVillageTable.getSelectedRowCount();
+            if (selectedRows != 0) {
+                jStatusLabel.setText(selectedRows + trans.get("Dorfgeweahlt"));
             }
         });
 
@@ -322,13 +307,7 @@ public class SupportRefillTargetPanel extends WizardPage {
         } else {
             jTableScrollPane.setViewportView(jVillageTable);
             jPanel2.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel2.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel2::updateUI);
         }
     }//GEN-LAST:event_fireViewStateChangeEvent
 

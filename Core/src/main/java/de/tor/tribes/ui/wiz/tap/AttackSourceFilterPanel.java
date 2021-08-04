@@ -556,13 +556,7 @@ public class AttackSourceFilterPanel extends WizardPage {
         } else {
             jTableScrollPane.setViewportView(jVillageTable);
             jPanel2.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel2.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel2::updateUI);
         }
     }//GEN-LAST:event_fireViewStateChangeEvent
 

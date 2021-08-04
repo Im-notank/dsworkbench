@@ -29,7 +29,6 @@ import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
 import java.io.*;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -299,16 +298,13 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
                     servers.add(server.getName());
                 }
                 //sort server names
-                Collections.sort(servers, new Comparator<String>() {
-                    @Override
-                    public int compare(String o1, String o2) {
-                        if (o1.length() < o2.length()) {
-                            return -1;
-                        } else if (o1.length() > o2.length()) {
-                            return 1;
-                        }
-                        return o1.compareTo(o2);
+                Collections.sort(servers, (String o1, String o2) -> {
+                    if (o1.length() < o2.length()) {
+                        return -1;
+                    } else if (o1.length() > o2.length()) {
+                        return 1;
                     }
+                    return o1.compareTo(o2);
                 });
                 List<Object> path = new LinkedList<>();
                 DefaultMutableTreeNode root = new DefaultMutableTreeNode(trans.get("Profile"));
@@ -514,18 +510,15 @@ public class DSWorkbenchSplashScreen extends javax.swing.JFrame implements DataH
 
         final boolean useSSD = ssd;
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    DSWorkbenchSplashScreen.getSingleton().setLocationRelativeTo(null);
-                    if (useSSD) {
-                        DSWorkbenchSplashScreen.getSingleton().initializeSuperSpecialDebugFeatures();
-                    }
-                    DSWorkbenchSplashScreen.getSingleton().setVisible(true);
-                } catch (Exception e) {
-                    logger.error("Fatal application error", e);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                DSWorkbenchSplashScreen.getSingleton().setLocationRelativeTo(null);
+                if (useSSD) {
+                    DSWorkbenchSplashScreen.getSingleton().initializeSuperSpecialDebugFeatures();
                 }
+                DSWorkbenchSplashScreen.getSingleton().setVisible(true);
+            } catch (Exception e) {
+                logger.error("Fatal application error", e);
             }
         });
     }

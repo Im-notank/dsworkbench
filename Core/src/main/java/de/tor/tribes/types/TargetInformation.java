@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
@@ -145,13 +144,9 @@ public class TargetInformation {
             timedAttacks.put(pSource, attacksFromSource);
         }
         
-        Object result = CollectionUtils.find(attacksFromSource, new Predicate() {
-            
-            @Override
-            public boolean evaluate(Object o) {
-                TimedAttack t = (TimedAttack) o;
-                return t.getSource().equals(pSource) && t.getlArriveTime().equals(pArrive.getTime());
-            }
+        Object result = CollectionUtils.find(attacksFromSource, (Object o) -> {
+            TimedAttack t = (TimedAttack) o;
+            return t.getSource().equals(pSource) && t.getlArriveTime().equals(pArrive.getTime());
         });
         
         if (result == null) {

@@ -22,12 +22,10 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.interfaces.BBChangeListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import net.java.dev.colorchooser.ColorChooser;
 import org.apache.logging.log4j.LogManager;
@@ -55,13 +53,9 @@ public class BBPanel extends javax.swing.JPanel {
         setEditMode(true);
         changeListener = pListener;
         colorChooser = new ColorChooser();
-        colorChooser.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jColorChooseDialog.setVisible(false);
-                fireAddColorCodeEvent();
-            }
+        colorChooser.addActionListener((ActionEvent e) -> {
+            jColorChooseDialog.setVisible(false);
+            fireAddColorCodeEvent();
         });
         jPanel2.add(colorChooser);
         jColorChooseDialog.pack();
@@ -93,28 +87,24 @@ public class BBPanel extends javax.swing.JPanel {
         });
 
         jTextPane1.setBackground(Constants.DS_BACK_LIGHT);
-        jTextPane1.addHyperlinkListener(new HyperlinkListener() {
-
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    String desc = e.getDescription();
-                    if (desc.startsWith("###")) {
-                        //village
-                        Village v = PluginManager.getSingleton().executeVillageParser(desc.substring(3)).get(0);
-                        BrowserInterface.showVillageInfoInGame(v);
-                    } else if (desc.startsWith("##")) {
-                        //ally
-                        Ally a = DataHolder.getSingleton().getAllyByName(desc.substring(2));
-                        BrowserInterface.showAllyInfoInGame(a);
-                    } else if (desc.startsWith("#")) {
-                        //tribe
-                        Tribe t = DataHolder.getSingleton().getTribeByName(desc.substring(1));
-                        BrowserInterface.showTribeInfoInGame(t);
-                    } else {
-                        //normal URL
-                        BrowserInterface.openPage(desc);
-                    }
+        jTextPane1.addHyperlinkListener((HyperlinkEvent e) -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                String desc = e.getDescription();
+                if (desc.startsWith("###")) {
+                    //village
+                    Village v = PluginManager.getSingleton().executeVillageParser(desc.substring(3)).get(0);
+                    BrowserInterface.showVillageInfoInGame(v);
+                } else if (desc.startsWith("##")) {
+                    //ally
+                    Ally a = DataHolder.getSingleton().getAllyByName(desc.substring(2));
+                    BrowserInterface.showAllyInfoInGame(a);
+                } else if (desc.startsWith("#")) {
+                    //tribe
+                    Tribe t = DataHolder.getSingleton().getTribeByName(desc.substring(1));
+                    BrowserInterface.showTribeInfoInGame(t);
+                } else {
+                    //normal URL
+                    BrowserInterface.openPage(desc);
                 }
             }
         });

@@ -15,7 +15,6 @@
  */
 package de.tor.tribes.ui.views;
 
-import de.tor.tribes.control.GenericEventListener;
 import de.tor.tribes.control.GenericManagerListener;
 import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.Village;
@@ -51,9 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.UIResource;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -155,22 +152,15 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         new ColorUpdateThread().start();
         mCountdownThread = new CountdownThread();
         mCountdownThread.start();
-        jXColumnList.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateFilter();
-            }
+        jXColumnList.addListSelectionListener((ListSelectionEvent e) -> {
+            updateFilter();
         });
 
 
-        jAttackTabPane.getModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                AttackTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.updatePlan();
-                }
+        jAttackTabPane.getModel().addChangeListener((ChangeEvent e) -> {
+            AttackTableTab activeTab = getActiveTab();
+            if (activeTab != null) {
+                activeTab.updatePlan();
             }
         });
 
@@ -713,41 +703,35 @@ private void createNewAttackPlan() {
         
         for(int i = 0; i < jAttackTabPane.getTabCount(); i++) {
             final TabPaneComponent component = new TabPaneComponent(jAttackTabPane);
-            component.setStopEditingListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jAttackTabPane.indexOfTabComponent(component);
-                    AttackTableTab tab = (AttackTableTab) jAttackTabPane.getComponentAt(i);
-                    String newName = component.getEditedText();
-                    if(!newName.equals(tab.getAttackPlan())) {
-                        newName = newName.trim();
-                        if (newName.length() == 0) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigerPlanname"), newName), trans.get("Fehler"));
-                            return;
-                        }
-                        if (AttackManager.getSingleton().groupExists(newName)) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("existiertbereits"), newName), trans.get("Fehler"));                        
-                            return;
-                        }
-                        if (! JDomUtils.stringAllowed(newName)) {
-                            JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigeSonderzeichen"), newName), trans.get("Fehler"));
-                            return;
-                        }
-                        
-                        AttackManager.getSingleton().renameGroup(tab.getAttackPlan(), newName);
+            component.setStopEditingListener(() -> {
+                int i1 = jAttackTabPane.indexOfTabComponent(component);
+                AttackTableTab tab = (AttackTableTab) jAttackTabPane.getComponentAt(i1);
+                String newName = component.getEditedText();
+                if(!newName.equals(tab.getAttackPlan())) {
+                    newName = newName.trim();
+                    if (newName.length() == 0) {
+                        JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigerPlanname"), newName), trans.get("Fehler"));
+                        return;
                     }
+                    if (AttackManager.getSingleton().groupExists(newName)) {
+                        JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("existiertbereits"), newName), trans.get("Fehler"));
+                        return;
+                    }
+                    if (! JDomUtils.stringAllowed(newName)) {
+                        JOptionPaneHelper.showWarningBox(jAttackTabPane, String.format(trans.get("ungueltigeSonderzeichen"), newName), trans.get("Fehler"));
+                        return;
+                    }
+                    
+                    AttackManager.getSingleton().renameGroup(tab.getAttackPlan(), newName);
                 }
             });
             
-            component.setCloseTabListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jAttackTabPane.indexOfTabComponent(component);
-                    AttackTableTab tab = (AttackTableTab) jAttackTabPane.getComponentAt(i);
-                    if (JOptionPaneHelper.showQuestionConfirmBox(jAttackTabPane, String.format(trans.get("Befehlewirklichloeschen"), tab.getAttackPlan())
-                            , trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
-                        AttackManager.getSingleton().removeGroup(tab.getAttackPlan());
-                    }
+            component.setCloseTabListener(() -> {
+                int i1 = jAttackTabPane.indexOfTabComponent(component);
+                AttackTableTab tab = (AttackTableTab) jAttackTabPane.getComponentAt(i1);
+                if (JOptionPaneHelper.showQuestionConfirmBox(jAttackTabPane, String.format(trans.get("Befehlewirklichloeschen"), tab.getAttackPlan())
+                        , trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
+                    AttackManager.getSingleton().removeGroup(tab.getAttackPlan());
                 }
             });
             
@@ -797,14 +781,10 @@ private void createNewAttackPlan() {
      * Redraw the countdown col
      */
     protected void updateCountdown() {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    ((AttackTableTab) jAttackTabPane.getSelectedComponent()).updateCountdown();
-                } catch (Exception ignored) {
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ((AttackTableTab) jAttackTabPane.getSelectedComponent()).updateCountdown();
+            } catch (Exception ignored) {
             }
         });
 
@@ -814,14 +794,10 @@ private void createNewAttackPlan() {
      * Redraw the time col
      */
     protected void updateTime() {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    ((AttackTableTab) jAttackTabPane.getSelectedComponent()).updateTime();
-                } catch (Exception ignored) {
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                ((AttackTableTab) jAttackTabPane.getSelectedComponent()).updateTime();
+            } catch (Exception ignored) {
             }
         });
 

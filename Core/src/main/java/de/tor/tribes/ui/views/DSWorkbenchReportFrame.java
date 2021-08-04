@@ -15,7 +15,6 @@
  */
 package de.tor.tribes.ui.views;
 
-import de.tor.tribes.control.GenericEventListener;
 import de.tor.tribes.control.GenericManagerListener;
 import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.types.*;
@@ -47,9 +46,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -150,40 +147,24 @@ public class DSWorkbenchReportFrame extends AbstractDSWorkbenchFrame implements 
         capabilityInfoPanel1.addActionListener(this);
         KeyStroke bbCopy = KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK, false);
 
-        ActionListener resultListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                copyResultBBToClipboardEvent();
-            }
+        ActionListener resultListener = (ActionEvent e) -> {
+            copyResultBBToClipboardEvent();
         };
 
         capabilityInfoPanel2.addActionListener(resultListener);
         jResultTabbedPane.registerKeyboardAction(resultListener, "BBCopy", bbCopy, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jReportsTabbedPane.getModel().addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                ReportTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.updateSet();
-                }
+        jReportsTabbedPane.getModel().addChangeListener((ChangeEvent e) -> {
+            ReportTableTab activeTab = getActiveTab();
+            if (activeTab != null) {
+                activeTab.updateSet();
             }
         });
-        jXColumnList.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                updateFilter();
-            }
+        jXColumnList.addListSelectionListener((ListSelectionEvent e) -> {
+            updateFilter();
         });
-        jList1.addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    fireRebuildStatsEvent();
-                }
+        jList1.addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting()) {
+                fireRebuildStatsEvent();
             }
         });
 
@@ -446,41 +427,35 @@ public class DSWorkbenchReportFrame extends AbstractDSWorkbenchFrame implements 
         
         for(int i = 0; i < jReportsTabbedPane.getTabCount(); i++) {
             final TabPaneComponent component = new TabPaneComponent(jReportsTabbedPane);
-            component.setStopEditingListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jReportsTabbedPane.indexOfTabComponent(component);
-                    ReportTableTab tab = (ReportTableTab) jReportsTabbedPane.getComponentAt(i);
-                    String newName = component.getEditedText();
-                    if(!newName.equals(tab.getReportSet())) {
-                        newName = newName.trim();
-                        if (newName.length() == 0) {
-                            JOptionPaneHelper.showWarningBox(jReportsTabbedPane, "'" + newName + trans.get("ungueltigerSetname"), trans.get("Fehler"));
-                            return;
-                        }
-                        if (ReportManager.getSingleton().groupExists(newName)) {
-                            JOptionPaneHelper.showWarningBox(jReportsTabbedPane, trans.get("existiert_Berichtset") + newName + "'", trans.get("Fehler"));
-                            return;
-                        }
-                        if (! JDomUtils.stringAllowed(newName)) {
-                            JOptionPaneHelper.showWarningBox(jReportsTabbedPane, trans.get("Dername") + newName + trans.get("enthaeltSonderzeichen"), trans.get("Fehler"));
-                            return;
-                        }
-                        
-                        ReportManager.getSingleton().renameGroup(tab.getReportSet(), newName);
+            component.setStopEditingListener(() -> {
+                int i1 = jReportsTabbedPane.indexOfTabComponent(component);
+                ReportTableTab tab = (ReportTableTab) jReportsTabbedPane.getComponentAt(i1);
+                String newName = component.getEditedText();
+                if(!newName.equals(tab.getReportSet())) {
+                    newName = newName.trim();
+                    if (newName.length() == 0) {
+                        JOptionPaneHelper.showWarningBox(jReportsTabbedPane, "'" + newName + trans.get("ungueltigerSetname"), trans.get("Fehler"));
+                        return;
                     }
+                    if (ReportManager.getSingleton().groupExists(newName)) {
+                        JOptionPaneHelper.showWarningBox(jReportsTabbedPane, trans.get("existiert_Berichtset") + newName + "'", trans.get("Fehler"));
+                        return;
+                    }
+                    if (! JDomUtils.stringAllowed(newName)) {
+                        JOptionPaneHelper.showWarningBox(jReportsTabbedPane, trans.get("Dername") + newName + trans.get("enthaeltSonderzeichen"), trans.get("Fehler"));
+                        return;
+                    }
+                    
+                    ReportManager.getSingleton().renameGroup(tab.getReportSet(), newName);
                 }
             });
             
-            component.setCloseTabListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jReportsTabbedPane.indexOfTabComponent(component);
-                    ReportTableTab tab = (ReportTableTab) jReportsTabbedPane.getComponentAt(i);
-                    if (JOptionPaneHelper.showQuestionConfirmBox(jReportsTabbedPane, trans.get("Berichtset") + tab.getReportSet() +
-                            trans.get("all_reports_delete"), trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
-                        ReportManager.getSingleton().removeGroup(tab.getReportSet());
-                    }
+            component.setCloseTabListener(() -> {
+                int i1 = jReportsTabbedPane.indexOfTabComponent(component);
+                ReportTableTab tab = (ReportTableTab) jReportsTabbedPane.getComponentAt(i1);
+                if (JOptionPaneHelper.showQuestionConfirmBox(jReportsTabbedPane, trans.get("Berichtset") + tab.getReportSet() +
+                        trans.get("all_reports_delete"), trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
+                    ReportManager.getSingleton().removeGroup(tab.getReportSet());
                 }
             });
             

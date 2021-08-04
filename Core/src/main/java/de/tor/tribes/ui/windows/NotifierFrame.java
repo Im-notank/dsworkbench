@@ -58,14 +58,10 @@ public class NotifierFrame extends javax.swing.JDialog {
         final String message = pMessage;
         final int type = pType;
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                NotifierFrame frame = new NotifierFrame(message, type);
-                frame.setVisible(true);
-                INSTANCES.push(frame);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            NotifierFrame frame = new NotifierFrame(message, type);
+            frame.setVisible(true);
+            INSTANCES.push(frame);
         });
     }
 
@@ -179,59 +175,55 @@ public class NotifierFrame extends javax.swing.JDialog {
         setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - 400 - i.right, Toolkit.getDefaultToolkit().getScreenSize().height - i.bottom, 400, 10);
 
         jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        Thread t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                int height = 0;
-                boolean inv = false;
+        Thread t = new Thread(() -> {
+            int height = 0;
+            boolean inv = false;
                 int y = getLocation().y;
-                int max = 100;
-                while (true) {
-                    try {
-                        height += (inv) ? - 10 : 10;
-                        setBounds(getLocation().x, y - height, getWidth(), height);
+            int max = 100;
+            while (true) {
+                try {
+                    height += (inv) ? - 10 : 10;
+                    setBounds(getLocation().x, y - height, getWidth(), height);
 
-                        if (height >= max) {
-                            maxed = true;
-                            jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-                            jScrollPane1.getViewport().setViewPosition(new Point(0, 0));
-                            repaint();
-
-                            int dur = GlobalOptions.getProperties().getInt("notify.duration");
-                            if (dur > 0) {
-                                //set duration to 'dur' ten-seconds
-                                dur = dur * 10 * 1000;
-                            } else {
-                                //set duration to "forever"
-                                dur = Integer.MAX_VALUE;
-                            }
-
-                            while (true) {
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException ignored) {
-                                }
-                                //substract 500ms from duration
-                                dur -= 500;
-                                if (disposed) {
-                                    //if user has closed notification, return
-                                    return;
-                                } else if (dur <= 0) {
-                                    //if max duration was reched, dispose
-                                    dispose();
-                                    return;
-                                }
-                            }
+                    if (height >= max) {
+                        maxed = true;
+                        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                        jScrollPane1.getViewport().setViewPosition(new Point(0, 0));
+                        repaint();
+                        
+                        int dur = GlobalOptions.getProperties().getInt("notify.duration");
+                        if (dur > 0) {
+                            //set duration to 'dur' ten-seconds
+                            dur = dur * 10 * 1000;
                         } else {
-                            //still in create loop
+                            //set duration to "forever"
+                            dur = Integer.MAX_VALUE;
+                        }
+                        
+                        while (true) {
                             try {
-                                Thread.sleep(80);
+                                Thread.sleep(500);
                             } catch (InterruptedException ignored) {
                             }
+                            //substract 500ms from duration
+                            dur -= 500;
+                            if (disposed) {
+                                //if user has closed notification, return
+                                return;
+                            } else if (dur <= 0) {
+                                //if max duration was reched, dispose
+                                dispose();
+                                return;
+                            }
                         }
-                    } catch (Exception ignored) {
+                    } else {
+                        //still in create loop
+                        try {
+                            Thread.sleep(80);
+                        } catch (InterruptedException ignored) {
+                        }
                     }
+                }catch (Exception ignored) {
                 }
             }
         });

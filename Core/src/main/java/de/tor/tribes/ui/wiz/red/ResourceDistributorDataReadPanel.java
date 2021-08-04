@@ -95,12 +95,8 @@ public class ResourceDistributorDataReadPanel extends WizardPage {
         sorter.setComparator(4, splitComparator);
 
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        ActionListener deleteListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteSelection();
-            }
+        ActionListener deleteListener = (ActionEvent e) -> {
+            deleteSelection();
         };
         jDataTable.registerKeyboardAction(deleteListener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         capabilityInfoPanel1.addActionListener(deleteListener);

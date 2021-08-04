@@ -20,8 +20,7 @@ import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.types.StandardAttack;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom2.Element;
@@ -74,49 +73,33 @@ public class StandardAttackManager extends GenericManager<StandardAttack> {
     }
 
     public StandardAttack getElementByName(final String pName) {
-        Object result = CollectionUtils.find(getAllElements(), new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((StandardAttack) o).getName().equals(pName);
-            }
-        });
+        Object result = IterableUtils.find(getAllElements(),
+                (Object o) -> ((StandardAttack) o).getName().equals(pName)
+        );
 
         return (StandardAttack) result;
     }
 
     public StandardAttack getElementByIcon(final int pIcon) {
-        Object result = CollectionUtils.find(getAllElements(), new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((StandardAttack) o).getIcon() == pIcon;
-            }
-        });
+        Object result = IterableUtils.find(getAllElements(),
+            (Object o) -> ((StandardAttack) o).getIcon() == pIcon
+        );
 
         return (StandardAttack) result;
     }
 
     public boolean containsElementByName(final String pName) {
-        Object result = CollectionUtils.find(getAllElements(), new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((StandardAttack) o).getName().equals(pName);
-            }
-        });
+        Object result = IterableUtils.find(getAllElements(),
+            (Object o) -> ((StandardAttack) o).getName().equals(pName)
+        );
 
         return result != null;
     }
 
     public boolean containsElementByIcon(final int pIcon) {
-        Object result = CollectionUtils.find(getAllElements(), new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((StandardAttack) o).getIcon() == pIcon;
-            }
-        });
+        Object result = IterableUtils.find(getAllElements(),
+            (Object o) -> ((StandardAttack) o).getIcon() == pIcon
+        );
 
         return result != null;
     }

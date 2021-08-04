@@ -189,12 +189,8 @@ public class MapPanel extends JPanel implements DragGestureListener, // For reco
 
                 @Override
                 public void run() {
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            repaint();
-                        }
+                    SwingUtilities.invokeLater(() -> {
+                        repaint();
                     });
                 }
             }, 0, 100);
@@ -340,15 +336,11 @@ public class MapPanel extends JPanel implements DragGestureListener, // For reco
         this.setDropTarget(dropTarget); // Tell the component about it.
 
         // <editor-fold defaultstate="collapsed" desc="MouseWheelListener for Tool changes">
-        addMouseWheelListener(new MouseWheelListener() {
-
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                if (e.getWheelRotation() < 0) {
-                    DSWorkbenchMainFrame.getSingleton().zoomOut();
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().zoomIn();
-                }
+        addMouseWheelListener((MouseWheelEvent e) -> {
+            if (e.getWheelRotation() < 0) {
+                DSWorkbenchMainFrame.getSingleton().zoomOut();
+            } else {
+                DSWorkbenchMainFrame.getSingleton().zoomIn();
             }
         });
         //</editor-fold>

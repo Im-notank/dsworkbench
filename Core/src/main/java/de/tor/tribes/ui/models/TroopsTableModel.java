@@ -24,7 +24,6 @@ import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.panels.MapPanel;
-import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.util.DSCalculator;
 import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;

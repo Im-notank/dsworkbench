@@ -66,7 +66,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.Range;
 import org.apache.logging.log4j.LogManager;
@@ -189,45 +188,25 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         KeyStroke farmB = KeyStroke.getKeyStroke(KeyEvent.VK_B, 0, false);
         KeyStroke farmK = KeyStroke.getKeyStroke(KeyEvent.VK_K, 0, false);
         KeyStroke farmC = KeyStroke.getKeyStroke(KeyEvent.VK_C, 0, false);
-        ActionListener listener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteSelection();
-            }
+        ActionListener listener = (ActionEvent e) -> {
+            deleteSelection();
         };
 
         capabilityInfoPanel1.addActionListener(listener);
 
         jFarmTable.setSortsOnUpdates(false);
         jFarmTable.registerKeyboardAction(listener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        jFarmTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmA();
-            }
+        jFarmTable.registerKeyboardAction((ActionEvent e) -> {
+            farmA();
         }, "FarmA", farmA, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jFarmTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmB();
-            }
+        jFarmTable.registerKeyboardAction((ActionEvent e) -> {
+            farmB();
         }, "FarmB", farmB, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jFarmTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmK();
-            }
+        jFarmTable.registerKeyboardAction((ActionEvent e) -> {
+            farmK();
         }, "FarmK", farmK, JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jFarmTable.registerKeyboardAction(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmC();
-            }
+        jFarmTable.registerKeyboardAction((ActionEvent e) -> {
+            farmC();
         }, "FarmC", farmC, JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         aTroops = new TroopSelectionPanelDynamic();
@@ -247,12 +226,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         jRSettingsTab.add(rTroops, BorderLayout.CENTER);
         jXLabel1.setLineWrap(true);
 
-        jFarmTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                showInfo(jFarmTable.getSelectedRowCount() + " " + trans.get("Farmen_gewahlt"));
-            }
+        jFarmTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            showInfo(jFarmTable.getSelectedRowCount() + " " + trans.get("Farmen_gewahlt"));
         });
 
         coordSpinner = new CoordinateSpinner();
@@ -402,16 +377,12 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton searchBarbs = new JXButton(
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/search_barbs.png")));
         searchBarbs.setToolTipText(trans.get("Barb_search"));
-        searchBarbs.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Tribe yourTribe = GlobalOptions.getSelectedProfile().getTribe();
-                coordSpinner.setValue(DSCalculator.calculateCenterOfMass(Arrays.asList(yourTribe.getVillageList())));
-                jFarmFromBarbarianSelectionDialog.pack();
-                jFarmFromBarbarianSelectionDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
-                jFarmFromBarbarianSelectionDialog.setVisible(true);
-            }
+        searchBarbs.addActionListener((ActionEvent e) -> {
+            Tribe yourTribe = GlobalOptions.getSelectedProfile().getTribe();
+            coordSpinner.setValue(DSCalculator.calculateCenterOfMass(Arrays.asList(yourTribe.getVillageList())));
+            jFarmFromBarbarianSelectionDialog.pack();
+            jFarmFromBarbarianSelectionDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
+            jFarmFromBarbarianSelectionDialog.setVisible(true);
         });
 
         farmSourcePane.getContentPane().add(searchBarbs);
@@ -419,12 +390,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton searchBarbsFromClipboard = new JXButton(
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farms_from_clipboard.png")));
         searchBarbsFromClipboard.setToolTipText(trans.get("Barb_Clipboard"));
-        searchBarbsFromClipboard.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FarmManager.getSingleton().findFarmsInClipboard();
-            }
+        searchBarbsFromClipboard.addActionListener((ActionEvent e) -> {
+            FarmManager.getSingleton().findFarmsInClipboard();
         });
 
         farmSourcePane.getContentPane().add(searchBarbsFromClipboard);
@@ -433,22 +400,18 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/search_reports.png")));
 
         searchReports.setToolTipText(trans.get("Farm_reportsearch"));
-        searchReports.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-                model.addElement(trans.get("Alle"));
-                for (String set : ReportManager.getSingleton().getGroups()) {
-                    if (!set.equals(ReportManager.FARM_SET)) {
-                        model.addElement(set);
-                    }
+        searchReports.addActionListener((ActionEvent e) -> {
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+            model.addElement(trans.get("Alle"));
+            for (String set : ReportManager.getSingleton().getGroups()) {
+                if (!set.equals(ReportManager.FARM_SET)) {
+                    model.addElement(set);
                 }
-                jReportSetBox.setModel(model);
-                jFarmFromReportSelectionDialog.pack();
-                jFarmFromReportSelectionDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
-                jFarmFromReportSelectionDialog.setVisible(true);
             }
+            jReportSetBox.setModel(model);
+            jFarmFromReportSelectionDialog.pack();
+            jFarmFromReportSelectionDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
+            jFarmFromReportSelectionDialog.setVisible(true);
         });
 
         farmSourcePane.getContentPane().add(searchReports);
@@ -457,12 +420,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/center_ingame.png")));
 
         centerFarm.setToolTipText(trans.get("open_Villageoverview"));
-        centerFarm.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openVillageInfo();
-            }
+        centerFarm.addActionListener((ActionEvent e) -> {
+            openVillageInfo();
         });
         farmSourcePane.getContentPane().add(centerFarm);
 
@@ -470,12 +429,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/last_report.png")));
 
         markLastFarm.setToolTipText(trans.get("last_reports"));
-        markLastFarm.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selectLastFarm();
-            }
+        markLastFarm.addActionListener((ActionEvent e) -> {
+            selectLastFarm();
         });
         farmSourcePane.getContentPane().add(markLastFarm);
         JXTaskPane farmPane = new JXTaskPane();
@@ -484,12 +439,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton farmA = new JXButton(new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farmA.png")));
 
         farmA.setToolTipText(trans.get("Farmtroops_A"));
-        farmA.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmA();
-            }
+        farmA.addActionListener((ActionEvent e) -> {
+            farmA();
         });
 
         farmPane.getContentPane().add(farmA);
@@ -497,12 +448,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton farmB = new JXButton(new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farmB.png")));
 
         farmB.setToolTipText(trans.get("Farmtroops_B"));
-        farmB.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmB();
-            }
+        farmB.addActionListener((ActionEvent e) -> {
+            farmB();
         });
 
         farmPane.getContentPane().add(farmB);
@@ -510,12 +457,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton farmK = new JXButton(new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farmK.png")));
 
         farmK.setToolTipText("Farmtroops_K");
-        farmK.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmK();
-            }
+        farmK.addActionListener((ActionEvent e) -> {
+            farmK();
         });
 
         farmPane.getContentPane().add(farmK);
@@ -523,12 +466,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
         JXButton farmC = new JXButton(new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farmC.png")));
 
         farmC.setToolTipText(trans.get("Farmtroops_C"));
-        farmC.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                farmC();
-            }
+        farmC.addActionListener((ActionEvent e) -> {
+            farmC();
         });
 
         farmPane.getContentPane().add(farmC);
@@ -540,12 +479,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/clear_fs.png")));
 
         clearStatus.setToolTipText(trans.get("Farmattack_reset"));
-        clearStatus.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetStatus();
-            }
+        clearStatus.addActionListener((ActionEvent e) -> {
+            resetStatus();
         });
 
         miscPane.getContentPane().add(clearStatus);
@@ -554,12 +489,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/clear_fs.png")));
 
         clearSiegeStatus.setToolTipText(trans.get("Farmattack_reset_cata"));
-        clearSiegeStatus.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetSiegeStatus();
-            }
+        clearSiegeStatus.addActionListener((ActionEvent e) -> {
+            resetSiegeStatus();
         });
 
         miscPane.getContentPane().add(clearSiegeStatus);
@@ -567,13 +498,9 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/check_farms.png")));
 
         revalidateFarms.setToolTipText(trans.get("Farm_Conquers"));
-        revalidateFarms.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FarmManager.getSingleton().revalidateFarms();
-                showInfo(trans.get("Finished_test"));
-            }
+        revalidateFarms.addActionListener((ActionEvent e) -> {
+            FarmManager.getSingleton().revalidateFarms();
+            showInfo(trans.get("Finished_test"));
         });
 
         miscPane.getContentPane().add(revalidateFarms);
@@ -581,13 +508,9 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/farm_info.png")));
 
         showFarmInfo.setToolTipText(trans.get("Farm_Information"));
-        showFarmInfo.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new FarmInformationDetailsDialog(DSWorkbenchFarmManager.this, false)
-                        .setupAndShow(getSelectedInformation());
-            }
+        showFarmInfo.addActionListener((ActionEvent e) -> {
+            new FarmInformationDetailsDialog(DSWorkbenchFarmManager.this, false)
+                    .setupAndShow(getSelectedInformation());
         });
 
         miscPane.getContentPane().add(showFarmInfo);
@@ -597,12 +520,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
 
         resetLockedStatus.setToolTipText(
                 trans.get("Farm_noLock"));
-        resetLockedStatus.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lockUnlockSelection();
-            }
+        resetLockedStatus.addActionListener((ActionEvent e) -> {
+            lockUnlockSelection();
         });
 
         miscPane.getContentPane().add(resetLockedStatus);
@@ -611,18 +530,13 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/Advanced_options.png")));
 
         farmByGroups.setToolTipText(trans.get("Farm_Group"));
-        farmByGroups.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buildJFarmGroupModel();
-                jFarmGroup.setSelectedItem(SelectedFarmGroup);
-                
-                jAdvancedSettingsDialog.pack();
-                jAdvancedSettingsDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
-                jAdvancedSettingsDialog.setVisible(true);
-            }
-
+        farmByGroups.addActionListener((ActionEvent e) -> {
+            buildJFarmGroupModel();
+            jFarmGroup.setSelectedItem(SelectedFarmGroup);
+            
+            jAdvancedSettingsDialog.pack();
+            jAdvancedSettingsDialog.setLocationRelativeTo(DSWorkbenchFarmManager.getSingleton());
+            jAdvancedSettingsDialog.setVisible(true);
         });
 
         miscPane.getContentPane().add(farmByGroups);
@@ -631,12 +545,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/chart.png")));
 
         showOverallStatus.setToolTipText(trans.get("Show_Farm_Info"));
-        showOverallStatus.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showOverallStatus();
-            }
+        showOverallStatus.addActionListener((ActionEvent e) -> {
+            showOverallStatus();
         });
 
         miscPane.getContentPane().add(showOverallStatus);
@@ -645,12 +555,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                 new ImageIcon(DSWorkbenchFarmManager.class.getResource("/res/ui/replace2.png")));
 
         resortButton.setToolTipText(trans.get("Updates_sorting"));
-        resortButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((TableSortController) jFarmTable.getRowSorter()).sort();
-            }
+        resortButton.addActionListener((ActionEvent e) -> {
+            ((TableSortController) jFarmTable.getRowSorter()).sort();
         });
 
         miscPane.getContentPane().add(resortButton);
@@ -811,11 +717,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
             showInfo(trans.get("No_troops_A"));
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                farm(FARM_CONFIGURATION.A);
-            }
+        new Thread(() -> {
+            farm(FARM_CONFIGURATION.A);
         }).start();
     }
 
@@ -827,11 +730,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
             showInfo(trans.get("No_troops_B"));
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                farm(FARM_CONFIGURATION.B);
-            }
+        new Thread(() -> {
+            farm(FARM_CONFIGURATION.B);
         }).start();
     }
 
@@ -840,11 +740,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
             showInfo(trans.get("No_troops_K"));
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                farm(FARM_CONFIGURATION.K);
-            }
+        new Thread(() -> {
+            farm(FARM_CONFIGURATION.K);
         }).start();
     }
 
@@ -856,11 +753,8 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
             showInfo(trans.get("No_troops_C"));
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                farm(FARM_CONFIGURATION.C);
-            }
+        new Thread(() -> {
+            farm(FARM_CONFIGURATION.C);
         }).start();
     }
 
@@ -935,27 +829,19 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
 
         }
 
-        Collections.sort(farmListcomplete, new Comparator<FarmInformation>() {
-            @Override
-            public int compare(FarmInformation o1, FarmInformation o2) {
-
-                double Dist1 = MinFarmDistAllFarms.get(o1);
-                double Dist2 = MinFarmDistAllFarms.get(o2);
-
-                return new Double(Dist1).compareTo(Dist2);
-            }
+        Collections.sort(farmListcomplete, (FarmInformation o1, FarmInformation o2) -> {
+            double Dist1 = MinFarmDistAllFarms.get(o1);
+            double Dist2 = MinFarmDistAllFarms.get(o2);
+            
+            return Double.valueOf(Dist1).compareTo(Dist2);
         });
 
         // (Row code) for compatability with old code
-        Collections.sort(rowIndex, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-
-                double Dist1 = rowMap.get(o1);
-                double Dist2 = rowMap.get(o2);
-
-                return new Double(Dist1).compareTo(Dist2);
-            }
+        Collections.sort(rowIndex, (Integer o1, Integer o2) -> {
+            double Dist1 = rowMap.get(o1);
+            double Dist2 = rowMap.get(o2);
+            
+            return Double.valueOf(Dist1).compareTo(Dist2);
         });
 
         // Hotfix for a bug due to incompatability old and new code (allowing multiple

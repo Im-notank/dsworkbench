@@ -92,14 +92,11 @@ public class DSWorkbenchKnownVillageFrame extends AbstractDSWorkbenchFrame imple
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
         KeyStroke bbCopy = KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK, false);
 
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ("Delete".equals(e.getActionCommand())) {
-                    deleteSelection();
-                } else if ("BBCopy".equals(e.getActionCommand())) {
-                    bbCopySelection();
-                }
+        ActionListener listener = (ActionEvent e) -> {
+            if ("Delete".equals(e.getActionCommand())) {
+                deleteSelection();
+            } else if ("BBCopy".equals(e.getActionCommand())) {
+                bbCopySelection();
             }
         };
         capabilityInfoPanel1.addActionListener(listener);

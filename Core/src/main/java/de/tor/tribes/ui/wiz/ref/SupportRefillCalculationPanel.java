@@ -521,13 +521,7 @@ public class SupportRefillCalculationPanel extends WizardPage {
         try {
             StyledDocument doc = jTextPane1.getStyledDocument();
             doc.insertString(doc.getLength(), "(" + dateFormat.format(new Date(System.currentTimeMillis())) + ") " + pMessage + "\n", doc.getStyle("Info"));
-            SwingUtilities.invokeLater(new Runnable() {
-                
-                @Override
-                public void run() {
-                    scroll();
-                }
-            });
+            SwingUtilities.invokeLater(this::scroll);
         } catch (BadLocationException ignored) {
         }
     }

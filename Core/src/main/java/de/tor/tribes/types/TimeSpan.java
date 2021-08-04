@@ -276,7 +276,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
             if(manualEnd <= DateUtils.MILLIS_PER_DAY) return false;
             
             //maybe intersection at next day
-            manual = Range.between(new Long(0), manualEnd - DateUtils.MILLIS_PER_DAY);
+            manual = Range.between(0L, manualEnd - DateUtils.MILLIS_PER_DAY);
             return always.isOverlappedBy(manual);
         }
     }

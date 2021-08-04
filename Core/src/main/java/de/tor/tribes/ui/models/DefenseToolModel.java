@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 
 /**
  *
@@ -104,13 +103,9 @@ public class DefenseToolModel extends DefaultTableModel {
     }
 
     public DefenseInformation findElement(final Village pTarget) {
-        return (DefenseInformation) CollectionUtils.find(entries, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((DefenseInformation) o).getTarget().equals(pTarget);
-            }
-        });
+        return IterableUtils.find(entries,
+            (o) -> o.getTarget().equals(pTarget)
+        );
     }
 
     public void addRow(DefenseInformation pElement) {

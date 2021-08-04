@@ -19,7 +19,6 @@ import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.renderer.NoteIconListCellRenderer;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
@@ -62,13 +61,9 @@ public class NoteIconCellEditor extends AbstractCellEditor implements TableCellE
 
         mEditor.setModel(model);
         mEditor.setRenderer(new NoteIconListCellRenderer(type));
-        mEditor.addItemListener(new ItemListener() {
-
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    stopCellEditing();
-                }
+        mEditor.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                stopCellEditing();
             }
         });
     }

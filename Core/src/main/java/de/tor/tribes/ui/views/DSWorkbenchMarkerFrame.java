@@ -36,7 +36,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,14 +107,10 @@ public class DSWorkbenchMarkerFrame extends AbstractDSWorkbenchFrame implements 
         }
         capabilityInfoPanel1.addActionListener(this);
 
-        jMarkerTabPane.getModel().addChangeListener(new ChangeListener() {
-
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                MarkerTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.updateSet();
-                }
+        jMarkerTabPane.getModel().addChangeListener((ChangeEvent e) -> {
+            MarkerTableTab activeTab = getActiveTab();
+            if (activeTab != null) {
+                activeTab.updateSet();
             }
         });
 

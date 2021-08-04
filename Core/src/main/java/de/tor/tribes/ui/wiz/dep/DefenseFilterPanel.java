@@ -366,13 +366,7 @@ public class DefenseFilterPanel extends WizardPage {
         } else {
             jVillageScrollPane.setViewportView(jVillageTable);
             jPanel4.add(overviewPanel, BorderLayout.CENTER);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel4.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel4::updateUI);
         }
     }//GEN-LAST:event_fireViewChangeEvent
 

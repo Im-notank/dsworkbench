@@ -58,6 +58,6 @@ public class StorageStatus implements Comparable<StorageStatus> {
 
     @Override
     public int compareTo(StorageStatus o) {
-        return new Integer(wood + clay + iron).compareTo(o.getWoodInStorage() + o.getClayInStorage() + o.getIronInStorage());
+        return Integer.valueOf(wood + clay + iron).compareTo(o.getWoodInStorage() + o.getClayInStorage() + o.getIronInStorage());
     }
 }

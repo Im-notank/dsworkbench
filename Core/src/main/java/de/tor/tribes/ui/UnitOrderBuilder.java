@@ -27,7 +27,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Comparator;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -58,17 +57,13 @@ public class UnitOrderBuilder {
             frame.getContentPane().setLayout(new java.awt.GridLayout(DataHolder.getSingleton().getUnits().size() + 1, 0, 0, 3));
 
             UnitHolder[] units = DataHolder.getSingleton().getUnits().toArray(new UnitHolder[]{});
-            Arrays.sort(units, new Comparator<UnitHolder>() {
-
-                @Override
-                public int compare(UnitHolder o1, UnitHolder o2) {
-                    if (o1.getSpeed() == o2.getSpeed()) {
-                        return 0;
-                    } else if (o1.getSpeed() < o2.getSpeed()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
+            Arrays.sort(units, (UnitHolder o1, UnitHolder o2) -> {
+                if (o1.getSpeed() == o2.getSpeed()) {
+                    return 0;
+                } else if (o1.getSpeed() < o2.getSpeed()) {
+                    return -1;
+                } else {
+                    return 1;
                 }
             });
             NumberFormat nf = NumberFormat.getInstance();

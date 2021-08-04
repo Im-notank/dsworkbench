@@ -153,11 +153,8 @@ public class ClockFrame extends javax.swing.JFrame implements ActionListener {
             if (p.newExpired()) {
                 SystrayHelper.showInfoMessage(String.format(trans.get("istabgelaufen"), p.getName()));
                 //moved playing the sound to a new Thread because of graphic problems
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        playSound(p.getSound());
-                    }
+                new Thread(() -> {
+                    playSound(p.getSound());
                 }).start();
                 if(jCheckBoxRemoveOld.isSelected()) {
                     removeTimer(p);
@@ -548,11 +545,8 @@ private void fireAlwaysOnTopChangedEvent(javax.swing.event.ChangeEvent evt) {//G
 private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireTestSoundEvent
     final String sound = (String) jComboBox1.getSelectedItem();
     //moved playing the sound to a new Thread because of graphic problems
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            playSound(sound);
-        }
+    new Thread(() -> {
+        playSound(sound);
     }).start();
 }//GEN-LAST:event_fireTestSoundEvent
 
@@ -589,13 +583,10 @@ private void fireTestSoundEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:even
      */
     public static void main(String args[]) {
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ClockFrame cf = new ClockFrame();
-                cf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                cf.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            ClockFrame cf = new ClockFrame();
+            cf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            cf.setVisible(true);
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

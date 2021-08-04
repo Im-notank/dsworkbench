@@ -22,8 +22,7 @@ import de.tor.tribes.util.translation.Translator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 
 /**
  *
@@ -52,13 +51,9 @@ public class REFSourceTableModel extends AbstractTableModel {
 
     public boolean removeRow(final Village pVillage, boolean pNotify) {
 
-        REFSourceElement elem = (REFSourceElement) CollectionUtils.find(elements, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ((REFSourceElement) o).getVillage().equals(pVillage);
-            }
-        });
+        REFSourceElement elem = IterableUtils.find(elements,
+            (o) -> o.getVillage().equals(pVillage)
+        );
 
         if (elem != null) {
             elements.remove(elem);

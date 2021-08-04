@@ -87,12 +87,7 @@ public class MarkerTableTab extends javax.swing.JPanel implements ListSelectionL
         jxMarkerTable.setColumnControlVisible(true);
         jxMarkerTable.setDefaultRenderer(Color.class, new ColorCellRenderer());
         jxMarkerTable.setDefaultRenderer(Marker.class, new MarkerCellRenderer());
-        ColorChooserCellEditor editor = new ColorChooserCellEditor(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
+        ColorChooserCellEditor editor = new ColorChooserCellEditor((e) -> {});
         jxMarkerTable.setDefaultEditor(Color.class, editor);
         markerModel = new MarkerTableModel(MarkerManager.DEFAULT_GROUP);
         jxMarkerTable.setModel(markerModel);

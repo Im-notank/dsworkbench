@@ -69,12 +69,8 @@ public class TroopSetupConfigurationFrame extends javax.swing.JDialog implements
         StandardAttackManager.getSingleton().addManagerListener(TroopSetupConfigurationFrame.this);
         
         KeyStroke delete = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-        ActionListener deleteListener = new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSelection();
-            }
+        ActionListener deleteListener = (ActionEvent e) -> {
+            removeSelection();
         };
         
         jAttackTypeTable.registerKeyboardAction(deleteListener, "Delete", delete, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);

@@ -17,7 +17,6 @@ package de.tor.tribes.ui.components;
 
 import de.tor.tribes.types.Layer;
 import de.tor.tribes.ui.panels.MapPanel;
-import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.ImageUtils;
 import de.tor.tribes.util.interfaces.LayerOrderTooltipListener;
@@ -39,7 +38,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -318,13 +316,9 @@ public class LayerOrderPanel extends javax.swing.JPanel {
             g2d.setComposite(before);
         }
         //sort layers
-        Collections.sort(layers, new Comparator<Layer>() {
-
-            @Override
-            public int compare(Layer o1, Layer o2) {
-                return Double.compare(o1.getDragEllipse().getCenterX(), o2.getDragEllipse().getCenterX());
-            }
-        });
+        Collections.sort(layers,
+            (Layer o1, Layer o2) -> Double.compare(o1.getDragEllipse().getCenterX(), o2.getDragEllipse().getCenterX())
+        );
 
         //reset active layer idx
         if (active != null) {

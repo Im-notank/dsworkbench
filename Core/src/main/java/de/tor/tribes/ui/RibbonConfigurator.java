@@ -32,7 +32,6 @@ import de.tor.tribes.util.village.KnownVillageManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -50,8 +49,6 @@ import org.pushingpixels.flamingo.api.common.icon.EmptyResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.common.popup.JCommandPopupMenu;
-import org.pushingpixels.flamingo.api.common.popup.JPopupPanel;
-import org.pushingpixels.flamingo.api.common.popup.PopupPanelCallback;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonBand;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 import org.pushingpixels.flamingo.api.ribbon.RibbonApplicationMenu;
@@ -77,159 +74,109 @@ public class RibbonConfigurator {
         // <editor-fold defaultstate="collapsed" desc="Main Menue">
         frame.setApplicationIcon(getResizableIconFromFile("graphics/big/axe.png"));
 
-        RibbonApplicationMenuEntryPrimary importEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/load.png"), "Import", new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().doImport();
-            }
+        RibbonApplicationMenuEntryPrimary importEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/load.png"), "Import", (ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().doImport();
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntryPrimary exportEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/save.png"), "Export", new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().doExport();
-            }
+        RibbonApplicationMenuEntryPrimary exportEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/save.png"), "Export", (ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().doExport();
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-        exportEntry.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("ExportDaten")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        exportEntry.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("ExportDaten")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
-        importEntry.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("ImportDaten")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        importEntry.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("ImportDaten")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
 
         appmen.addMenuEntry(importEntry);
         appmen.addMenuEntry(exportEntry);
         appmen.addMenuSeparator();
 
-        RibbonApplicationMenuEntryPrimary bbEditorEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/bbeditor.png"), trans.get("BBTemplate"), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                BBCodeEditor.getSingleton().setVisible(true);
-            }
+        RibbonApplicationMenuEntryPrimary bbEditorEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/bbeditor.png"), trans.get("BBTemplate"), (ActionEvent e) -> {
+            BBCodeEditor.getSingleton().setVisible(true);
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-        bbEditorEntry.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("BBEditor")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        bbEditorEntry.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("BBEditor")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
 
         appmen.addMenuEntry(bbEditorEntry);
 
-        RibbonApplicationMenuEntryPrimary standardAttackFrame = new RibbonApplicationMenuEntryPrimary(getResizableIconFromResource("/res/ui/troop_info_add.png"), trans.get("Standardangriffe"), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TroopSetupConfigurationFrame.getSingleton().setVisible(true);
-            }
+        RibbonApplicationMenuEntryPrimary standardAttackFrame = new RibbonApplicationMenuEntryPrimary(getResizableIconFromResource("/res/ui/troop_info_add.png"), trans.get("Standardangriffe"), (ActionEvent e) -> {
+            TroopSetupConfigurationFrame.getSingleton().setVisible(true);
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-        standardAttackFrame.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("Standardangriffe_Text")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        standardAttackFrame.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("Standardangriffe_Text")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
 
         appmen.addMenuEntry(standardAttackFrame);
 
         if (!GlobalOptions.isMinimal()) {
-            RibbonApplicationMenuEntryPrimary layerEditor = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/layer_settings.gif"), trans.get("Ebeneneinstellungen"), new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    LayerOrderConfigurationFrame.getSingleton().setAlwaysOnTop(true);
-                    LayerOrderConfigurationFrame.getSingleton().setVisible(true);
-                }
+            RibbonApplicationMenuEntryPrimary layerEditor = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/24x24/layer_settings.gif"), trans.get("Ebeneneinstellungen"), (ActionEvent e) -> {
+                LayerOrderConfigurationFrame.getSingleton().setAlwaysOnTop(true);
+                LayerOrderConfigurationFrame.getSingleton().setVisible(true);
             }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-            layerEditor.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-                @Override
-                public void menuEntryActivated(JPanel targetPanel) {
-                    targetPanel.removeAll();
-                    targetPanel.setLayout(new BorderLayout());
-                    targetPanel.add(new JLabel(trans.get("Ebenen_Text")), BorderLayout.CENTER);
-                    targetPanel.revalidate();
-                }
+            layerEditor.setRolloverCallback((JPanel targetPanel) -> {
+                targetPanel.removeAll();
+                targetPanel.setLayout(new BorderLayout());
+                targetPanel.add(new JLabel(trans.get("Ebenen_Text")), BorderLayout.CENTER);
+                targetPanel.revalidate();
             });
 
             appmen.addMenuEntry(layerEditor);
         }
 
-        RibbonApplicationMenuEntryPrimary settingsEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/settings.png"), trans.get("Einstellungen"), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GlobalOptions.storeViewStates();
-                DSWorkbenchSettingsDialog.getSingleton().setVisible(true);
-            }
+        RibbonApplicationMenuEntryPrimary settingsEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/settings.png"), trans.get("Einstellungen"), (ActionEvent e) -> {
+            GlobalOptions.storeViewStates();
+            DSWorkbenchSettingsDialog.getSingleton().setVisible(true);
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-        settingsEntry.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("Einstellungen_Text")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        settingsEntry.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("Einstellungen_Text")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
 
         appmen.addMenuEntry(settingsEntry);
 
         appmen.addMenuSeparator();
-        RibbonApplicationMenuEntryPrimary exitEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/logout.png"), trans.get("Beenden"), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().doExit();
-
-            }
+        RibbonApplicationMenuEntryPrimary exitEntry = new RibbonApplicationMenuEntryPrimary(getResizableIconFromFile("graphics/icons/logout.png"), trans.get("Beenden"), (ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().doExit();
         }, JCommandButton.CommandButtonKind.ACTION_ONLY);
 
-        exitEntry.setRolloverCallback(new RibbonApplicationMenuEntryPrimary.PrimaryRolloverCallback() {
-            @Override
-            public void menuEntryActivated(JPanel targetPanel) {
-                targetPanel.removeAll();
-                targetPanel.setLayout(new BorderLayout());
-                targetPanel.add(new JLabel(trans.get("Beenden_Text")), BorderLayout.CENTER);
-                targetPanel.revalidate();
-            }
+        exitEntry.setRolloverCallback((JPanel targetPanel) -> {
+            targetPanel.removeAll();
+            targetPanel.setLayout(new BorderLayout());
+            targetPanel.add(new JLabel(trans.get("Beenden_Text")), BorderLayout.CENTER);
+            targetPanel.revalidate();
         });
         appmen.addMenuEntry(exitEntry);
-        appmen.addFooterEntry(new RibbonApplicationMenuEntryFooter(getResizableIconFromFile("graphics/icons/logout.png"), trans.get("Beenden"), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().doExit();
-            }
+        appmen.addFooterEntry(new RibbonApplicationMenuEntryFooter(getResizableIconFromFile("graphics/icons/logout.png"), trans.get("Beenden"), (ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().doExit();
         }));
 
         frame.getRibbon().setApplicationMenu(appmen);
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="Help button">
-        frame.getRibbon().configureHelp(getResizableIconFromFile("graphics/big/help2.png"),
-                new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!Constants.DEBUG) {
-                    GlobalOptions.getHelpBroker().setDisplayed(true);
-                }
+        frame.getRibbon().configureHelp(getResizableIconFromFile("graphics/big/help2.png"), (ActionEvent e) -> {
+            if (!Constants.DEBUG) {
+                GlobalOptions.getHelpBroker().setDisplayed(true);
             }
         });
         // </editor-fold>
@@ -244,64 +191,33 @@ public class RibbonConfigurator {
         // <editor-fold defaultstate="collapsed" desc="attackToolsBand setup">
         JCommandButton attackPlanerToolButton = factoryButton(trans.get("Taktikplaner"), "graphics/big/att_auto.png", trans.get("OeffnetdenTaktikplaner"),
                 trans.get("Taktikplaner_Text"), true);
-        attackPlanerToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        TacticsPlanerWizard.show();
-                    }
-                });
-            }
+        attackPlanerToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(TacticsPlanerWizard::show);
         });
         JCommandButton manualAttackPlanerToolButton = factoryButton(trans.get("Angriffsplaner"), "graphics/big/att_manual.png", trans.get("open_angriffsplaner"), trans.get("angriffsplaner_text"), true);
-        manualAttackPlanerToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchDoItYourselfAttackPlaner.getSingleton().setVisible(true);
-                        DSWorkbenchDoItYourselfAttackPlaner.getSingleton().requestFocus();
-                    }
-                });
-            }
+        manualAttackPlanerToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchDoItYourselfAttackPlaner.getSingleton().setVisible(true);
+                DSWorkbenchDoItYourselfAttackPlaner.getSingleton().requestFocus();
+            });
         });
         attackToolsBand.addCommandButton(attackPlanerToolButton, RibbonElementPriority.TOP);
         attackToolsBand.addCommandButton(manualAttackPlanerToolButton, RibbonElementPriority.TOP);
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="defendToolsBand setup">
         JCommandButton astarToolButton = factoryButton(trans.get("AStar"), "graphics/big/astar.png", trans.get("Simulator"), trans.get("AStar_Text"), true);
-        astarToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchSimulatorFrame.getSingleton().setVisible(true);
-                        DSWorkbenchSimulatorFrame.getSingleton().requestFocus();
-                    }
-                });
-
-            }
+        astarToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchSimulatorFrame.getSingleton().setVisible(true);
+                DSWorkbenchSimulatorFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton sosAnalyzerToolButton = factoryButton(trans.get("SOSAnalyzer"), "graphics/big/lifebelt.png", trans.get("open_SOSAnalyzer"), trans.get("SOSAnalyzer_Text"), true);
-        sosAnalyzerToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchSOSRequestAnalyzer.getSingleton().setVisible(true);
-                        DSWorkbenchSOSRequestAnalyzer.getSingleton().requestFocus();
-                    }
-                });
-            }
+        sosAnalyzerToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchSOSRequestAnalyzer.getSingleton().setVisible(true);
+                DSWorkbenchSOSRequestAnalyzer.getSingleton().requestFocus();
+            });
         });
         /*
          * JCommandButton retimeToolButton = factoryButton("Re-Timer", "graphics/big/retime.png", "Öffnet den Re-Timer", "Der Re-Timer
@@ -321,46 +237,25 @@ public class RibbonConfigurator {
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="infoToolBand setup">
         JCommandButton selectionToolButton = factoryButton(trans.get("Auswahluebersicht"), "graphics/icons/selection.png", trans.get("open_Auswahluebersicht"), trans.get("DieAuswahluebersicht_text"), true);
-        selectionToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchSelectionFrame.getSingleton().setVisible(true);
-                        DSWorkbenchSelectionFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        selectionToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchSelectionFrame.getSingleton().setVisible(true);
+                DSWorkbenchSelectionFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton searchToolButton = factoryButton(trans.get("Suche"), "graphics/big/find.png", trans.get("werkzeug_suche"), trans.get("Werkzeug_text"), true);
-        searchToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchSearchFrame.getSingleton().setVisible(true);
-                        DSWorkbenchSearchFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        searchToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchSearchFrame.getSingleton().setVisible(true);
+                DSWorkbenchSearchFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton distanceToolButton = factoryButton(trans.get("Entfernungsberechnung"), "graphics/icons/measure.png", trans.get("open_Entfernungsberechnung"), trans.get("Entfernungsberechnung_text"), true);
-        distanceToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchDistanceFrame.getSingleton().setVisible(true);
-                        DSWorkbenchDistanceFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        distanceToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchDistanceFrame.getSingleton().setVisible(true);
+                DSWorkbenchDistanceFrame.getSingleton().requestFocus();
+            });
         });
         infoToolBand.addCommandButton(selectionToolButton, RibbonElementPriority.MEDIUM);
         infoToolBand.addCommandButton(searchToolButton, RibbonElementPriority.LOW);
@@ -371,37 +266,21 @@ public class RibbonConfigurator {
                 trans.get("Rohstoffverteiler"), "graphics/big/resource_distrib.png", 
                 trans.get("Rohstoffverteiler_tool"), 
                 trans.get("Rohstoffverteiler_text"), true);
-        resourceDistributorToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        ResourceDistributorWizard.show();
-                    }
-                });
-            }
+        resourceDistributorToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(ResourceDistributorWizard::show);
         });
 
         JCommandButton farmManagerButton = factoryButton(trans.get("Farmmanager"), "graphics/big/farm_tool.png", 
                 trans.get("Farmmanager_tool"), 
                 trans.get("Farmmanager_text"), true);
-        farmManagerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isHaulActive()) {
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            DSWorkbenchFarmManager.getSingleton().setVisible(true);
-                            DSWorkbenchFarmManager.getSingleton().requestFocus();
-                        }
-                    });
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Farmmanager_notactive"));
-                }
+        farmManagerButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isHaulActive()) {
+                SwingUtilities.invokeLater(() -> {
+                    DSWorkbenchFarmManager.getSingleton().setVisible(true);
+                    DSWorkbenchFarmManager.getSingleton().requestFocus();
+                });
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Farmmanager_notactive"));
             }
         });
 
@@ -409,44 +288,25 @@ public class RibbonConfigurator {
                 "graphics/big/camera.png", 
                 trans.get("Screenshot_tool"), 
                 trans.get("Screenshot_text"), true);
-        mapshotToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().planMapshot();
-            }
+        mapshotToolButton.addActionListener((ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().planMapshot();
         });
         JCommandButton runtimeToolButton = factoryButton(trans.get("Laufzeiten"), "graphics/big/speed.png", 
                 trans.get("Laufzeiten_tool"), 
                 trans.get("Laufzeiten_text"), true);
-        runtimeToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        UnitOrderBuilder.showUnitOrder(null, null);
-                    }
-                });
-
-            }
+        runtimeToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                UnitOrderBuilder.showUnitOrder(null, null);
+            });
         });
         JCommandButton clockToolButton = factoryButton(trans.get("Uhr"), "graphics/big/clock.png", 
                 trans.get("Uhr_tool"), 
                 trans.get("Uhr_Text"), true);
-        clockToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        ClockFrame.getSingleton().setVisible(true);
-                        ClockFrame.getSingleton().requestFocus();
-                    }
-                });
-
-            }
+        clockToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                ClockFrame.getSingleton().setVisible(true);
+                ClockFrame.getSingleton().requestFocus();
+            });
         });
         miscToolsBand.addCommandButton(resourceDistributorToolButton, RibbonElementPriority.TOP);
         miscToolsBand.addCommandButton(farmManagerButton, RibbonElementPriority.TOP);
@@ -486,71 +346,47 @@ public class RibbonConfigurator {
 
         // <editor-fold defaultstate="collapsed" desc="baseToolsBand setup">
         JCommandButton noToolButton = factoryButton(trans.get("Werkzeugabwaehlen"), "graphics/cursors/default.png", trans.get("Deaktiviert_Karte"), trans.get("Deaktiviert_Text"), true);
-        noToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
-                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
-            }
+        noToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
+            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DEFAULT);
         });
         baseToolsBand.addCommandButton(noToolButton, RibbonElementPriority.TOP);
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="attackToolsBand setup">
         JCommandButton attackRamToolButton = factoryButton(null, "graphics/big/ram.png", trans.get("Erstellt_Ram"), 
                 trans.get("Erstellt_Ram_Text"), true);
-        attackRamToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_RAM);
-            }
+        attackRamToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_RAM);
         });
         JCommandButton attackSnobToolButton = factoryButton(null, "graphics/big/snob.png", trans.get("Erstellt_AG"), 
                 trans.get("Erstellt_AG_Text"), true);
-        attackSnobToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SNOB);
-            }
+        attackSnobToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SNOB);
         });
         JCommandButton attackSpyToolButton = factoryButton(null, "graphics/big/spy.png", trans.get("Erstellt_Spaeh"), 
                 trans.get("Erstellt_Spaeh_Text"), true);
-        attackSpyToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SPY);
-            }
+        attackSpyToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SPY);
         });
         JCommandButton attackAxeToolButton = factoryButton(null, "graphics/big/axe.png", trans.get("Erstellt_Axtlaufzeit"), 
                 trans.get("Erstellt_Axtlaufzeit_Text"), true);
-        attackAxeToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_AXE);
-            }
+        attackAxeToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_AXE);
         });
         JCommandButton attackLightToolButton = factoryButton(null, "graphics/big/light.png", trans.get("Erstellt_LKav"), 
                 trans.get("Erstellt_LKav_Text"), true);
-        attackLightToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_LIGHT);
-            }
+        attackLightToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_LIGHT);
         });
         JCommandButton attackHeavyToolButton = factoryButton(null, "graphics/big/heavy.png", trans.get("Erstellt_SKav"), 
                 trans.get("Erstellt_SKav_Text"), true);
-        attackHeavyToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_HEAVY);
-            }
+        attackHeavyToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_HEAVY);
         });
         JCommandButton attackSwordToolButton = factoryButton(null, "graphics/big/sword.png", trans.get("Erstellt_Schwert"), 
                 trans.get("Erstellt_Schwert_Text"), true);
-        attackSwordToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SWORD);
-            }
+        attackSwordToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_SWORD);
         });
         attackToolsBand.addCommandButton(attackRamToolButton, RibbonElementPriority.TOP);
         attackToolsBand.addCommandButton(attackSnobToolButton, RibbonElementPriority.TOP);
@@ -564,11 +400,8 @@ public class RibbonConfigurator {
         JCommandButton supportToolButton = factoryButton(trans.get("Unterstuetzungenbestimmen"), "graphics/big/support.png", 
                 trans.get("Unterstuetzungenbestimmen_open"), 
                 trans.get("Unterstuetzungenbestimmen_text"), true);
-        supportToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SUPPORT);
-            }
+        supportToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SUPPORT);
         });
         defendToolsBand.addCommandButton(supportToolButton, RibbonElementPriority.LOW);
         // </editor-fold>
@@ -576,101 +409,71 @@ public class RibbonConfigurator {
         JCommandButton selectToolButton = factoryButton(trans.get("Hauptkarte"), "graphics/big/selection.png", 
                 trans.get("Hauptkarte_open"), 
                 trans.get("Hauptkarte_text"), true);
-        selectToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SELECTION);
-            }
+        selectToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SELECTION);
         });
         JCommandButton markToolButton = factoryButton(trans.get("Spielermarkieren"), "graphics/big/brush3.png", trans.get("SpielerHauptkarte"), 
                 trans.get("SpielerHauptkarte_text"), true);
-        markToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MARK);
-            }
+        markToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MARK);
         });
         JCommandButton noteToolButton = factoryButton(trans.get("Notizerstellen"), "graphics/big/notebook_add.png", 
                 trans.get("Notiz_open"), 
                 trans.get("Notiz_text"), true);
-        noteToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_NOTE);
-            }
+        noteToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_NOTE);
         });
         JCommandButton distanceToolButton = factoryButton(trans.get("Laufzeitbestimmen"), "graphics/big/tape_measure1.png", 
                 trans.get("Laufzeitbestimmen_open"), 
                         trans.get("Laufzeitbestimmen_text"), true);
-        distanceToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MEASURE);
-            }
+        distanceToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MEASURE);
         });
         JCommandButton radarToolButton = factoryButton(trans.get("Laufzeitradar"), "graphics/icons/radar.png", 
                 trans.get("Laufzeitradar_open"), 
                         trans.get("Laufzeitradar_text"), true);
-        radarToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_RADAR);
-            }
+        radarToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_RADAR);
         });
         JCommandButton tagToolButton = factoryButton(trans.get("Gruppezuweisen"), "graphics/icons/tag.png", 
                 trans.get("Gruppezuweisen_open"), 
                         trans.get("Gruppezuweisen_text"), true);
-        tagToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_TAG);
-            }
+        tagToolButton.addActionListener((ActionEvent e) -> {
+            MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_TAG);
         });
 
         // <editor-fold defaultstate="collapsed" desc="church button setup">
         JCommandButton createChurchToolButton = factoryButton(null, "graphics/big/Church1.png", trans.get("KircheDorf"), trans.get("KircheDorfWerkzeug"), true);
         JCommandButton createChurch1ToolButton = factoryButton(null, "graphics/big/Church1.png", trans.get("KircheStufeerstellen"), trans.get("KircheStufeerstellen_tool"), true);
-        createChurch1ToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isChurch()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_1);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
-                }
+        createChurch1ToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isChurch()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_1);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
             }
         });
         JCommandButton createChurch2ToolButton = factoryButton(null, "graphics/big/Church2.png", trans.get("KircheStufeerstellenzwei_tool"), trans.get("KircheStufeerstellenzwei_Werkzeug"), true);
-        createChurch2ToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isChurch()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_2);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
-                }
+        createChurch2ToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isChurch()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_2);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
             }
         });
         JCommandButton createChurch3ToolButton = factoryButton(null, "graphics/big/Church3.png", trans.get("KircheStufeerstellendrei_tool"), trans.get("KircheStufeerstellendrei_Werkzeug"), true);
-        createChurch3ToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isChurch()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_3);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
-                }
+        createChurch3ToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isChurch()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_CHURCH_3);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
             }
         });
         JCommandButton removeChurchToolButton = factoryButton(null, "graphics/big/NoChurch.png", trans.get("Kircheloeschen"), trans.get("Kircheloeschen_text"), true);
-        removeChurchToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isChurch()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_REMOVE_CHURCH);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
-                }
+        removeChurchToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isChurch()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_REMOVE_CHURCH);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Kirchenwelten"));
             }
         });
 
@@ -684,47 +487,33 @@ public class RibbonConfigurator {
         final JCommandPopupMenu popupMenuChurch = new JCommandPopupMenu(
                 cbpChurch, 1, 4);
 
-        createChurchToolButton.setPopupCallback(new PopupPanelCallback() {
-            @Override
-            public JPopupPanel getPopupPanel(JCommandButton commandButton) {
-                return popupMenuChurch;
-            }
-        });
+        createChurchToolButton.setPopupCallback((JCommandButton commandButton) -> popupMenuChurch);
         createChurchToolButton.setCommandButtonKind(JCommandButton.CommandButtonKind.POPUP_ONLY);
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="watchtower button setup">
         JCommandButton createWatchtowerToolButton = factoryButton(null, "graphics/big/Watchtower1.png", trans.get("WachturmDorfWerkzeug"), trans.get("Wachturmaktiv"), true);
         JCommandButton createWatchtower1ToolButton = factoryButton(null, "graphics/big/Watchtower1.png", trans.get("WachturmStufeerstellen"), trans.get("WachturmStufeerstellen_tool"), true);
-        createWatchtower1ToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isWatchtower()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_WATCHTOWER_1);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
-                }
+        createWatchtower1ToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isWatchtower()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_WATCHTOWER_1);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
             }
         });
         JCommandButton createWatchtowerInToolButton = factoryButton(null, "graphics/big/WatchtowerIn.png", trans.get("Wachturmerstellen"), trans.get("Wachturm_text"), true);
-        createWatchtowerInToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isWatchtower()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_WATCHTOWER_INPUT);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
-                }
+        createWatchtowerInToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isWatchtower()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_WATCHTOWER_INPUT);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
             }
         });
         JCommandButton removeWatchtowerToolButton = factoryButton(null, "graphics/big/NoWatchtower.png", trans.get("Wachturmlöschen"), trans.get("Wachturmlöschen_text"), true);
-        removeWatchtowerToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isWatchtower()) {
-                    MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_REMOVE_WATCHTOWER);
-                } else {
-                    DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
-                }
+        removeWatchtowerToolButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isWatchtower()) {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_REMOVE_WATCHTOWER);
+            } else {
+                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("VerfuegbarWachturm"));
             }
         });
 
@@ -737,12 +526,7 @@ public class RibbonConfigurator {
         final JCommandPopupMenu watchtoerPopupMenu = new JCommandPopupMenu(
                 wbp, 1, 3);
 
-        createWatchtowerToolButton.setPopupCallback(new PopupPanelCallback() {
-            @Override
-            public JPopupPanel getPopupPanel(JCommandButton commandButton) {
-                return watchtoerPopupMenu;
-            }
-        });
+        createWatchtowerToolButton.setPopupCallback((JCommandButton commandButton) -> watchtoerPopupMenu);
         createWatchtowerToolButton.setCommandButtonKind(JCommandButton.CommandButtonKind.POPUP_ONLY);
         // </editor-fold>
 
@@ -758,94 +542,52 @@ public class RibbonConfigurator {
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="drawToolsBand setup">
         JCommandButton drawRectToolButton = factoryButton(trans.get("Rechteckzeichnen"), "graphics/icons/draw_rect.png", trans.get("Rechteckzeichnen_text"), null, true);
-        drawRectToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_RECT);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Rectangle.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawRectToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_RECT);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Rectangle.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton drawCircleToolButton = factoryButton(trans.get("Kreiszeichnen"), "graphics/icons/draw_circle.png", trans.get("Kreiszeichnen_text"), null, true);
-        drawCircleToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_CIRCLE);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Circle.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawCircleToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_CIRCLE);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Circle.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton drawLineToolButton = factoryButton(trans.get("Liniezeichnen"), "graphics/icons/draw_line.png", trans.get("Liniezeichnen_text"), null, true);
-        drawLineToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_LINE);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Line.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawLineToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_LINE);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Line.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton drawArrowToolButton = factoryButton(trans.get("Pfeilzeichnen"), "graphics/icons/draw_arrow.png", trans.get("Pfeilzeichnen_text"), null, true);
-        drawArrowToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_ARROW);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Arrow.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawArrowToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_ARROW);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Arrow.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton drawFreehandToolButton = factoryButton(trans.get("Freihandzeichnen"), "graphics/icons/draw_freeform.png", trans.get("Freihandzeichnen_text"), null, true);
-        drawFreehandToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_FREEFORM);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.FreeForm.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawFreehandToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_FREEFORM);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.FreeForm.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton drawTextToolButton = factoryButton(trans.get("Textzeichnen"), "graphics/icons/draw_text.png", trans.get("Textzeichnen_text"), null, true);
-        drawTextToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_TEXT);
-                        FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Text.class);
-                        FormConfigFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        drawTextToolButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_DRAW_TEXT);
+                FormConfigFrame.getSingleton().setupAndShow(de.tor.tribes.types.drawing.Text.class);
+                FormConfigFrame.getSingleton().requestFocus();
+            });
         });
         drawToolsBand.addCommandButton(drawRectToolButton, RibbonElementPriority.MEDIUM);
         drawToolsBand.addCommandButton(drawCircleToolButton, RibbonElementPriority.MEDIUM);
@@ -856,25 +598,16 @@ public class RibbonConfigurator {
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="minimapToolsBand setup">
         JCommandButton minimapMoveToolButton = factoryButton(trans.get("Ausschnittbewegen"), "graphics/icons/move.png", trans.get("Ausschnittbewegen_text"), trans.get("Ausschnittbewegen_tool"), true);
-        minimapMoveToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MOVE);
-            }
+        minimapMoveToolButton.addActionListener((ActionEvent e) -> {
+            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MOVE);
         });
         JCommandButton minimapZoomToolButton = factoryButton(trans.get("Minimapvergoessern"), "graphics/big/view.png", trans.get("Minimapvergoessern_text"), trans.get("Minimapvergoessern_tool"), true);
-        minimapZoomToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ZOOM);
-            }
+        minimapZoomToolButton.addActionListener((ActionEvent e) -> {
+            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ZOOM);
         });
         JCommandButton minimapShotToolButton = factoryButton(trans.get("Screenshoterstellen"), "graphics/big/camera.png", trans.get("Screenshoterstellen_text"), trans.get("Screenshoterstellen_tool"), true);
-        minimapShotToolButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SHOT);
-            }
+        minimapShotToolButton.addActionListener((ActionEvent e) -> {
+            MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SHOT);
         });
         minimapToolsBand.addCommandButton(minimapMoveToolButton, RibbonElementPriority.TOP);
         minimapToolsBand.addCommandButton(minimapZoomToolButton, RibbonElementPriority.LOW);
@@ -913,104 +646,62 @@ public class RibbonConfigurator {
         // <editor-fold defaultstate="collapsed" desc="attackViewBand setup">
         JCommandButton attackViewButton = factoryButton(trans.get("Befehle"), "graphics/big/axe_sword.png", trans.get("Befehle_open"),
                 trans.get("Befehle_text"), true);
-        attackViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchAttackFrame.getSingleton().setVisible(true);
-                        DSWorkbenchAttackFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        attackViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchAttackFrame.getSingleton().setVisible(true);
+                DSWorkbenchAttackFrame.getSingleton().requestFocus();
+            });
         });
 
         JCommandButton markerViewButton = factoryButton(trans.get("Markierungen"), "graphics/icons/mark.png", 
                 trans.get("Markierungen_open"), 
                 trans.get("Markierungen_text"), true);
-        markerViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchMarkerFrame.getSingleton().setVisible(true);
-                        DSWorkbenchMarkerFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        markerViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchMarkerFrame.getSingleton().setVisible(true);
+                DSWorkbenchMarkerFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton formsViewButton = factoryButton(trans.get("Zeichnungen"), "graphics/big/palette2.png", 
                 trans.get("Zeichnungen_open"), 
                 trans.get("Zeichnungen_text"), true);
-        formsViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchFormFrame.getSingleton().setVisible(true);
-                        DSWorkbenchFormFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        formsViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchFormFrame.getSingleton().setVisible(true);
+                DSWorkbenchFormFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton churchViewButton = factoryButton(trans.get("Kirchen"), "graphics/big/Church1.png", trans.get("Kirchen_open"), trans.get("Kirchen_text"), true);
-        churchViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isChurch()) {
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            DSWorkbenchChurchFrame.getSingleton().setVisible(true);
-                            DSWorkbenchChurchFrame.getSingleton().requestFocus();
-                        }
-                    });
-                } else {
-                    JOptionPaneHelper.showInformationBox(DSWorkbenchMainFrame.getSingleton(), trans.get("KirchennichtAktiv"), trans.get("Information"));
-                }
+        churchViewButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isChurch()) {
+                SwingUtilities.invokeLater(() -> {
+                    DSWorkbenchChurchFrame.getSingleton().setVisible(true);
+                    DSWorkbenchChurchFrame.getSingleton().requestFocus();
+                });
+            } else {
+                JOptionPaneHelper.showInformationBox(DSWorkbenchMainFrame.getSingleton(), trans.get("KirchennichtAktiv"), trans.get("Information"));
             }
         });
         JCommandButton watchtowerViewButton = factoryButton(trans.get("Wachtuerm"), "graphics/big/Watchtower1.png", trans.get("Wachtuerm_open"), trans.get("Wachtuerm_text"), true);
-        watchtowerViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (ServerSettings.getSingleton().isWatchtower()) {
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            DSWorkbenchWatchtowerFrame.getSingleton().setVisible(true);
-                            DSWorkbenchWatchtowerFrame.getSingleton().requestFocus();
-                        }
-                    });
-                } else {
-                    JOptionPaneHelper.showInformationBox(DSWorkbenchMainFrame.getSingleton(), trans.get("Wachtuermnichtaktiv"), "Information");
-                }
+        watchtowerViewButton.addActionListener((ActionEvent e) -> {
+            if (ServerSettings.getSingleton().isWatchtower()) {
+                SwingUtilities.invokeLater(() -> {
+                    DSWorkbenchWatchtowerFrame.getSingleton().setVisible(true);
+                    DSWorkbenchWatchtowerFrame.getSingleton().requestFocus();
+                });
+            } else {
+                JOptionPaneHelper.showInformationBox(DSWorkbenchMainFrame.getSingleton(), trans.get("Wachtuermnichtaktiv"), "Information");
             }
         });
         JCommandButton villageViewButton = factoryButton(trans.get("Doerfer"), "graphics/big/village.png", 
                 trans.get("Doerfer_open"), 
                 trans.get("Doerfer_text"), true);
-        villageViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        KnownVillageManager.getSingleton().cleanEmptyVillages();
-                        DSWorkbenchKnownVillageFrame.getSingleton().setVisible(true);
-                        DSWorkbenchKnownVillageFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        villageViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                KnownVillageManager.getSingleton().cleanEmptyVillages();
+                DSWorkbenchKnownVillageFrame.getSingleton().setVisible(true);
+                DSWorkbenchKnownVillageFrame.getSingleton().requestFocus();
+            });
         });
         //   attackViewBand.startGroup();
         attackViewBand.addCommandButton(attackViewButton, RibbonElementPriority.TOP);
@@ -1024,51 +715,29 @@ public class RibbonConfigurator {
         JCommandButton tagsViewButton = factoryButton(trans.get("Gruppen"), "graphics/icons/tag.png", 
                 trans.get("Gruppen_open"), 
                 trans.get("Gruppen_text"), true);
-        tagsViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchTagFrame.getSingleton().setVisible(true);
-                        DSWorkbenchTagFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        tagsViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchTagFrame.getSingleton().setVisible(true);
+                DSWorkbenchTagFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton troopsViewButton = factoryButton(trans.get("Truppen"), "graphics/big/troops.png", 
                 trans.get("Truppen_open"), 
                 trans.get("Truppen_text"), true);
-        troopsViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchTroopsFrame.getSingleton().setVisible(true);
-                        DSWorkbenchTroopsFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        troopsViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchTroopsFrame.getSingleton().setVisible(true);
+                DSWorkbenchTroopsFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton reportsViewButton = factoryButton(trans.get("Berichte"), "graphics/big/report.png", 
                 trans.get("Berichte_open"), 
                 trans.get("Berichte_text"), true);
-        reportsViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchReportFrame.getSingleton().setVisible(true);
-                        DSWorkbenchReportFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        reportsViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchReportFrame.getSingleton().setVisible(true);
+                DSWorkbenchReportFrame.getSingleton().requestFocus();
+            });
         });
         ingameInfoViewBand.addCommandButton(tagsViewButton, RibbonElementPriority.MEDIUM);
         ingameInfoViewBand.addCommandButton(troopsViewButton, RibbonElementPriority.MEDIUM);
@@ -1078,67 +747,38 @@ public class RibbonConfigurator {
         JCommandButton notesViewButton = factoryButton(trans.get("Notizblock"), "graphics/big/notebook.png", 
                 trans.get("Notizblock_open"), 
                 trans.get("Notizblock_text"), true);
-        notesViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchNotepad.getSingleton().setVisible(true);
-                        DSWorkbenchNotepad.getSingleton().requestFocus();
-                    }
-                });
-            }
+        notesViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchNotepad.getSingleton().setVisible(true);
+                DSWorkbenchNotepad.getSingleton().requestFocus();
+            });
         });
         JCommandButton conquerViewButton = factoryButton(trans.get("Eroberungen"), "graphics/big/snob.png", 
                 trans.get("Eroberungen_open"), 
                 trans.get("Eroberungen_text"), true);
-        conquerViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchConquersFrame.getSingleton().setVisible(true);
-                        DSWorkbenchConquersFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        conquerViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchConquersFrame.getSingleton().setVisible(true);
+                DSWorkbenchConquersFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton rankViewButton = factoryButton(trans.get("Ranglisten"), "graphics/big/medal.png", 
                 trans.get("Ranglisten_open"), 
                 trans.get("Ranglisten_text"), true);
-        rankViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchRankFrame.getSingleton().setVisible(true);
-                        DSWorkbenchRankFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        rankViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchRankFrame.getSingleton().setVisible(true);
+                DSWorkbenchRankFrame.getSingleton().requestFocus();
+            });
         });
         JCommandButton statsViewButton = factoryButton(trans.get("Statistiken"), "graphics/icons/ally_chart.png", 
                 trans.get("Statistiken_open"), 
                 trans.get("Statistiken_text"), true);
-        statsViewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        DSWorkbenchStatsFrame.getSingleton().setVisible(true);
-                        DSWorkbenchStatsFrame.getSingleton().requestFocus();
-                    }
-                });
-            }
+        statsViewButton.addActionListener((ActionEvent e) -> {
+            SwingUtilities.invokeLater(() -> {
+                DSWorkbenchStatsFrame.getSingleton().setVisible(true);
+                DSWorkbenchStatsFrame.getSingleton().requestFocus();
+            });
         });
         infoViewBand.addCommandButton(notesViewButton, RibbonElementPriority.TOP);
         infoViewBand.addCommandButton(conquerViewButton, RibbonElementPriority.MEDIUM);
@@ -1172,38 +812,26 @@ public class RibbonConfigurator {
         JCommandButton helpButton = factoryButton(trans.get("Hilfe"), "/res/128x128/help.png", 
                 trans.get("Hilfe_open"), 
                 trans.get("Hilfe_text"), true);
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GlobalOptions.getHelpBroker().setDisplayed(true);
-            }
+        helpButton.addActionListener((ActionEvent e) -> {
+            GlobalOptions.getHelpBroker().setDisplayed(true);
         });
         JCommandButton facebookButton = factoryButton(trans.get("Facebook"), "/res/128x128/facebook.png", 
                 trans.get("Facebook_open"), 
                 trans.get("Facebook_text"), true);
-        facebookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                BrowserInterface.openPage("http://www.facebook.com/pages/DS-Workbench/182068775185568");
-            }
+        facebookButton.addActionListener((ActionEvent e) -> {
+            BrowserInterface.openPage("http://www.facebook.com/pages/DS-Workbench/182068775185568");
         });
         JCommandButton donateButton = factoryButton(trans.get("Spenden"), "/res/ui/paypal.gif", 
                 trans.get("Spenden_open"), 
                 trans.get("Spenden_text"), true);
-        donateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                BrowserInterface.openPage("https://www.paypal.com/paypalme/mecqq");
-            }
+        donateButton.addActionListener((ActionEvent e) -> {
+            BrowserInterface.openPage("https://www.paypal.com/paypalme/mecqq");
         });
         JCommandButton aboutButton = factoryButton(trans.get("About"), "/res/ui/about.png", 
                 trans.get("About_open"), 
                 trans.get("About_text"), true);
-        aboutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DSWorkbenchMainFrame.getSingleton().showAboutDialog();
-            }
+        aboutButton.addActionListener((ActionEvent e) -> {
+            DSWorkbenchMainFrame.getSingleton().showAboutDialog();
         });
         miscBand.addCommandButton(helpButton, RibbonElementPriority.TOP);
         miscBand.addCommandButton(facebookButton, RibbonElementPriority.TOP);

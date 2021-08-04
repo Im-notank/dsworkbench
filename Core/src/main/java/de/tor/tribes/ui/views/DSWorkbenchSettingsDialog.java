@@ -30,7 +30,6 @@ import de.tor.tribes.ui.panels.MinimapPanel;
 import de.tor.tribes.ui.panels.TroopSelectionPanel;
 import de.tor.tribes.ui.renderer.ColorCellRenderer;
 import de.tor.tribes.ui.renderer.DefaultTableHeaderRenderer;
-import de.tor.tribes.ui.renderer.map.MapRenderer;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.ui.wiz.red.ResourceDistributorWizard;
 import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;
@@ -40,7 +39,6 @@ import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.math.BigDecimal;
@@ -269,13 +267,6 @@ public class DSWorkbenchSettingsDialog extends javax.swing.JDialog implements
             }
         };
         jAttackColorTable.setDefaultRenderer(Color.class, new ColorCellRenderer());
-        jAttackColorTable.setDefaultEditor(Color.class, new ColorChooserCellEditor(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //not needed
-            }
-        }));
 
         jAttackColorTable.setModel(model);
         jAttackColorTable.getColumnModel().getColumn(1).setMaxWidth(75);
@@ -2787,17 +2778,13 @@ private void fireDownloadLiveDataEvent(java.awt.event.ActionEvent evt) {//GEN-FI
     jStatusArea.setText("");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-    Thread t = new Thread(new Runnable() {
-
-        @Override
-        public void run() {
-            try {
-                logger.debug("Start downloading data from tribal wars servers");
-                boolean ret = DataHolder.getSingleton().loadLiveData();
-                logger.debug("Update finished " + ((ret) ? "successfully" : "with errors"));
-            } catch (Exception e) {
-                logger.error("Failed to load data", e);
-            }
+    Thread t = new Thread(() -> {
+        try {
+            logger.debug("Start downloading data from tribal wars servers");
+            boolean ret = DataHolder.getSingleton().loadLiveData();
+            logger.debug("Update finished " + ((ret) ? "successfully" : "with errors"));
+        } catch (Exception e) {
+            logger.error("Failed to load data", e);
         }
     });
 

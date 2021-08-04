@@ -15,8 +15,8 @@
  */
 package de.tor.tribes.ui.panels;
 
-import de.tor.tribes.dssim.ui.DSWorkbenchSimulatorFrame;
 import de.tor.tribes.dssim.types.AStarResultReceiver;
+import de.tor.tribes.dssim.ui.DSWorkbenchSimulatorFrame;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.TroopAmountFixed;
 import de.tor.tribes.io.UnitHolder;
@@ -26,7 +26,6 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.models.ReportManagerTableModel;
 import de.tor.tribes.ui.renderer.*;
 import de.tor.tribes.ui.views.DSWorkbenchReportFrame;
-import de.tor.tribes.ui.views.DSWorkbenchSettingsDialog;
 import de.tor.tribes.ui.windows.ReportShowDialog;
 import de.tor.tribes.ui.wiz.tap.AttackTargetPanel;
 import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;

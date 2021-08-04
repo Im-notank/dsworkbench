@@ -324,12 +324,7 @@ public class FarmInformation extends ManageableType {
 
     public void guessBuildings() {
         List<FightReport> reports = ReportManager.getSingleton().findAllReportsForTarget(getVillage());
-        Collections.sort(reports, new Comparator<FightReport>() {
-            @Override
-            public int compare(FightReport o1, FightReport o2) {
-                return Long.valueOf(o1.getTimestamp()).compareTo(o2.getTimestamp());
-            }
-        });
+        Collections.sort(reports, (FightReport o1, FightReport o2) -> Long.valueOf(o1.getTimestamp()).compareTo(o2.getTimestamp()));
 
         if (!reports.isEmpty()) {// at least one report exists
             if (reports.size() > 1) {
@@ -740,18 +735,15 @@ public class FarmInformation extends ManageableType {
                     // there are villages which can carry all resources or we use scenario A/B
                     // sort valid villages by speed if we are not in the case that we are
                     // using farm type C without sufficient troops
-                    Collections.sort(villages, new Comparator<Village>() {
-                        @Override
-                        public int compare(Village o1, Village o2) {
-                            // get speed of defined troops (A and B) or by troops for carriage (C)...
-                            // ...as this ordering is not performed in case of cByMinHaul, pAllowMaxCarriage
-                            // is set to 'false'
-                            double speed1 = carriageMap.get(o1).getSpeed();
-                            double speed2 = carriageMap.get(o2).getSpeed();
-
-                            return new Double(DSCalculator.calculateMoveTimeInMinutes(o1, getVillage(), speed1))
-                                    .compareTo(DSCalculator.calculateMoveTimeInMinutes(o2, getVillage(), speed2));
-                        }
+                    Collections.sort(villages, (Village o1, Village o2) -> {
+                        // get speed of defined troops (A and B) or by troops for carriage (C)...
+                        // ...as this ordering is not performed in case of cByMinHaul, pAllowMaxCarriage
+                        // is set to 'false'
+                        double speed1 = carriageMap.get(o1).getSpeed();
+                        double speed2 = carriageMap.get(o2).getSpeed();
+                        
+                        return Double.valueOf(DSCalculator.calculateMoveTimeInMinutes(o1, getVillage(), speed1))
+                                .compareTo(DSCalculator.calculateMoveTimeInMinutes(o2, getVillage(), speed2));
                     });
                     // now select the "best" village for farming
                     Village selection = null;

@@ -266,13 +266,7 @@ public class RetimerFinishPanel extends WizardPage {
         } else {
             jPanel5.add(overviewPanel, BorderLayout.CENTER);
             jScrollPane1.setViewportView(jxResultsTable);
-            SwingUtilities.invokeLater(new Runnable() {
-
-                @Override
-                public void run() {
-                    jPanel5.updateUI();
-                }
-            });
+            SwingUtilities.invokeLater(jPanel5::updateUI);
         }
     }//GEN-LAST:event_fireViewStateChangeEvent
 

@@ -299,13 +299,7 @@ public class ValidationPanel extends WizardPage implements SettingsChangedListen
             } else {
                 jScrollPane1.setViewportView(jXTable1);
                 jPanel2.add(sourceOverviewPanel, BorderLayout.CENTER);
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        jPanel2.updateUI();
-                    }
-                });
+                SwingUtilities.invokeLater(jPanel2::updateUI);
             }
         } else {
             if (jToggleButton2.isSelected()) {
@@ -315,13 +309,7 @@ public class ValidationPanel extends WizardPage implements SettingsChangedListen
             } else {
                 jScrollPane2.setViewportView(jXTable2);
                 jPanel3.add(targetOverviewPanel, BorderLayout.CENTER);
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        jPanel3.updateUI();
-                    }
-                });
+                SwingUtilities.invokeLater(jPanel3::updateUI);
             }
         }
     }//GEN-LAST:event_fireChangeViewEvent

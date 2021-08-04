@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -129,13 +128,9 @@ public class VillageUtils {
         List<Village> villages = new LinkedList<>();
         Collections.addAll(villages, pVillages);
 
-        CollectionUtils.filter(villages, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return ArrayUtils.contains(pContinents, ((Village) o).getContinent());
-            }
-        });
+        CollectionUtils.filter(villages,
+            (Object o) -> ArrayUtils.contains(pContinents, ((Village) o).getContinent())
+        );
         if (pComparator != null) {
             Collections.sort(villages, pComparator);
         }

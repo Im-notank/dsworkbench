@@ -21,8 +21,7 @@ import de.tor.tribes.util.translation.Translator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 
 /**
  *
@@ -45,13 +44,9 @@ public class REFTargetTableModel extends AbstractTableModel {
     }
 
     public void addRow(final Village pVillage) {
-        Object result = CollectionUtils.find(elements, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object o) {
-                return o.equals(pVillage);
-            }
-        });
+        Object result = IterableUtils.find(elements,
+            (Object o) -> o.equals(pVillage)
+        );
 
         if (result == null) {
             elements.add(pVillage);

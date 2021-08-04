@@ -42,7 +42,6 @@ import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -55,9 +54,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -133,32 +130,23 @@ public class DSWorkbenchTroopsFrame extends AbstractDSWorkbenchFrame implements 
     buildMenu();
     capabilityInfoPanel1.addActionListener(this);
 
-    jTroopsTabPane.getModel().addChangeListener(new ChangeListener() {
-      @Override
-      public void stateChanged(ChangeEvent e) {
+    jTroopsTabPane.getModel().addChangeListener((ChangeEvent e) -> {
         TroopTableTab activeTab = getActiveTab();
         if (activeTab != null) {
-          activeTab.updateSet();
+            activeTab.updateSet();
         }
-      }
     });
 
     DataHolder.getSingleton().addDataHolderListener(DSWorkbenchTroopsFrame.this);
 
-    jXGroupsList.addListSelectionListener(new ListSelectionListener() {
-      @Override
-      public void valueChanged(ListSelectionEvent e) {
+    jXGroupsList.addListSelectionListener((ListSelectionEvent e) -> {
         updateFilter();
-      }
     });
 
-    jTroopAddTribe.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
+    jTroopAddTribe.addItemListener((ItemEvent e) -> {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-          updateTroopAddVillageList();
+            updateTroopAddVillageList();
         }
-      }
     });
     jTroopsAddDialog.pack();
 

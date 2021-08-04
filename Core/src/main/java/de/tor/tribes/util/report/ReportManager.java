@@ -65,18 +65,14 @@ public class ReportManager extends GenericManager<FightReport> {
   @Override
   public String[] getGroups() {
     String[] groups = super.getGroups();
-    Arrays.sort(groups, new Comparator<String>() {
-
-      @Override
-      public int compare(String o1, String o2) {
+    Arrays.sort(groups, (String o1, String o2) -> {
         if (o1.equals(DEFAULT_GROUP) || o1.equals(FARM_SET)) {
-          return -1;
+            return -1;
         } else if (o2.equals(DEFAULT_GROUP) || o2.equals(FARM_SET)) {
-          return 1;
+            return 1;
         } else {
-          return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
+            return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
         }
-      }
     });
     return groups;
   }

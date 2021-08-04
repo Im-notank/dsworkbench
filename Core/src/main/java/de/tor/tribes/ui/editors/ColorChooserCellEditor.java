@@ -33,12 +33,8 @@ public class ColorChooserCellEditor extends AbstractCellEditor implements TableC
     private final ColorChooser chooserComponent = new ColorChooser();
 
     public ColorChooserCellEditor(ActionListener pListener) {
-        chooserComponent.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopCellEditing();
-            }
+        chooserComponent.addActionListener((ActionEvent e) -> {
+            stopCellEditing();
         });
         chooserComponent.addActionListener(pListener);
     }

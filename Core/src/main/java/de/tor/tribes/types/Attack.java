@@ -36,8 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -487,16 +486,13 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
 
         //get attacker and look for UserProfile for this attacker
         final Tribe attacker = source.getTribe();
-        UserProfile profileForAttacker = (UserProfile) CollectionUtils.find(serverProfiles, new Predicate() {
-            @Override
-            public boolean evaluate(Object o) {
-                UserProfile profile = (UserProfile) o;
-                if (attacker != null && profile.getTribe() != null) {
-                    return profile.getTribe().getId() == attacker.getId();
-                }
-                //no attacker found
-                return false;
+        UserProfile profileForAttacker = (UserProfile) IterableUtils.find(serverProfiles, (o) -> {
+            UserProfile profile = (UserProfile) o;
+            if (attacker != null && profile.getTribe() != null) {
+                return profile.getTribe().getId() == attacker.getId();
             }
+            //no attacker found
+            return false;
         });
 
         if (profileForAttacker != null) {

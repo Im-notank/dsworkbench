@@ -53,13 +53,7 @@ public class ScreenshotPanel extends javax.swing.JPanel {
         }
         mBuffer = pBuffer;
         setScaling(1);
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                updateUI();
-            }
-        });
+        SwingUtilities.invokeLater(this::updateUI);
     }
 
     public BufferedImage getResult(int pTransparency) {

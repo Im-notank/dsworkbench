@@ -50,26 +50,22 @@ public class TagMapMarkerEditorImpl extends javax.swing.JPanel {
 
         final ImageIcon no_tag = new ImageIcon(TagMapMarkerEditorImpl.class.getResource("/res/remove.gif"));
 
-        ListCellRenderer rSymbol = new ListCellRenderer() {
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component c = new DefaultListCellRenderer().getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                try {
-                    JLabel label = ((JLabel) c);
-                    label.setText("");
-                    int v = (Integer) value;
-                    label.setHorizontalAlignment(SwingConstants.CENTER);
-                    if (v != -1) {
-                        BufferedImage symbol = ImageManager.getNoteSymbol(v);//ImageManager.getUnitImage(v, false);
-                        label.setIcon(new ImageIcon(symbol.getScaledInstance(16, 16, BufferedImage.SCALE_FAST)));
-                    } else {
-                        label.setIcon(no_tag);
-                    }
-                } catch (Exception ignored) {
+        ListCellRenderer rSymbol = (ListCellRenderer) (JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) -> {
+            Component c1 = new DefaultListCellRenderer().getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            try {
+                JLabel label = (JLabel) c1;
+                label.setText("");
+                int v = (Integer) value;
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                if (v != -1) {
+                    BufferedImage symbol = ImageManager.getNoteSymbol(v);//ImageManager.getUnitImage(v, false);
+                    label.setIcon(new ImageIcon(symbol.getScaledInstance(16, 16, BufferedImage.SCALE_FAST)));
+                } else {
+                    label.setIcon(no_tag);
                 }
-                return c;
+            }catch (Exception ignored) {
             }
+            return c1;
         };
         jComboBox1.setRenderer(rSymbol);
     }

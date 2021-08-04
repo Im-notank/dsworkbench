@@ -15,7 +15,6 @@
  */
 package de.tor.tribes.ui.views;
 
-import de.tor.tribes.control.GenericEventListener;
 import de.tor.tribes.control.GenericManagerListener;
 import de.tor.tribes.types.Note;
 import de.tor.tribes.types.ext.Village;
@@ -46,7 +45,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -127,14 +125,10 @@ public class DSWorkbenchNotepad extends AbstractDSWorkbenchFrame implements Gene
         buildMenu();
         capabilityInfoPanel1.addActionListener(this);
         
-        jNoteTabbedPane.getModel().addChangeListener(new ChangeListener() {
-            
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                NoteTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.updateSet();
-                }
+        jNoteTabbedPane.getModel().addChangeListener((ChangeEvent e) -> {
+            NoteTableTab activeTab = getActiveTab();
+            if (activeTab != null) {
+                activeTab.updateSet();
             }
         });
         
@@ -292,41 +286,35 @@ public class DSWorkbenchNotepad extends AbstractDSWorkbenchFrame implements Gene
         
         for(int i = 0; i < jNoteTabbedPane.getTabCount(); i++) {
             final TabPaneComponent component = new TabPaneComponent(jNoteTabbedPane);
-            component.setStopEditingListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jNoteTabbedPane.indexOfTabComponent(component);
-                    NoteTableTab tab = (NoteTableTab) jNoteTabbedPane.getComponentAt(i);
-                    String newName = component.getEditedText();
-                    if(!newName.equals(tab.getNoteSet())) {
-                        newName = newName.trim();
-                        if (newName.length() == 0) {
-                            JOptionPaneHelper.showWarningBox(jNoteTabbedPane, "'" + newName + trans.get("ungueltigerNotizenset"), trans.get("Fehler"));
-                            return;
-                        }
-                        if (NoteManager.getSingleton().groupExists(newName)) {
-                            JOptionPaneHelper.showWarningBox(jNoteTabbedPane, trans.get("Esexistiertbereits") + newName + "'", trans.get("Fehler"));
-                            return;
-                        }
-                        if (! JDomUtils.stringAllowed(newName)) {
-                            JOptionPaneHelper.showWarningBox(jNoteTabbedPane, trans.get("Dername") + newName + trans.get("enthaeltSonderzeichen"), trans.get("Fehler"));
-                            return;
-                        }
-                        
-                        NoteManager.getSingleton().renameGroup(tab.getNoteSet(), newName);
+            component.setStopEditingListener(() -> {
+                int i1 = jNoteTabbedPane.indexOfTabComponent(component);
+                NoteTableTab tab = (NoteTableTab) jNoteTabbedPane.getComponentAt(i1);
+                String newName = component.getEditedText();
+                if(!newName.equals(tab.getNoteSet())) {
+                    newName = newName.trim();
+                    if (newName.length() == 0) {
+                        JOptionPaneHelper.showWarningBox(jNoteTabbedPane, "'" + newName + trans.get("ungueltigerNotizenset"), trans.get("Fehler"));
+                        return;
                     }
+                    if (NoteManager.getSingleton().groupExists(newName)) {
+                        JOptionPaneHelper.showWarningBox(jNoteTabbedPane, trans.get("Esexistiertbereits") + newName + "'", trans.get("Fehler"));
+                        return;
+                    }
+                    if (! JDomUtils.stringAllowed(newName)) {
+                        JOptionPaneHelper.showWarningBox(jNoteTabbedPane, trans.get("Dername") + newName + trans.get("enthaeltSonderzeichen"), trans.get("Fehler"));
+                        return;
+                    }
+                    
+                    NoteManager.getSingleton().renameGroup(tab.getNoteSet(), newName);
                 }
             });
             
-            component.setCloseTabListener(new GenericEventListener() {
-                @Override
-                public void event() {
-                    int i = jNoteTabbedPane.indexOfTabComponent(component);
-                    NoteTableTab tab = (NoteTableTab) jNoteTabbedPane.getComponentAt(i);
-                    if (JOptionPaneHelper.showQuestionConfirmBox(jNoteTabbedPane, trans.get("Notizset") + tab.getNoteSet()+
-                            trans.get("Notzienwirklichloeschen"), trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
-                        NoteManager.getSingleton().removeGroup(tab.getNoteSet());
-                    }
+            component.setCloseTabListener(() -> {
+                int i1 = jNoteTabbedPane.indexOfTabComponent(component);
+                NoteTableTab tab = (NoteTableTab) jNoteTabbedPane.getComponentAt(i1);
+                if (JOptionPaneHelper.showQuestionConfirmBox(jNoteTabbedPane, trans.get("Notizset") + tab.getNoteSet()+
+                        trans.get("Notzienwirklichloeschen"), trans.get("Loeschen"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
+                    NoteManager.getSingleton().removeGroup(tab.getNoteSet());
                 }
             });
             

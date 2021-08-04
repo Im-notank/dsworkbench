@@ -16,7 +16,6 @@
 package de.tor.tribes.ui.algo;
 
 import com.visutools.nav.bislider.ColorisationEvent;
-import com.visutools.nav.bislider.ColorisationListener;
 import de.tor.tribes.types.TimeSpan;
 import de.tor.tribes.types.TimeSpanDivider;
 import de.tor.tribes.ui.renderer.TimeFrameListCellRenderer;
@@ -30,7 +29,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -65,17 +63,11 @@ public class AttackTimePanel extends javax.swing.JPanel implements DragGestureLi
         DropTarget dropTarget = new DropTarget(this, this);
         jTimeFrameList.setDropTarget(dropTarget);
 
-        jSendTimeFrame.addColorisationListener(new ColorisationListener() {
-            @Override
-            public void newColors(ColorisationEvent ColorisationEvent_Arg) {
-                updatePreview();
-            }
+        jSendTimeFrame.addColorisationListener((ColorisationEvent ColorisationEvent_Arg) -> {
+            updatePreview();
         });
-        dateTimeField.setActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updatePreview();
-            }
+        dateTimeField.setActionListener((ActionEvent e) -> {
+            updatePreview();
         });
 
         jTimeFrameList.addKeyListener(new KeyAdapter() {
@@ -87,13 +79,10 @@ public class AttackTimePanel extends javax.swing.JPanel implements DragGestureLi
             }
         });
         jArriveInPastLabel.setVisible(false);
-        maxArriveTimeField.setActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TimeFrame currentFrame = getTimeFrame();
-                if (currentFrame != null) {
-                    jArriveInPastLabel.setVisible(currentFrame.getArriveRange().getMaximum()< System.currentTimeMillis());
-                }
+        maxArriveTimeField.setActionListener((ActionEvent e) -> {
+            TimeFrame currentFrame = getTimeFrame();
+            if (currentFrame != null) {
+                jArriveInPastLabel.setVisible(currentFrame.getArriveRange().getMaximum()< System.currentTimeMillis());
             }
         });
         reset();
