@@ -50,8 +50,8 @@ public class ImageManager {
     public final static int CURSOR_MARK = 1;
     public final static int CURSOR_MEASURE = 2;
     public final static int CURSOR_TAG = 3;
-    public final static int CURSOR_ATTACK_INGAME = 4;
-    public final static int CURSOR_SEND_RES_INGAME = 5;
+//    public final static int CURSOR_ATTACK_INGAME = 4;
+//    public final static int CURSOR_SEND_RES_INGAME = 5;
     //</editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Attack cursor IDs">
     public final static int CURSOR_ATTACK_RAM = 6;

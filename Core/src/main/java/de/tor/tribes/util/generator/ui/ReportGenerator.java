@@ -17,7 +17,6 @@ package de.tor.tribes.util.generator.ui;
 
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.TroopAmountFixed;
-import de.tor.tribes.types.FarmInformation;
 import de.tor.tribes.types.FightReport;
 import de.tor.tribes.types.ext.InvalidTribe;
 import de.tor.tribes.types.ext.Tribe;
@@ -25,7 +24,6 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.BuildingSettings;
 import de.tor.tribes.util.PluginManager;
 import de.tor.tribes.util.UIHelper;
-import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.report.ReportManager;
 import de.tor.tribes.util.xml.JDomUtils;
 import java.util.List;
@@ -517,13 +515,8 @@ public class ReportGenerator extends javax.swing.JFrame {
     private TroopAmountFixed getAttackingTroops(Village pVillage) {
         TroopAmountFixed units = new TroopAmountFixed(0);
         if (jFarming.isSelected()) {
-            FarmInformation info = FarmManager.getSingleton().getFarmInformation(pVillage);
-            if (info == null || info.getFarmTroop() == null) {
-                units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("light"), getRandomValueInRange(30, 60));
-                units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("spy"), 1);
-            } else {
-                units = info.getFarmTroop();
-            }
+            units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("light"), getRandomValueInRange(30, 60));
+            units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("spy"), 1);
         } else if (jOffing.isSelected()) {
             units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("axe"), getRandomValueInRange(5000, 7000));
             units.setAmountForUnit(DataHolder.getSingleton().getUnitByPlainName("light"), getRandomValueInRange(2000, 2300));

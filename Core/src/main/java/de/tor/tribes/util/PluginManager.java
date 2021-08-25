@@ -16,7 +16,6 @@
 package de.tor.tribes.util;
 
 import de.tor.tribes.types.SOSRequest;
-import de.tor.tribes.types.VillageMerchantInfo;
 import de.tor.tribes.types.ext.Village;
 import java.io.*;
 import java.util.LinkedList;
@@ -81,22 +80,6 @@ public class PluginManager {
       return ((GenericParserInterface<Village>) parser).parse(pData);
     } catch (Exception e) {
       logger.error("Failed to execute village parser", e);
-    }
-    return new LinkedList<>();
-  }
-
-  /**
-   * Execute the merchant parser plugin
-   *
-   * @param pData The text that contains merchant infos
-   * @return List<VillageMerchantInfo> Parsed list of merchant infos
-   */
-  public List<VillageMerchantInfo> executeMerchantParser(String pData) {
-    try {
-      Object parser = loadParser("de.tor.tribes.util.parser.MerchantParser");
-      return ((GenericParserInterface<VillageMerchantInfo>) parser).parse(pData);
-    } catch (Exception e) {
-      logger.error("Failed to execute merchant parser", e);
     }
     return new LinkedList<>();
   }

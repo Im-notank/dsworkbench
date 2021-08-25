@@ -23,7 +23,6 @@ import de.tor.tribes.ui.windows.BBCodeEditor;
 import de.tor.tribes.ui.windows.ClockFrame;
 import de.tor.tribes.ui.windows.DSWorkbenchMainFrame;
 import de.tor.tribes.ui.windows.FormConfigFrame;
-import de.tor.tribes.ui.wiz.red.ResourceDistributorWizard;
 import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.translation.TranslationManager;
@@ -262,28 +261,6 @@ public class RibbonConfigurator {
         infoToolBand.addCommandButton(distanceToolButton, RibbonElementPriority.LOW);
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="miscToolsBand setup">
-        JCommandButton resourceDistributorToolButton = factoryButton(
-                trans.get("Rohstoffverteiler"), "graphics/big/resource_distrib.png", 
-                trans.get("Rohstoffverteiler_tool"), 
-                trans.get("Rohstoffverteiler_text"), true);
-        resourceDistributorToolButton.addActionListener((ActionEvent e) -> {
-            SwingUtilities.invokeLater(ResourceDistributorWizard::show);
-        });
-
-        JCommandButton farmManagerButton = factoryButton(trans.get("Farmmanager"), "graphics/big/farm_tool.png", 
-                trans.get("Farmmanager_tool"), 
-                trans.get("Farmmanager_text"), true);
-        farmManagerButton.addActionListener((ActionEvent e) -> {
-            if (ServerSettings.getSingleton().isHaulActive()) {
-                SwingUtilities.invokeLater(() -> {
-                    DSWorkbenchFarmManager.getSingleton().setVisible(true);
-                    DSWorkbenchFarmManager.getSingleton().requestFocus();
-                });
-            } else {
-                DSWorkbenchMainFrame.getSingleton().showInfo(trans.get("Farmmanager_notactive"));
-            }
-        });
-
         JCommandButton mapshotToolButton = factoryButton(trans.get("Screenshoterstellen"), 
                 "graphics/big/camera.png", 
                 trans.get("Screenshot_tool"), 
@@ -308,8 +285,6 @@ public class RibbonConfigurator {
                 ClockFrame.getSingleton().requestFocus();
             });
         });
-        miscToolsBand.addCommandButton(resourceDistributorToolButton, RibbonElementPriority.TOP);
-        miscToolsBand.addCommandButton(farmManagerButton, RibbonElementPriority.TOP);
         miscToolsBand.addCommandButton(mapshotToolButton, RibbonElementPriority.MEDIUM);
         miscToolsBand.addCommandButton(runtimeToolButton, RibbonElementPriority.MEDIUM);
         miscToolsBand.addCommandButton(clockToolButton, RibbonElementPriority.MEDIUM);

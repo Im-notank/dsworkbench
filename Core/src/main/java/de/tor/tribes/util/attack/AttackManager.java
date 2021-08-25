@@ -147,7 +147,7 @@ public class AttackManager extends GenericManager<Attack> {
      */
     public void addAttack(Village pSource, Village pTarget, UnitHolder pUnit, Date pArriveTime, String pPlan) {
         boolean showOnMap = GlobalOptions.getProperties().getBoolean("draw.attacks.by.default");
-        addAttack(pSource, pTarget, pUnit, pArriveTime, showOnMap, pPlan, Attack.NO_TYPE, false);
+        addAttack(pSource, pTarget, pUnit, pArriveTime, showOnMap, pPlan, Attack.NO_TYPE);
     }
 
     /**
@@ -155,7 +155,7 @@ public class AttackManager extends GenericManager<Attack> {
      *
      * type is automatically determined through unit
      */
-    public void addAttack(Village pSource, Village pTarget, UnitHolder pUnit, Date pArriveTime, boolean pShowOnMap, String pPlan, Integer pType, boolean pTransferredToBrowser) {
+    public void addAttack(Village pSource, Village pTarget, UnitHolder pUnit, Date pArriveTime, boolean pShowOnMap, String pPlan, Integer pType) {
         if (pSource == null || pTarget == null || pUnit == null || pArriveTime == null) {
             logger.error("Invalid attack");
             return;
@@ -166,7 +166,6 @@ public class AttackManager extends GenericManager<Attack> {
         a.setUnit(pUnit);
         a.setArriveTime(pArriveTime);
         a.setShowOnMap(pShowOnMap);
-        a.setTransferredToBrowser(pTransferredToBrowser);
         if (pType == -1) {
             switch (pUnit.getPlainName()) {
                 case "catapult":

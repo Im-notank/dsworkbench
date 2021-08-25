@@ -30,7 +30,6 @@ import de.tor.tribes.util.*;
 import de.tor.tribes.util.bb.AllyReportStatsFormatter;
 import de.tor.tribes.util.bb.OverallReportStatsFormatter;
 import de.tor.tribes.util.bb.TribeReportStatsFormatter;
-import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.report.ReportManager;
 import de.tor.tribes.util.report.ReportStatBuilder;
 import de.tor.tribes.util.translation.TranslationManager;
@@ -345,32 +344,22 @@ public class DSWorkbenchReportFrame extends AbstractDSWorkbenchFrame implements 
             if (!old.contains(r)) {
                 source = r.getSourceVillage();
                 target = r.getTargetVillage();
-                FarmInformation info = FarmManager.getSingleton().getFarmInformation(target);
-                boolean removeByFarmInfo = false;
-                if (info != null) {
-                    if (info.getLastReport() > r.getTimestamp()) {
-                        old.add(r);
-                        removeByFarmInfo = true;
-                    }
-                }
-
-                if (!removeByFarmInfo) {
-                    long time = r.getTimestamp();
-                    int secondaryIndex = 0;
-                    for (ManageableType elem2 : ReportManager.getSingleton().getAllElements(set)) {
-                        FightReport r1 = (FightReport) elem2;
-                        if (!old.contains(r1) && r1.getSourceVillage().equals(source) && r1.getTargetVillage().equals(target)) {
-                            if (currentIndex != secondaryIndex) {
-                                if (r1.getTimestamp() > time || r.equals(r1)) {
-                                    old.add(r);
-                                    break;
-                                } else {
-                                    old.add(r1);
-                                }
+                
+                long time = r.getTimestamp();
+                int secondaryIndex = 0;
+                for (ManageableType elem2 : ReportManager.getSingleton().getAllElements(set)) {
+                    FightReport r1 = (FightReport) elem2;
+                    if (!old.contains(r1) && r1.getSourceVillage().equals(source) && r1.getTargetVillage().equals(target)) {
+                        if (currentIndex != secondaryIndex) {
+                            if (r1.getTimestamp() > time || r.equals(r1)) {
+                                old.add(r);
+                                break;
+                            } else {
+                                old.add(r1);
                             }
                         }
-                        secondaryIndex++;
                     }
+                    secondaryIndex++;
                 }
             }
             currentIndex++;

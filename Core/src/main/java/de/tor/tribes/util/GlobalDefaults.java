@@ -67,10 +67,6 @@ public class GlobalDefaults {
         GLOBAL_DEFAULTS.addProperty("attack.movement", false);
         GLOBAL_DEFAULTS.addProperty("attack.planer.check.amount", 20000);
         GLOBAL_DEFAULTS.addProperty("attack.planer.enable.check", true);
-        GLOBAL_DEFAULTS.addProperty("attack.script.attacks.in.overview", true);
-        GLOBAL_DEFAULTS.addProperty("attack.script.attacks.in.place", true);
-        GLOBAL_DEFAULTS.addProperty("attack.script.attacks.in.village.info", true);
-        GLOBAL_DEFAULTS.addProperty("attack.script.attacks.on.confirm.page", true);
         GLOBAL_DEFAULTS.addProperty("check.updates.on.startup", true);
         GLOBAL_DEFAULTS.addProperty("church.frame.alwaysOnTop", false);
         GLOBAL_DEFAULTS.addProperty("clipboard.notification", true);

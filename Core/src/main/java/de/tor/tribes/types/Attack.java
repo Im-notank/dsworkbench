@@ -71,7 +71,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
     private boolean showOnMap = false;
     private int type = NO_TYPE;
     private TroopAmountDynamic amounts = null;
-    private boolean transferredToBrowser = false;
     private short multiplier = 1;
 
     public Attack() {
@@ -86,7 +85,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         this.amounts = pAttack.getTroops().clone();
         setArriveTime(pAttack.getArriveTime());
         this.type = pAttack.getType();
-        this.transferredToBrowser = pAttack.isTransferredToBrowser();
     }
 
     public boolean isSourceVillage(Village pVillage) {
@@ -269,20 +267,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         return result;
     }
 
-    /**
-     * @return the transferredToBrowser
-     */
-    public boolean isTransferredToBrowser() {
-        return transferredToBrowser;
-    }
-
-    /**
-     * @param transferredToBrowser the transferredToBrowser to set
-     */
-    public void setTransferredToBrowser(boolean transferredToBrowser) {
-        this.transferredToBrowser = transferredToBrowser;
-    }
-
     public String toInternalRepresentation() {
         StringBuilder str = new StringBuilder();
         str.append(getSource().getId()).append("&");
@@ -291,7 +275,7 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         str.append(getArriveTime().getTime()).append("&");
         str.append(getType()).append("&");
         str.append(isShowOnMap()).append("&");
-        str.append(isTransferredToBrowser()).append("&");
+        str.append(false).append("&"); //hotfix for backwards compability eqals isTransferedToBrowser
         str.append(getTroops().toProperty()).append("&");
         str.append(getMultiplier());
         return str.toString();
@@ -308,7 +292,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
             a.setArriveTime(new Date(Long.parseLong(split[3])));
             a.setType(Integer.parseInt(split[4]));
             a.setShowOnMap(Boolean.parseBoolean(split[5]));
-            a.setTransferredToBrowser(Boolean.parseBoolean(split[6]));
             a.setTroops(new TroopAmountDynamic().loadFromProperty(split[7]));
             if(split.length > 8) {
                 a.setMultiplier((short) Integer.parseInt(split[8]));
@@ -341,7 +324,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         extensions.addContent(amounts.toXml("amounts"));
         extensions.addContent(new Element("showOnMap").setText(Boolean.toString(showOnMap)));
         extensions.addContent(new Element("type").setText(Integer.toString(type)));
-        extensions.addContent(new Element("transferredToBrowser").setText(Boolean.toString(transferredToBrowser)));
         extensions.addContent(new Element("multiplier").setText(Integer.toString(multiplier)));
         
         attack.addContent(extensions);
@@ -369,7 +351,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
             this.amounts = new TroopAmountDynamic(0);
         }
         this.showOnMap = Boolean.parseBoolean(JDomUtils.getNodeValue(pElement, "extensions/showOnMap"));
-        this.transferredToBrowser = Boolean.parseBoolean(JDomUtils.getNodeValue(pElement, "extensions/transferredToBrowser"));
         
         if(JDomUtils.getNodeValue(pElement, "extensions/multiplier") != null)
             this.multiplier = (short) Integer.parseInt(JDomUtils.getNodeValue(pElement, "extensions/multiplier"));
@@ -532,7 +513,6 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         if(!arriveTime.equals(otherAtt.getArriveTime())) return false;
         if(showOnMap != otherAtt.isShowOnMap()) return false;
         if(type != otherAtt.getType()) return false;
-        if(transferredToBrowser != otherAtt.isTransferredToBrowser()) return false;
         
         return true;
     }

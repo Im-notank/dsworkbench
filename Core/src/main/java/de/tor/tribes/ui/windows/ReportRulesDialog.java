@@ -665,11 +665,6 @@ public class ReportRulesDialog extends javax.swing.JDialog implements GenericMan
             return;
         }
 
-        if (selection.getType() == ReportRule.RuleType.FARM) {
-            JOptionPaneHelper.showWarningBox(this, "Diese Regel kann nicht gelöscht werden.", "Warnung");
-            return;
-        }
-
         if (JOptionPaneHelper.showQuestionConfirmBox(this, "Regel '" + selection.getStringRepresentation() + "' wirklich löschen?", "Regel löschen", "Nein", "Ja") == JOptionPane.YES_OPTION) {
             logger.debug("Deleting Rule {}", selection.getStringRepresentation());
             ReportManager.getSingleton().removeRule(selection);

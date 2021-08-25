@@ -460,28 +460,6 @@ public class MapPanel extends JPanel implements DragGestureListener, // For reco
                         }
                         break;
                     }
-                    case ImageManager.CURSOR_ATTACK_INGAME: {
-                        if (e.getClickCount() == 2) {
-                            Village u = DSWorkbenchMainFrame.getSingleton().getCurrentUserVillage();
-                            if ((u != null) && (v != null)) {
-                                if (Desktop.isDesktopSupported()) {
-                                    BrowserInterface.sendTroops(u, v);
-                                }
-                            }
-                        }
-                        break;
-                    }
-                    case ImageManager.CURSOR_SEND_RES_INGAME: {
-                        if (e.getClickCount() == 2) {
-                            Village u = DSWorkbenchMainFrame.getSingleton().getCurrentUserVillage();
-                            if ((u != null) && (v != null)) {
-                                if (Desktop.isDesktopSupported()) {
-                                    BrowserInterface.sendRes(u, v);
-                                }
-                            }
-                        }
-                        break;
-                    }
                     case ImageManager.CURSOR_ATTACK_AXE: {
                         unit = DataHolder.getSingleton().getUnitID("Axtkämpfer");
                         break;

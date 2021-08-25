@@ -20,7 +20,6 @@ import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.types.FightReport;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.SystrayHelper;
-import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.troops.TroopsManager;
 import de.tor.tribes.util.village.KnownVillageManager;
 import de.tor.tribes.util.xml.JDomUtils;
@@ -42,7 +41,6 @@ public class ReportManager extends GenericManager<FightReport> {
   private static ReportManager SINGLETON = null;
   public final static String FARM_SET = "Farmberichte";
   private List<ReportRule> rules = new LinkedList<>();
-  private final ReportRule farmFilter = new ReportRule(ReportRule.RuleType.FARM, null, FARM_SET);
 
   public static synchronized ReportManager getSingleton() {
     if (SINGLETON == null) {
@@ -98,24 +96,18 @@ public class ReportManager extends GenericManager<FightReport> {
     KnownVillageManager.getSingleton().updateInformation(pElement);
     TroopsManager.getSingleton().updateInformation(pElement);
     
-    if (farmFilter.isValid(pElement)) {
-      logger.debug("Farm filter was activated for village " + pElement.getTargetVillage());
-      FarmManager.getSingleton().updateFarmInfoFromReport(pElement);
-      addManagedElement(FARM_SET, pElement, false);
-    } else {
-      for (ReportRule entry : getRules()) {
-        if (entry.isValid(pElement)) {
-          super.addManagedElement(entry.getTargetSet(), pElement);
-          filtered = true;
-          break;
-        }
+    for (ReportRule entry : getRules()) {
+      if (entry.isValid(pElement)) {
+        super.addManagedElement(entry.getTargetSet(), pElement);
+        filtered = true;
+        break;
       }
-
-      if (!filtered) {
-        super.addManagedElement(pElement);
-      }
-      SystrayHelper.showInfoMessage("Bericht erfolgreich eingelesen");
     }
+
+    if (!filtered) {
+      super.addManagedElement(pElement);
+    }
+    SystrayHelper.showInfoMessage("Bericht erfolgreich eingelesen");
   }
 
   @Override
@@ -126,17 +118,11 @@ public class ReportManager extends GenericManager<FightReport> {
   public void addManagedElement(String pGroup, final FightReport pElement, boolean pFiltered) {
     boolean filtered = false;
     if (pFiltered) {
-      if (farmFilter.isValid(pElement)) {
-        logger.debug("Farm filter was activated for village " + pElement.getTargetVillage());
-        FarmManager.getSingleton().updateFarmInfoFromReport(pElement);
-        addManagedElement(FARM_SET, pElement, false);
-      } else {
-        for (ReportRule entry : getRules()) {
-          if (entry.isValid(pElement)) {
-            addManagedElement(entry.getTargetSet(), pElement);
-            filtered = true;
-            break;
-          }
+      for (ReportRule entry : getRules()) {
+        if (entry.isValid(pElement)) {
+          addManagedElement(entry.getTargetSet(), pElement);
+          filtered = true;
+          break;
         }
       }
       if (!filtered) {

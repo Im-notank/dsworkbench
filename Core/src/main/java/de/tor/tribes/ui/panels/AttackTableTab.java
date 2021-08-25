@@ -15,13 +15,11 @@
  */
 package de.tor.tribes.ui.panels;
 
-import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.TroopAmountElement;
 import de.tor.tribes.io.UnitHolder;
 import de.tor.tribes.types.Attack;
 import de.tor.tribes.types.TimeSpan;
-import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.editors.*;
@@ -38,7 +36,6 @@ import de.tor.tribes.util.attack.AttackManager;
 import de.tor.tribes.util.attack.StandardAttackManager;
 import de.tor.tribes.util.bb.AttackListFormatter;
 import de.tor.tribes.util.html.AttackPlanHTMLExporter;
-import de.tor.tribes.util.js.AttackScriptWriter;
 import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
@@ -82,7 +79,7 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     private static Logger logger = LogManager.getLogger("AttackTableTab");
 
     public enum TRANSFER_TYPE {
-        CLIPBOARD_PLAIN, CLIPBOARD_BB, FILE_HTML, FILE_TEXT, FILE_GM, DSWB_RETIME, SELECTION_TOOL, BROWSER_LINK, CUT_TO_INTERNAL_CLIPBOARD, COPY_TO_INTERNAL_CLIPBOARD, FROM_INTERNAL_CLIPBOARD
+        CLIPBOARD_PLAIN, CLIPBOARD_BB, FILE_HTML, FILE_TEXT, FILE_GM, DSWB_RETIME, SELECTION_TOOL, CUT_TO_INTERNAL_CLIPBOARD, COPY_TO_INTERNAL_CLIPBOARD, FROM_INTERNAL_CLIPBOARD
     }
     private String sAttackPlan = null;
     private final static JXTable jxAttackTable = new JXTable();
@@ -114,9 +111,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         TableColumnExt drawCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.show_on_map"));
         drawCol.setCellRenderer(new CustomBooleanRenderer(CustomBooleanRenderer.LayoutStyle.DRAW_NOTDRAW));
         drawCol.setCellEditor(new CustomCheckBoxEditor(CustomBooleanRenderer.LayoutStyle.DRAW_NOTDRAW));
-        TableColumnExt transferCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.transfer"));
-        transferCol.setCellRenderer(new CustomBooleanRenderer(CustomBooleanRenderer.LayoutStyle.SENT_NOTSENT));
-        transferCol.setCellEditor(new CustomCheckBoxEditor(CustomBooleanRenderer.LayoutStyle.SENT_NOTSENT));
         TableColumnExt runtimeCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.runtime"));
         runtimeCol.setVisible(false);
         
@@ -184,13 +178,8 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         }
         jxAttackTable.getSelectionModel().addListSelectionListener(AttackTableTab.this);
         jDateField.setDate(new Date());
-        jShowAttacksInVillageInfo.setSelected(GlobalOptions.getProperties().getBoolean("attack.script.attacks.in.village.info"));
-        jShowAttacksOnConfirmPage.setSelected(GlobalOptions.getProperties().getBoolean("attack.script.attacks.on.confirm.page"));
-        jShowAttacksInPlace.setSelected(GlobalOptions.getProperties().getBoolean("attack.script.attacks.in.place"));
-        jShowAttacksInOverview.setSelected(GlobalOptions.getProperties().getBoolean("attack.script.attacks.in.overview"));
         jTimeChangeDialog.pack();
         jChangeAttackTypeDialog.pack();
-        jScriptExportDialog.pack();
     }
 
     public void deregister() {
@@ -309,7 +298,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 jxAttackTable,
                 trans.getRaw("ui.models.AttackTableModel.unit"),
                 trans.getRaw("ui.models.AttackTableModel.type"),
-                trans.getRaw("ui.models.AttackTableModel.transfer"),
                 trans.getRaw("ui.models.AttackTableModel.show_on_map")
         );
 
@@ -383,13 +371,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jScriptExportDialog = new javax.swing.JDialog();
-        jShowAttacksInVillageInfo = new javax.swing.JCheckBox();
-        jShowAttacksOnConfirmPage = new javax.swing.JCheckBox();
-        jShowAttacksInPlace = new javax.swing.JCheckBox();
-        jShowAttacksInOverview = new javax.swing.JCheckBox();
-        jDoScriptExportButton = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
         jTimeChangeDialog = new javax.swing.JDialog();
         jOKButton = new javax.swing.JButton();
         jCancelButton = new javax.swing.JButton();
@@ -433,70 +414,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         jScrollPane1 = new javax.swing.JScrollPane();
         infoPanel = new org.jdesktop.swingx.JXCollapsiblePane();
         jXLabel1 = new org.jdesktop.swingx.JXLabel();
-
-        jScriptExportDialog.setTitle("Scripteinstellungen");
-
-        jShowAttacksInVillageInfo.setSelected(true);
-        jShowAttacksInVillageInfo.setText("Befehle in den Dorfinformationen anzeigen");
-
-        jShowAttacksOnConfirmPage.setSelected(true);
-        jShowAttacksOnConfirmPage.setText("Befehle auf der Befehlsbestätigungsseite anzeigen");
-
-        jShowAttacksInPlace.setSelected(true);
-        jShowAttacksInPlace.setText("Befehle im Versammlungsplatz anzeigen");
-
-        jShowAttacksInOverview.setSelected(true);
-        jShowAttacksInOverview.setText("Befehle in den Übersichten anzeigen");
-
-        jDoScriptExportButton.setText("Script erstellen");
-        jDoScriptExportButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                fireDoExportAsScriptEvent(evt);
-            }
-        });
-
-        jButton14.setText("Abbrechen");
-        jButton14.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                fireDoExportAsScriptEvent(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jScriptExportDialogLayout = new javax.swing.GroupLayout(jScriptExportDialog.getContentPane());
-        jScriptExportDialog.getContentPane().setLayout(jScriptExportDialogLayout);
-        jScriptExportDialogLayout.setHorizontalGroup(
-            jScriptExportDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jScriptExportDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jScriptExportDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jShowAttacksInPlace, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jShowAttacksInOverview, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addGroup(jScriptExportDialogLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-                        .addComponent(jButton14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDoScriptExportButton))
-                    .addComponent(jShowAttacksOnConfirmPage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jShowAttacksInVillageInfo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jScriptExportDialogLayout.setVerticalGroup(
-            jScriptExportDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jScriptExportDialogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jShowAttacksInVillageInfo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jShowAttacksOnConfirmPage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jShowAttacksInPlace)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jShowAttacksInOverview)
-                .addGap(18, 18, 18)
-                .addGroup(jScriptExportDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jDoScriptExportButton)
-                    .addComponent(jButton14))
-                .addContainerGap())
-        );
 
         jTimeChangeDialog.setTitle("Zeiten ändern");
 
@@ -958,13 +875,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         add(infoPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fireDoExportAsScriptEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireDoExportAsScriptEvent
-        if (evt.getSource() == jDoScriptExportButton) {
-            actionListener.actionPerformed(new ActionEvent(this, 0, "ExportScript"));
-        }
-        jScriptExportDialog.setVisible(false);
-    }//GEN-LAST:event_fireDoExportAsScriptEvent
-
     private void fireCloseTimeChangeDialogEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireCloseTimeChangeDialogEvent
         if (evt.getSource() == jOKButton) {
             actionListener.actionPerformed(new ActionEvent(this, 0, "TimeChange"));
@@ -1052,13 +962,11 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     private static javax.swing.JComboBox jAdaptTypeBox;
     private static javax.swing.JCheckBox jAdeptTypeBox;
     private static javax.swing.JCheckBox jAdeptUnitBox;
-    private static javax.swing.JButton jButton14;
     private static javax.swing.JButton jButton15;
     private static javax.swing.JButton jCancelButton;
     private static javax.swing.JDialog jChangeAttackTypeDialog;
     private static de.tor.tribes.ui.components.DateTimeField jDateField;
     private static javax.swing.JSpinner jDayField;
-    private static javax.swing.JButton jDoScriptExportButton;
     private static javax.swing.JSpinner jHourField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
@@ -1081,14 +989,9 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     private javax.swing.JPanel jPanel5;
     private static javax.swing.JFormattedTextField jRandomField;
     private static javax.swing.JRadioButton jRandomizeOption;
-    private static javax.swing.JDialog jScriptExportDialog;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private static javax.swing.JSpinner jSecondsField;
-    private static javax.swing.JCheckBox jShowAttacksInOverview;
-    private static javax.swing.JCheckBox jShowAttacksInPlace;
-    private static javax.swing.JCheckBox jShowAttacksInVillageInfo;
-    private static javax.swing.JCheckBox jShowAttacksOnConfirmPage;
     private static javax.swing.JDialog jTimeChangeDialog;
     private static javax.swing.JComboBox jTypeComboBox;
     private org.jdesktop.swingx.JXLabel jUnconfiguredTypeWarning;
@@ -1234,35 +1137,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         attackModel.fireTableDataChanged();
     }
 
-    public void fireExportScriptEvent() {
-        List<Attack> attacks = getSelectedAttacks();
-        if (attacks.isEmpty()) {
-            return;
-        }
-
-        if (AttackScriptWriter.writeAttackScript(attacks, false, 5, true, Color.GREEN, Color.RED, jShowAttacksInVillageInfo.isSelected(), jShowAttacksOnConfirmPage.isSelected(), jShowAttacksInPlace.isSelected(), jShowAttacksInOverview.isSelected())) {
-            showSuccess(trans.get("Scripterfolgreich"));
-            if (System.getProperty("os.name").startsWith("Windows")) {
-                if (JOptionPaneHelper.showQuestionConfirmBox(this, trans.get("Speicherverzeichnis"),
-                        trans.get("Information"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.YES_OPTION) {
-                    try {
-                        Runtime.getRuntime().exec("explorer.exe .\\");
-                    } catch (Exception e) {
-                        showError(trans.get("Explorer_noopen"));
-                    }
-                }
-            }
-        } else {
-            showError(trans.get("Error_writing_script"));
-        }
-        //store properties
-        GlobalOptions.addProperty("attack.script.draw.vectors", Boolean.toString(false));
-        GlobalOptions.addProperty("attack.script.attacks.in.village.info", Boolean.toString(jShowAttacksInVillageInfo.isSelected()));
-        GlobalOptions.addProperty("attack.script.attacks.on.confirm.page", Boolean.toString(jShowAttacksOnConfirmPage.isSelected()));
-        GlobalOptions.addProperty("attack.script.attacks.in.place", Boolean.toString(jShowAttacksInPlace.isSelected()));
-        GlobalOptions.addProperty("attack.script.attacks.in.overview", Boolean.toString(jShowAttacksInOverview.isSelected()));
-    }
-
     public void cleanup() {
         List<Attack> elements = AttackManager.getSingleton().getAllElements(sAttackPlan);
         List<Attack> toRemove = new LinkedList<>();
@@ -1329,17 +1203,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         }
     }
 
-    public void setSelectionUnsent() {
-        if (!getSelectedAttacks().isEmpty()) {
-            for (Attack a : getSelectedAttacks()) {
-                a.setTransferredToBrowser(false);
-            }
-            attackModel.fireTableDataChanged();
-        } else {
-            showInfo(trans.get("KeinBefehlgewaehlt"));
-        }
-    }
-
     public void changeSelectionDrawState() {
         if (!getSelectedAttacks().isEmpty()) {
             for (Attack a : getSelectedAttacks()) {
@@ -1349,16 +1212,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         } else {
             showInfo(trans.get("KeinBefehlgewaehlt"));
         }
-    }
-
-    public void transferToScript() {
-        if (getSelectedAttacks().isEmpty()) {
-            showInfo(trans.get("KeinBefehlgewaehlt"));
-            return;
-        }
-        jScriptExportDialog.pack();
-        jScriptExportDialog.setLocationRelativeTo(this);
-        jScriptExportDialog.setVisible(true);
     }
 
     private void transferToSelectionTool() {
@@ -1413,10 +1266,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
             case CLIPBOARD_BB:
                 copyBBToExternalClipboardEvent();
                 break;
-            case BROWSER_LINK:
-                //use own thread against blocking of render thread
-                new Thread(this::sendAttacksToBrowser).start();
-                break;
             case FILE_HTML:
                 copyHTMLToFileEvent();
                 break;
@@ -1425,9 +1274,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 break;
             case DSWB_RETIME:
                 sendAttackToRetimeFrame();
-                break;
-            case FILE_GM:
-                transferToScript();
                 break;
             case SELECTION_TOOL:
                 transferToSelectionTool();
@@ -1572,87 +1418,6 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         } else {
             showInfo(trans.get("AbbruchSpeichern"));
         }
-    }
-
-    private void sendAttacksToBrowser() {
-        List<Attack> attacks = getSelectedAttacks();
-        if (attacks.isEmpty()) {
-            showInfo(trans.get("KeineBefehleausgewaehlt"));
-            return;
-        }
-        int sentAttacks = 0;
-        int ignoredAttacks = 0;
-        int errors = 0;
-        UserProfile profile = DSWorkbenchAttackFrame.getSingleton().getQuickProfile();
-        boolean clickAccountEmpty = false;
-
-        for (Attack a : attacks) {
-            try {
-                if (!a.isTransferredToBrowser()) {
-                    if (attacks.size() > 1) {//try to use click in case of multiple attacks
-                        if (!DSWorkbenchAttackFrame.getSingleton().decreaseClickAccountValue()) {
-                            //no click left
-                            clickAccountEmpty = true;
-                            break;
-                        }
-                    }
-                    
-                    //decrease multiple times in case of multiplier > 1
-                    for(int i = 0; i < a.getMultiplier() - 1; i++) {
-                        if(!DSWorkbenchAttackFrame.getSingleton().decreaseClickAccountValue()) {
-                            //clicks empty / not enough for sending full attack
-                            //give clicks back that were used to much
-                            for(int j = 0; j < i+1; j++) {
-                                DSWorkbenchAttackFrame.getSingleton().increaseClickAccountValue();
-                            }
-                            clickAccountEmpty = true;
-                            break;
-                       }
-                    }
-                    if(clickAccountEmpty) break;
-                    
-                    for(int i = 0; i < a.getMultiplier(); i++) {
-                        if (BrowserInterface.sendAttack(a, profile)) {
-                            a.setTransferredToBrowser(true);
-                            sentAttacks++;
-                        } else {//give click back in case of an error and for multiple attacks
-                            if (attacks.size() > 1) {
-                                DSWorkbenchAttackFrame.getSingleton().increaseClickAccountValue();
-                            }
-                        }
-                    }
-                } else {
-                    ignoredAttacks++;
-                }
-            } catch(Exception e) {
-                logger.error("Unhandled exception while sending attacks\n{}", a.toInternalRepresentation(), e);
-                errors++;
-            }
-        }
-        
-        if (sentAttacks == 1) {
-            jxAttackTable.getSelectionModel().setSelectionInterval(jxAttackTable.getSelectedRow() + 1, jxAttackTable.getSelectedRow() + 1);
-        } else {
-            jxAttackTable.getSelectionModel().setSelectionInterval(jxAttackTable.getSelectedRow() + sentAttacks, jxAttackTable.getSelectedRow() + sentAttacks);
-        }
-
-        String usedProfile = "";
-        if (profile != null) {
-            usedProfile = trans.get("als") + profile.toString();
-        }
-        String message = "<html>" + sentAttacks + trans.get("von") + attacks.size() + trans.get("Befehlen_HTML") + usedProfile + trans.get("Browseruebertragen_HTML");
-        if(errors != 0) {
-            message += "<br/>" + errors + trans.get("BefehleinternenFehler");
-        }
-        if (ignoredAttacks != 0) {
-            message += "<br/>" + ignoredAttacks + trans.get("Befehleignoriert");
-        }
-
-        if (clickAccountEmpty) {
-            message += trans.get("KlickKonto");
-        }
-        message += "</html>";
-        showInfo(message);
     }
 
     private boolean copyToInternalClipboard() {

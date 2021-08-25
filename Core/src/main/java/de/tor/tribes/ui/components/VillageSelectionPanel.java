@@ -22,7 +22,6 @@ import de.tor.tribes.types.ext.Ally;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.renderer.UnitListCellRenderer;
-import de.tor.tribes.ui.wiz.red.ResourceDistributorDataReadPanel;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
@@ -72,7 +71,7 @@ public class VillageSelectionPanel extends javax.swing.JPanel{
         initComponents();
         listener = pListener;
 
-        jFromClipboard.setIcon(new ImageIcon(ResourceDistributorDataReadPanel.class.getResource("/res/ui/clipboard.png")));
+        jFromClipboard.setIcon(new ImageIcon(VillageSelectionPanel.class.getResource("/res/ui/clipboard.png")));
         
         allyList = new IconizedList("/res/awards/ally.png");
         jAllyScrollPane.setViewportView(allyList);

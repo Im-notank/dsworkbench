@@ -18,7 +18,6 @@ package de.tor.tribes.ui.views;
 import de.tor.tribes.control.GenericManagerListener;
 import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.Village;
-import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.ProfileQuickChangePanel;
 import de.tor.tribes.ui.components.TabPaneComponent;
 import de.tor.tribes.ui.panels.AttackTableTab;
@@ -76,8 +75,6 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 activeTab.fireChangeUnitEvent();
             } else if (e.getActionCommand().equals("Recolor")) {
                 activeTab.updateSortHighlighter();
-            } else if (e.getActionCommand().equals("ExportScript")) {
-                activeTab.fireExportScriptEvent();
             } else if (e.getActionCommand().equals("Copy")) {
                 activeTab.transferSelection(AttackTableTab.TRANSFER_TYPE.COPY_TO_INTERNAL_CLIPBOARD);
             } else if (e.getActionCommand().equals("BBCopy")) {
@@ -128,7 +125,6 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
     private static DSWorkbenchAttackFrame SINGLETON = null;
     private CountdownThread mCountdownThread = null;
     private GenericTestPanel centerPanel = null;
-    private ClickAccountPanel clickAccount = null;
     private ProfileQuickChangePanel profilePanel = null;
 
     public static synchronized DSWorkbenchAttackFrame getSingleton() {
@@ -291,16 +287,6 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        editTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser_unsent.png", trans.get("UebertragenFeld"), new MouseAdapter() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                AttackTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.setSelectionUnsent();
-                }
-            }
-        }));
         editTaskPane.getContentPane().add(factoryButton("/res/ui/pencil2.png", trans.get("MarkierteBefehle"), new MouseAdapter() {
 
             @Override
@@ -358,16 +344,6 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
                 }
             }
         }));
-        transferTaskPane.getContentPane().add(factoryButton("/res/ui/att_browser.png", trans.get("MarkierteBefehleBrowser"), new MouseAdapter() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                AttackTableTab activeTab = getActiveTab();
-                if (activeTab != null) {
-                    activeTab.transferSelection(AttackTableTab.TRANSFER_TYPE.BROWSER_LINK);
-                }
-            }
-        }));
         transferTaskPane.getContentPane().add(factoryButton("/res/ui/export_js.png", trans.get("MarkierteBefehleUserscript"), new MouseAdapter() {
 
             @Override
@@ -419,9 +395,8 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         }));
         // </editor-fold>
 
-        clickAccount = new ClickAccountPanel();
         profilePanel = new ProfileQuickChangePanel();
-        centerPanel.setupTaskPane(clickAccount, profilePanel, editTaskPane, transferTaskPane, miscTaskPane);
+        centerPanel.setupTaskPane(profilePanel, editTaskPane, transferTaskPane, miscTaskPane);
     }
 
     /**
@@ -657,14 +632,6 @@ private void createNewAttackPlan() {
         jAttackFrameAlwaysOnTop.setSelected(false);
         fireAttackFrameAlwaysOnTopEvent(null);
         super.toBack();
-    }
-
-    public boolean decreaseClickAccountValue() {
-        return clickAccount.useClick();
-    }
-
-    public void increaseClickAccountValue() {
-        clickAccount.giveClickBack();
     }
 
     public UserProfile getQuickProfile() {

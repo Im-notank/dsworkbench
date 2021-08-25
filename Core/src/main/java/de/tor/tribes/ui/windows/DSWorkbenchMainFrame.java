@@ -28,7 +28,6 @@ import de.tor.tribes.ui.components.WelcomePanel;
 import de.tor.tribes.ui.panels.MapPanel;
 import de.tor.tribes.ui.panels.MinimapPanel;
 import de.tor.tribes.ui.views.*;
-import de.tor.tribes.ui.wiz.red.ResourceDistributorWizard;
 import de.tor.tribes.ui.wiz.tap.TacticsPlanerWizard;
 import de.tor.tribes.util.*;
 import de.tor.tribes.util.attack.AttackManager;
@@ -36,7 +35,6 @@ import de.tor.tribes.util.attack.StandardAttackManager;
 import de.tor.tribes.util.conquer.ConquerManager;
 import de.tor.tribes.util.dist.DistanceManager;
 import de.tor.tribes.util.dsreal.DSRealManager;
-import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.interfaces.DSWorkbenchFrameListener;
 import de.tor.tribes.util.interfaces.MapShotListener;
 import de.tor.tribes.util.interfaces.ToolChangeListener;
@@ -253,12 +251,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
             } else if ((e.getKeyCode() == KeyEvent.VK_6) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
                 //attack ingame tool shortcut
                 MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_RADAR);
-            } else if ((e.getKeyCode() == KeyEvent.VK_7) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-                //attack ingame tool shortcut
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_ATTACK_INGAME);
-            } else if ((e.getKeyCode() == KeyEvent.VK_8) && e.isAltDown() && !e.isShiftDown() && !e.isControlDown()) {
-                //res ingame tool shortcut
-                MapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_SEND_RES_INGAME);
             } else if ((e.getKeyCode() == KeyEvent.VK_1) && e.isControlDown() && !e.isShiftDown() && !e.isAltDown()) {
                 //move minimap tool shortcut
                 MinimapPanel.getSingleton().setCurrentCursor(ImageManager.CURSOR_MOVE);
@@ -493,7 +485,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
       DSWorkbenchAttackFrame.getSingleton().restoreProperties();
       DSWorkbenchAttackFrame.getSingleton().updateCountdownSettings();
       TacticsPlanerWizard.restoreProperties();
-      ResourceDistributorWizard.restoreProperties();
       DSWorkbenchTagFrame.getSingleton().resetView();
       DSWorkbenchTagFrame.getSingleton().restoreProperties();
       DSWorkbenchConquersFrame.getSingleton().resetView();
@@ -514,8 +505,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
       DSWorkbenchReportFrame.getSingleton().restoreProperties();
       DSWorkbenchSOSRequestAnalyzer.getSingleton().resetView();
       DSWorkbenchSOSRequestAnalyzer.getSingleton().restoreProperties();
-      DSWorkbenchFarmManager.getSingleton().resetView();
-      DSWorkbenchFarmManager.getSingleton().restoreProperties();
       BBCodeEditor.getSingleton().reset();
       //update attack planner
       DSWorkbenchSettingsDialog.getSingleton().setupAttackColorTable();
@@ -808,7 +797,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
         jExportForms = new javax.swing.JCheckBox();
         jExportVillageInformation = new javax.swing.JCheckBox();
         jExportStdAttacks = new javax.swing.JCheckBox();
-        jExportFarminfos = new javax.swing.JCheckBox();
         jExportSplits = new javax.swing.JCheckBox();
         jExportSOS = new javax.swing.JCheckBox();
         jAddROIDialog = new javax.swing.JDialog();
@@ -1124,18 +1112,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
         gridBagConstraints.weightx = 1.0;
         jPanel5.add(jExportStdAttacks, gridBagConstraints);
 
-        jExportFarminfos.setText("Farminfos");
-        jExportFarminfos.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        jExportFarminfos.setMinimumSize(new java.awt.Dimension(130, 24));
-        jExportFarminfos.setPreferredSize(new java.awt.Dimension(130, 24));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
-        gridBagConstraints.weightx = 1.0;
-        jPanel5.add(jExportFarminfos, gridBagConstraints);
-
         jExportSplits.setText("Split Sets");
         jExportSplits.setToolTipText("Enthält Gebäudeinfos (z.B. Kichrche, Wachturm)");
         jExportSplits.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
@@ -1267,9 +1243,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveE.setBackground(new java.awt.Color(239, 235, 223));
         jMoveE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_e.png"))); // NOI18N
-        jMoveE.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveE.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveE.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1278,9 +1251,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveNE.setBackground(new java.awt.Color(239, 235, 223));
         jMoveNE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_ne.png"))); // NOI18N
-        jMoveNE.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveNE.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveNE.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveNE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1289,9 +1259,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveN.setBackground(new java.awt.Color(239, 235, 223));
         jMoveN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_n.png"))); // NOI18N
-        jMoveN.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveN.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveN.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1300,9 +1267,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveNW.setBackground(new java.awt.Color(239, 235, 223));
         jMoveNW.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_nw.png"))); // NOI18N
-        jMoveNW.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveNW.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveNW.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveNW.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1311,9 +1275,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveW.setBackground(new java.awt.Color(239, 235, 223));
         jMoveW.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_w.png"))); // NOI18N
-        jMoveW.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveW.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveW.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveW.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1322,9 +1283,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveSW.setBackground(new java.awt.Color(239, 235, 223));
         jMoveSW.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_sw.png"))); // NOI18N
-        jMoveSW.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveSW.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveSW.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveSW.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1333,9 +1291,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveS.setBackground(new java.awt.Color(239, 235, 223));
         jMoveS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_s.png"))); // NOI18N
-        jMoveS.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveS.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveS.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveS.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1344,9 +1299,6 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
 
         jMoveSE.setBackground(new java.awt.Color(239, 235, 223));
         jMoveSE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/map_se.png"))); // NOI18N
-        jMoveSE.setMaximumSize(new java.awt.Dimension(21, 21));
-        jMoveSE.setMinimumSize(new java.awt.Dimension(21, 21));
-        jMoveSE.setPreferredSize(new java.awt.Dimension(21, 21));
         jMoveSE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fireMoveMapEvent(evt);
@@ -1433,23 +1385,23 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
                     .addGroup(jNavigationPanelLayout.createSequentialGroup()
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jNavigationPanelLayout.createSequentialGroup()
-                                .addComponent(jMoveNW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jMoveNW)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jMoveN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jMoveN))
                             .addGroup(jNavigationPanelLayout.createSequentialGroup()
-                                .addComponent(jMoveW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jMoveW)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jMoveE1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jMoveNE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jMoveNE)
+                            .addComponent(jMoveE)))
                     .addGroup(jNavigationPanelLayout.createSequentialGroup()
-                        .addComponent(jMoveSW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jMoveSW)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMoveS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jMoveS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jMoveSE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jMoveSE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jZoomInButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1475,19 +1427,19 @@ public class DSWorkbenchMainFrame extends JRibbonFrame implements
                 .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jNavigationPanelLayout.createSequentialGroup()
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jMoveNE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveNW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jMoveNE)
+                            .addComponent(jMoveN)
+                            .addComponent(jMoveNW))
                         .addGap(4, 4, 4)
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jMoveE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jMoveE)
+                            .addComponent(jMoveW)
                             .addComponent(jMoveE1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jMoveSW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jMoveSE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jMoveSW)
+                            .addComponent(jMoveS)
+                            .addComponent(jMoveSE)))
                     .addGroup(jNavigationPanelLayout.createSequentialGroup()
                         .addGroup(jNavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCenterX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2232,7 +2184,6 @@ private void fireExportEvent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
     needExport |= jExportForms.isSelected();
     needExport |= !noteSetsToExport.isEmpty();
     needExport |= jExportVillageInformation.isSelected();
-    needExport |= jExportFarminfos.isSelected();
     needExport |= jExportSOS.isSelected();
     needExport |= jExportSplits.isSelected();
     needExport |= jExportStdAttacks.isSelected();
@@ -2314,10 +2265,6 @@ private void fireExportEvent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_
 
         if (jExportVillageInformation.isSelected()) {
           backup.addContent(KnownVillageManager.getSingleton().getExportData(null));
-        }
-
-        if (jExportFarminfos.isSelected()) {
-          backup.addContent(FarmManager.getSingleton().getExportData(null));
         }
 
         if (jExportSOS.isSelected()) {
@@ -2423,7 +2370,6 @@ private void fireDSWorkbenchClosingEvent(java.awt.event.WindowEvent evt) {//GEN-
     GlobalOptions.addProperty("ribbon.minimized", Boolean.toString(getRibbon().isMinimized()));
     GlobalOptions.getSelectedProfile().updateProperties();
     TacticsPlanerWizard.storeProperties();
-    ResourceDistributorWizard.storeProperties();
     GlobalOptions.getSelectedProfile().storeProfileData();
   } catch (Exception e) {
     logger.error("Failed to store profile settings on shutdown");
@@ -2648,18 +2594,17 @@ private void fireChangeClipboardWatchEvent(java.awt.event.MouseEvent evt) {//GEN
     }
     importedNum[0] = AttackManager.getSingleton().importData(data, pExtension);
     importedNum[1] = StandardAttackManager.getSingleton().importData(data, pExtension);
-    importedNum[2] = FarmManager.getSingleton().importData(data, pExtension);
-    importedNum[3] = FormManager.getSingleton().importData(data, pExtension);
-    importedNum[4] = MarkerManager.getSingleton().importData(data, pExtension);
-    importedNum[5] = NoteManager.getSingleton().importData(data, pExtension);
-    importedNum[6] = ReportManager.getSingleton().importData(data, pExtension);
-    importedNum[7] = SOSManager.getSingleton().importData(data, pExtension);
-    importedNum[8] = TagManager.getSingleton().importData(data, pExtension);
-    importedNum[9] = TroopsManager.getSingleton().importData(data, null);
-    importedNum[10] = KnownVillageManager.getSingleton().importData(data, pExtension);
-    importedNum[11] = SplitSetHelper.importData(data, pExtension);
+    importedNum[2] = FormManager.getSingleton().importData(data, pExtension);
+    importedNum[3] = MarkerManager.getSingleton().importData(data, pExtension);
+    importedNum[4] = NoteManager.getSingleton().importData(data, pExtension);
+    importedNum[5] = ReportManager.getSingleton().importData(data, pExtension);
+    importedNum[6] = SOSManager.getSingleton().importData(data, pExtension);
+    importedNum[7] = TagManager.getSingleton().importData(data, pExtension);
+    importedNum[8] = TroopsManager.getSingleton().importData(data, null);
+    importedNum[9] = KnownVillageManager.getSingleton().importData(data, pExtension);
+    importedNum[10] = SplitSetHelper.importData(data, pExtension);
     
-    String names[] = new String[]{trans.get("Angriffe"), trans.get("StandardAngriffe"), trans.get("Farmen"),
+    String names[] = new String[]{trans.get("Angriffe"), trans.get("StandardAngriffe"),
         trans.get("Formen"), trans.get("Markierungen"), trans.get("Notizen"), trans.get("Berichte"), trans.get("SOSInfos"), trans.get("Gruppen"),
         trans.get("Truppen"), trans.get("Dorfinfos"), trans.get("Splits")};
     boolean allOk = true;
@@ -2948,7 +2893,6 @@ private void fireChangeClipboardWatchEvent(java.awt.event.MouseEvent evt) {//GEN
     private javax.swing.JButton jEnableClipboardWatchButton;
     private javax.swing.JButton jExportButton;
     private javax.swing.JDialog jExportDialog;
-    private javax.swing.JCheckBox jExportFarminfos;
     private javax.swing.JCheckBox jExportForms;
     private javax.swing.JCheckBox jExportSOS;
     private javax.swing.JCheckBox jExportSplits;
@@ -3056,8 +3000,6 @@ class BackupTask extends TimerTask {
       backup.addContent(AttackManager.getSingleton().getExportData(Arrays.asList(AttackManager.getSingleton().getGroups())));
       logger.debug(" - Backing up std-attacks");
       backup.addContent(StandardAttackManager.getSingleton().getExportData(null));
-      logger.debug(" - Backing up farms");
-      backup.addContent(FarmManager.getSingleton().getExportData(null));
       logger.debug(" - Backing up forms");
       backup.addContent(FormManager.getSingleton().getExportData(null));
       logger.debug(" - Backing up markers");

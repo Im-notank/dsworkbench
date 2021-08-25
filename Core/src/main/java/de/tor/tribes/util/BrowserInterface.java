@@ -40,85 +40,6 @@ public class BrowserInterface {
 
     private static Logger logger = LogManager.getLogger("BrowserInterface");
 
-    public static boolean sendAttack(Attack pAttack) {
-        return sendAttack(pAttack, null);
-    }
-
-    public static boolean sendAttack(Attack pAttack, UserProfile pProfile) {
-        boolean result = false;
-        if (pAttack != null) {
-            result = sendTroops(pAttack.getSource(), pAttack.getTarget(), pAttack.getSendTime(),
-                    pAttack.getTroops().transformToFixed(pAttack.getSource()) , pProfile);
-            pAttack.setTransferredToBrowser(result);
-        }
-        return result;
-    }
-
-    public static boolean sendTroops(Village pSource, Village pTarget) {
-        return sendTroops(pSource, pTarget, new TroopAmountFixed(0));
-    }
-
-    public static boolean sendTroops(Village pSource, Village pTarget, TroopAmountFixed pTroops) {
-        return sendTroops(pSource, pTarget, pTroops, null);
-    }
-
-    public static boolean sendTroops(Village pSource, Village pTarget, TroopAmountFixed pTroops, UserProfile pProfile) {
-        return sendTroops(pSource, pTarget, null, pTroops, pProfile);
-    }
-
-    public static boolean sendTroops(Village pSource, Village pTarget, Date pSendTime, TroopAmountFixed pTroops, UserProfile pProfile) {
-        try {
-            logger.debug("Transfer troops to browser for village '" + pSource + "' to '" + pTarget + "'");
-            
-            StringBuilder url = getBaseUrl(null);
-            url.append("village=").append(pSource.getId());
-            url.append("&screen=place&mode=command&target=").append(pTarget.getId());
-            url.append("&type=0");
-            
-            for (UnitHolder unit : DataHolder.getSingleton().getSendableUnits()) {
-                int amount = pTroops.getAmountForUnit(unit);
-                if (amount < 0) {
-                    amount = 0;
-                }
-                url.append("&").append(unit.getPlainName()).append("=").append(amount);
-            }
-            
-            if (pSendTime != null) {
-                url.append("&ts=").append(pSendTime.getTime());
-            } else {
-                url.append("&ts=").append(System.currentTimeMillis());
-            }
-            
-            return openPage(url.toString());
-        } catch (Throwable t) {
-            logger.error("Failed to open browser window", t);
-            return false;
-        }
-    }
-    
-    public static boolean sendRes(Village pSource, Village pTarget) {
-        return sendRes(pSource, pTarget, null, null);
-    }
-
-    public static boolean sendRes(Village pSource, Village pTarget, Transport pTrans, UserProfile pProfile) {
-        try {
-            StringBuilder url = getBaseUrl(null);
-            url.append("village=").append(pSource.getId());
-            url.append("&screen=market&mode=send&target=").append(pTarget.getId());
-            if(pTrans != null) {
-                url.append("&type=1");
-                url.append("&wood=").append(pTrans.getSingleTransports().get(0).getAmount());
-                url.append("&stone=").append(pTrans.getSingleTransports().get(1).getAmount());
-                url.append("&iron=").append(pTrans.getSingleTransports().get(2).getAmount());
-            }
-            
-            return openPage(url.toString());
-        } catch (Throwable t) {
-            logger.error("Failed to open browser window", t);
-            return false;
-        }
-    }
-
     public static boolean centerVillage(Village pSource) {
         return centerCoordinate(pSource.getX(), pSource.getY());
     }
@@ -155,7 +76,7 @@ public class BrowserInterface {
         try {
             StringBuilder url = getBaseUrl(null);
             url.append("village=").append(pVillage.getId());
-            url.append("&screen=info_player&id=").append(pVillage.getId());
+            url.append("&screen=info_village&id=").append(pVillage.getId());
             
             return openPage(url.toString());
         } catch (Throwable t) {

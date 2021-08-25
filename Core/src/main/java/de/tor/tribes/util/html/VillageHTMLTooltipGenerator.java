@@ -31,7 +31,6 @@ import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.ServerSettings;
 import de.tor.tribes.util.TimeManager;
 import de.tor.tribes.util.conquer.ConquerManager;
-import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.mark.MarkerManager;
 import de.tor.tribes.util.note.NoteManager;
 import de.tor.tribes.util.report.ReportManager;
@@ -123,15 +122,6 @@ public class VillageHTMLTooltipGenerator {
             }
             imgString += "\"/>";
             b.append(buildInfoRow("Letzter Bericht:", imgString + " " + df.format(r.getTimestamp()), false));
-        }
-        
-        FarmInformation fi = FarmManager.getSingleton().getFarmInformation(pVillage);
-        if (fi != null) {
-            b.append(buildInfoRow("Letzter Farmangriff:", (fi.getLastReport() > 0) ? df.format(fi.getLastReport()) : "Keine Informationen", false));
-            b.append(buildInfoRow("Rohstoffe im Speicher:",
-                    nf.format(fi.getWoodInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/holz.png") + "\"/>&nbsp;"
-                    + nf.format(fi.getClayInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/lehm.png") + "\"/>&nbsp;"
-                    + nf.format(fi.getIronInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/eisen.png") + "\"/>", false));
         }
         
         if (showFarmSpace) {
