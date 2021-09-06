@@ -491,7 +491,7 @@ public class Attack extends ManageableType implements Serializable, Comparable<A
         if (uvID >= 0) {
             placeURL = baseURL + "game.php?t=" + uvID + "&village=";
         }
-        placeURL += source.getId() + "&screen=place&mode=command&target=" + target.getId();
+        placeURL += source.getId() + "&screen=place&target=" + target.getId();
 
         String placeURLVal = placeURL;
         
