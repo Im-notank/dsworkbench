@@ -394,7 +394,7 @@ public class DSWorkbenchKnownVillageFrame extends AbstractDSWorkbenchFrame imple
             String b = buffer.toString();
             StringTokenizer t = new StringTokenizer(b, "[");
             int cnt = t.countTokens();
-            if (cnt > 1000) {
+            if (cnt > 5000) {
                 if (JOptionPaneHelper.showQuestionConfirmBox(this, trans.get("tausendeBBCode"), trans.get("tomutch_BBCode"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.NO_OPTION) {
                     return;
                 }

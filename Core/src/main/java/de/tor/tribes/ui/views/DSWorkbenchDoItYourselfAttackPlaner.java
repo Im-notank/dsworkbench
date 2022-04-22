@@ -852,7 +852,7 @@ public class DSWorkbenchDoItYourselfAttackPlaner extends AbstractDSWorkbenchFram
             String b = AttackListFormatter.AttackListToBBCodes(this, attacks, trans.get("Angriffsplan"));
             StringTokenizer t = new StringTokenizer(b, "[");
             int cnt = t.countTokens();
-            if (cnt > 1000) {
+            if (cnt > 5000) {
                 if (JOptionPaneHelper.showQuestionConfirmBox(this, trans.get("BB_report_tausend"), trans.get("tomutch_BBCode"), trans.get("Nein"), trans.get("Ja")) == JOptionPane.NO_OPTION) {
                     return;
                 }

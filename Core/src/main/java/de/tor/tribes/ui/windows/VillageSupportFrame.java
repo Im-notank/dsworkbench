@@ -135,8 +135,8 @@ public class VillageSupportFrame extends javax.swing.JFrame implements ActionLis
             String b = AttackListFormatter.AttackListToBBCodes(this, supports, "Unterstützungsplan");
             StringTokenizer t = new StringTokenizer(b, "[");
             int cnt = t.countTokens();
-            if (cnt > 1000) {
-                if (JOptionPaneHelper.showQuestionConfirmBox(this, "Die ausgewählten Unterstützungen benötigen mehr als 1000 BB-Codes\n" + "und können daher im Spiel (Forum/IGM/Notizen) nicht auf einmal dargestellt werden.\nTrotzdem exportieren?", "Zu viele BB-Codes", "Nein", "Ja") == JOptionPane.NO_OPTION) {
+            if (cnt > 5000) {
+                if (JOptionPaneHelper.showQuestionConfirmBox(this, "Die ausgewählten Unterstützungen benötigen mehr als 5000 BB-Codes\n" + "und können daher im Spiel (Forum/IGM/Notizen) nicht auf einmal dargestellt werden.\nTrotzdem exportieren?", "Zu viele BB-Codes", "Nein", "Ja") == JOptionPane.NO_OPTION) {
                     return;
                 }
             }
