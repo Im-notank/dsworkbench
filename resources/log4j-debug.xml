@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="TRACE">
+  <Properties>
+   <Property name="baseDir">log</Property>
+  </Properties>
   <Appenders>
     <RollingFile
       name="MAINFILE"
@@ -13,7 +16,7 @@
       </Policies>
       <DefaultRolloverStrategy>
         <Delete basePath="${baseDir}" maxDepth="1">
-          <IfFileName glob="log/dsworkbench.*.log.gz" />
+          <IfFileName glob="dsworkbench.*.log.gz" />
           <IfLastModified age="7d" />
         </Delete>
       </DefaultRolloverStrategy>
