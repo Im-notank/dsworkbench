@@ -1,5 +1,7 @@
 # DS Workbench
 
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/extremeCrazyCoder/dsworkbench/4.2.3/total.svg)](https://github.com/extremeCrazyCoder/dsworkbench/releases/tag/4.2.3)
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/extremeCrazyCoder/dsworkbench/4.2.2/total.svg)](https://github.com/extremeCrazyCoder/dsworkbench/releases/tag/4.2.2)
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/Torridity/dsworkbench/3.72/total.svg)](https://github.com/Torridity/dsworkbench/releases/tag/3.72)
 
 DS Workbench is a planning tool for the browser game "Tribal Wars" (http://www.die-staemme.de/).
