@@ -352,6 +352,16 @@ public class AttackPlanHTMLExporter {
                 placeURL = baseURL + "game.php?t=" + uvID + "&village=";
             }
             placeURL += a.getSource().getId() + "&screen=place&target=" + a.getTarget().getId();
+
+            StandardAttack stdAttack = StandardAttackManager.getSingleton().getElementByIcon(a.getType());
+            for (UnitHolder u : DataHolder.getSingleton().getUnits()) {
+                int amount = 0;
+                if (stdAttack != null) {
+                    amount = stdAttack.getTroops().getAmountForUnit(u, a.getSource());
+                }
+                placeURL += "&" + u.getPlainName() + "=" + amount;
+            }
+
             b = b.replace(PLACE, placeURL);
             // </editor-fold>
 
