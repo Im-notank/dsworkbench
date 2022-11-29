@@ -23,6 +23,7 @@ import de.tor.tribes.php.UnitTableInterface;
 import de.tor.tribes.types.*;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
+import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.ProfileQuickChangePanel;
 import de.tor.tribes.ui.models.DefenseToolModel;
 import de.tor.tribes.ui.models.SupportsModel;
@@ -90,6 +91,7 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
     private static DSWorkbenchSOSRequestAnalyzer SINGLETON = null;
     private GenericTestPanel centerPanel = null;
     private DefenseAnalyzer a = null;
+    private ClickAccountPanel clickAccount = null;
     private ProfileQuickChangePanel profileQuickchangePanel = null;
 
     public static synchronized DSWorkbenchSOSRequestAnalyzer getSingleton() {
@@ -245,6 +247,18 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
 
         transferPane.getContentPane().add(toRetime);
 
+        JXButton toBrowser = new JXButton(new ImageIcon(DSWorkbenchTagFrame.class.getResource("/res/ui/att_browser.png")));
+        toBrowser.setToolTipText(trans.get("Browser"));
+        toBrowser.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                transferToBrowser();
+            }
+        });
+
+        transferPane.getContentPane().add(toBrowser);
+
         transferPane.getContentPane().add(new JXButton(new AbstractAction(null, new ImageIcon(DSWorkbenchTagFrame.class.getResource("/res/ui/sos_clipboard.png"))) {
 
             @Override
@@ -284,8 +298,9 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
             }
         });
         miscPane.getContentPane().add(setSelectionSecured);
+        clickAccount = new ClickAccountPanel();
         profileQuickchangePanel = new ProfileQuickChangePanel();
-        centerPanel.setupTaskPane(profileQuickchangePanel, viewPane, transferPane, miscPane);
+        centerPanel.setupTaskPane(clickAccount, profileQuickchangePanel, viewPane, transferPane, miscPane);
     }
 
     public boolean sendDataToDefensePlaner() {
@@ -332,6 +347,49 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
             return;
         }
         VillageSupportFrame.getSingleton().showSupportFrame(attacks.get(0).getTarget(), attacks.get(0).getFirstAttack().getTime());
+    }
+
+    private void transferToBrowser() {
+        if (!jScrollPane6.getViewport().getView().equals(jSupportsTable)) {
+            showInfo(trans.get("UnterstuetzungFunktion"));
+            return;
+        }
+        int[] rows = jSupportsTable.getSelectedRows();
+        if (rows == null || rows.length == 0) {
+            showInfo(trans.get("KeineUnterstuezung"));
+            return;
+        }
+        SupportsModel model = TableHelper.getTableModel(jSupportsTable);
+        for (int i : rows) {
+            int row = jSupportsTable.convertRowIndexToModel(i);
+            Defense defense = model.getRows()[row];
+            if (!defense.isTransferredToBrowser()) {
+                if (rows.length == 1 || clickAccount.useClick()) {
+                    Village source = defense.getSupporter();
+                    Village target = defense.getTarget();
+                    TroopAmountFixed units = DSWorkbenchSettingsDialog.getSingleton().getDefense();
+                    if (units == null || !units.hasUnits()) {
+                        showError(trans.get("FehlerhafteEinstellungen"));
+                        break;
+                    }
+                    if (!BrowserInterface.sendTroops(source, target, units, profileQuickchangePanel.getSelectedProfile())) {
+                        if (rows.length > 1) {
+                            clickAccount.giveClickBack();
+                            showError(trans.get("Browsers"));
+                            break;
+                        }
+                    } else {
+                        jSupportsTable.getSelectionModel().removeSelectionInterval(i, i);
+                        defense.setTransferredToBrowser(true);
+                    }
+                } else {
+                    showInfo(trans.get("Click_Konto"));
+                    break;
+                }
+            } else {//already transferred
+                jSupportsTable.getSelectionModel().removeSelectionInterval(i, i);
+            }
+        }
     }
 
     private void copyDefRequests() {

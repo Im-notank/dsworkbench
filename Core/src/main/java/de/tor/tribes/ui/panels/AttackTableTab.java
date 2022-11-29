@@ -15,11 +15,13 @@
  */
 package de.tor.tribes.ui.panels;
 
+import de.tor.tribes.control.ManageableType;
 import de.tor.tribes.io.DataHolder;
 import de.tor.tribes.io.TroopAmountElement;
 import de.tor.tribes.io.UnitHolder;
 import de.tor.tribes.types.Attack;
 import de.tor.tribes.types.TimeSpan;
+import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.ui.ImageManager;
 import de.tor.tribes.ui.editors.*;
@@ -36,6 +38,7 @@ import de.tor.tribes.util.attack.AttackManager;
 import de.tor.tribes.util.attack.StandardAttackManager;
 import de.tor.tribes.util.bb.AttackListFormatter;
 import de.tor.tribes.util.html.AttackPlanHTMLExporter;
+import de.tor.tribes.util.js.AttackScriptWriter;
 import de.tor.tribes.util.translation.TranslationManager;
 import de.tor.tribes.util.translation.Translator;
 import java.awt.*;
@@ -79,7 +82,7 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
     private static Logger logger = LogManager.getLogger("AttackTableTab");
 
     public enum TRANSFER_TYPE {
-        CLIPBOARD_PLAIN, CLIPBOARD_BB, FILE_HTML, FILE_TEXT, FILE_GM, DSWB_RETIME, SELECTION_TOOL, CUT_TO_INTERNAL_CLIPBOARD, COPY_TO_INTERNAL_CLIPBOARD, FROM_INTERNAL_CLIPBOARD
+        CLIPBOARD_PLAIN, CLIPBOARD_BB, FILE_HTML, FILE_TEXT, DSWB_RETIME, SELECTION_TOOL, BROWSER_LINK, CUT_TO_INTERNAL_CLIPBOARD, COPY_TO_INTERNAL_CLIPBOARD, FROM_INTERNAL_CLIPBOARD
     }
     private String sAttackPlan = null;
     private final static JXTable jxAttackTable = new JXTable();
@@ -111,6 +114,9 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         TableColumnExt drawCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.show_on_map"));
         drawCol.setCellRenderer(new CustomBooleanRenderer(CustomBooleanRenderer.LayoutStyle.DRAW_NOTDRAW));
         drawCol.setCellEditor(new CustomCheckBoxEditor(CustomBooleanRenderer.LayoutStyle.DRAW_NOTDRAW));
+        TableColumnExt transferCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.transfer"));
+        transferCol.setCellRenderer(new CustomBooleanRenderer(CustomBooleanRenderer.LayoutStyle.SENT_NOTSENT));
+        transferCol.setCellEditor(new CustomCheckBoxEditor(CustomBooleanRenderer.LayoutStyle.SENT_NOTSENT));
         TableColumnExt runtimeCol = jxAttackTable.getColumnExt(trans.getRaw("ui.models.AttackTableModel.runtime"));
         runtimeCol.setVisible(false);
         
@@ -298,6 +304,7 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 jxAttackTable,
                 trans.getRaw("ui.models.AttackTableModel.unit"),
                 trans.getRaw("ui.models.AttackTableModel.type"),
+                trans.getRaw("ui.models.AttackTableModel.transfer"),
                 trans.getRaw("ui.models.AttackTableModel.show_on_map")
         );
 
@@ -1203,6 +1210,17 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         }
     }
 
+    public void setSelectionUnsent() {
+        if (!getSelectedAttacks().isEmpty()) {
+            for (Attack a : getSelectedAttacks()) {
+                a.setTransferredToBrowser(false);
+            }
+            attackModel.fireTableDataChanged();
+        } else {
+            showInfo(trans.get("KeinBefehlgewaehlt"));
+        }
+    }
+
     public void changeSelectionDrawState() {
         if (!getSelectedAttacks().isEmpty()) {
             for (Attack a : getSelectedAttacks()) {
@@ -1265,6 +1283,10 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
                 break;
             case CLIPBOARD_BB:
                 copyBBToExternalClipboardEvent();
+                break;
+            case BROWSER_LINK:
+                //use own thread against blocking of render thread
+                new Thread(this::sendAttacksToBrowser).start();
                 break;
             case FILE_HTML:
                 copyHTMLToFileEvent();
@@ -1418,6 +1440,87 @@ public class AttackTableTab extends javax.swing.JPanel implements ListSelectionL
         } else {
             showInfo(trans.get("AbbruchSpeichern"));
         }
+    }
+
+    private void sendAttacksToBrowser() {
+        List<Attack> attacks = getSelectedAttacks();
+        if (attacks.isEmpty()) {
+            showInfo(trans.get("KeineBefehleausgewaehlt"));
+            return;
+        }
+        int sentAttacks = 0;
+        int ignoredAttacks = 0;
+        int errors = 0;
+        UserProfile profile = DSWorkbenchAttackFrame.getSingleton().getQuickProfile();
+        boolean clickAccountEmpty = false;
+
+        for (Attack a : attacks) {
+            try {
+                if (!a.isTransferredToBrowser()) {
+                    if (attacks.size() > 1) {//try to use click in case of multiple attacks
+                        if (!DSWorkbenchAttackFrame.getSingleton().decreaseClickAccountValue()) {
+                            //no click left
+                            clickAccountEmpty = true;
+                            break;
+                        }
+                    }
+                    
+                    //decrease multiple times in case of multiplier > 1
+                    for(int i = 0; i < a.getMultiplier() - 1; i++) {
+                        if(!DSWorkbenchAttackFrame.getSingleton().decreaseClickAccountValue()) {
+                            //clicks empty / not enough for sending full attack
+                            //give clicks back that were used to much
+                            for(int j = 0; j < i+1; j++) {
+                                DSWorkbenchAttackFrame.getSingleton().increaseClickAccountValue();
+                            }
+                            clickAccountEmpty = true;
+                            break;
+                       }
+                    }
+                    if(clickAccountEmpty) break;
+                    
+                    for(int i = 0; i < a.getMultiplier(); i++) {
+                        if (BrowserInterface.sendAttack(a, profile)) {
+                            a.setTransferredToBrowser(true);
+                            sentAttacks++;
+                        } else {//give click back in case of an error and for multiple attacks
+                            if (attacks.size() > 1) {
+                                DSWorkbenchAttackFrame.getSingleton().increaseClickAccountValue();
+                            }
+                        }
+                    }
+                } else {
+                    ignoredAttacks++;
+                }
+            } catch(Exception e) {
+                logger.error("Unhandled exception while sending attacks\n{}", a.toInternalRepresentation(), e);
+                errors++;
+            }
+        }
+        
+        if (sentAttacks == 1) {
+            jxAttackTable.getSelectionModel().setSelectionInterval(jxAttackTable.getSelectedRow() + 1, jxAttackTable.getSelectedRow() + 1);
+        } else {
+            jxAttackTable.getSelectionModel().setSelectionInterval(jxAttackTable.getSelectedRow() + sentAttacks, jxAttackTable.getSelectedRow() + sentAttacks);
+        }
+
+        String usedProfile = "";
+        if (profile != null) {
+            usedProfile = trans.get("als") + profile.toString();
+        }
+        String message = "<html>" + sentAttacks + trans.get("von") + attacks.size() + trans.get("Befehlen_HTML") + usedProfile + trans.get("Browseruebertragen_HTML");
+        if(errors != 0) {
+            message += "<br/>" + errors + trans.get("BefehleinternenFehler");
+        }
+        if (ignoredAttacks != 0) {
+            message += "<br/>" + ignoredAttacks + trans.get("Befehleignoriert");
+        }
+
+        if (clickAccountEmpty) {
+            message += trans.get("KlickKonto");
+        }
+        message += "</html>";
+        showInfo(message);
     }
 
     private boolean copyToInternalClipboard() {

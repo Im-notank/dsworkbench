@@ -199,6 +199,7 @@ public class MovementParser implements SilentParserInterface {
                 logger.debug("getting slowest unit");
                 //find out wich unit is the slowest
                 parsed.setUnit(units.getSlowestUnit());
+                parsed.setTransferredToBrowser(true);
                 
                 //if the program runns till here the movement semms to be valid
                 StringBuilder attStr = new StringBuilder();

@@ -23,6 +23,7 @@ import de.tor.tribes.types.ext.NoAlly;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.util.Filter;
 import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.farm.FarmManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +59,7 @@ public class ReportRule implements Filter<FightReport> {
         DEFENDER_ALLY,
         DEFENDER_TRIBE,
         FAKE,
+        FARM,
         OFF,
         WALL,
     }
@@ -130,6 +132,7 @@ public class ReportRule implements Filter<FightReport> {
             case CATA:
             case CONQUERED:
             case FAKE:
+            case FARM:
             case OFF:
             case WALL:
                 filterComponent = null;
@@ -200,6 +203,7 @@ public class ReportRule implements Filter<FightReport> {
             case CATA:
             case CONQUERED:
             case FAKE:
+            case FARM:
             case OFF:
             case WALL:
                 filterComponent = null;
@@ -256,6 +260,7 @@ public class ReportRule implements Filter<FightReport> {
         case CATA:
         case CONQUERED:
         case FAKE:
+        case FARM:
         case OFF:
         case WALL:
             break;
@@ -308,6 +313,8 @@ public class ReportRule implements Filter<FightReport> {
             return ((List<Tribe>) filterComponent).contains(c.getDefender());
         case FAKE:
             return (c.guessType() == Attack.FAKE_TYPE);
+        case FARM:
+            return FarmManager.getSingleton().getFarmInformation(c.getTargetVillage()) != null;
         case OFF:
             return (c.guessType() == Attack.CLEAN_TYPE);
         case WALL:
@@ -340,6 +347,8 @@ public class ReportRule implements Filter<FightReport> {
             return "Filterung nach Verteidiger";
         case FAKE:
             return "Filtert Fake-Berichte";
+        case FARM:
+            return "Filterung von Farmberichten";
         case OFF:
             return "Filtert Off-Berichte";
         case WALL:
@@ -393,6 +402,8 @@ public class ReportRule implements Filter<FightReport> {
             return "Verteidiger " + StringUtils.join((List<Tribe>) filterComponent, ", ");
         case FAKE:
             return "Fakes";
+        case FARM:
+            return "Farmberichte";
         case OFF:
             return "Off-Berichte";
         case WALL:

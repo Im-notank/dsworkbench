@@ -15,7 +15,9 @@
  */
 package de.tor.tribes.ui.renderer;
 
+import de.tor.tribes.types.FarmInformation;
 import de.tor.tribes.types.FightReport;
+import de.tor.tribes.types.VillageMerchantInfo;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +38,42 @@ public class EnumImageCellRenderer extends DefaultTableRenderer {
     private final static Logger logger = LogManager.getLogger("FarmResultRenderer");
     
     public enum LayoutStyle {
+        FarmResult(new HashMap<Integer, String>() {{
+            put(FarmInformation.FARM_RESULT.OK.ordinal(), "/res/ui/bullet_ball_green.png");
+            put(FarmInformation.FARM_RESULT.FAILED.ordinal(), "/res/ui/bullet_ball_yellow.png");
+            put(FarmInformation.FARM_RESULT.IMPOSSIBLE.ordinal(), "/res/ui/bullet_ball_red.png");
+            put(FarmInformation.FARM_RESULT.FARM_INACTIVE.ordinal(), "/res/ui/bullet_ball_grey.png");
+            put(FarmInformation.FARM_RESULT.UNKNOWN.ordinal(), "/res/ui/bullet_ball_empty.png");
+        };}),
+        FarmStatus(new HashMap<Integer, String>() {{
+            put(FarmInformation.FARM_STATUS.CONQUERED.ordinal(), "/res/ui/snob_lock.png");
+            put(FarmInformation.FARM_STATUS.FARMING.ordinal(), "/res/ui/trade_in.png");
+            put(FarmInformation.FARM_STATUS.LOCKED.ordinal(), "/res/ui/lock.png");
+            put(FarmInformation.FARM_STATUS.NOT_INITIATED.ordinal(), "/res/ui/spy_needed.png");
+            put(FarmInformation.FARM_STATUS.NOT_SPYED.ordinal(), "/res/checkbox_disabled.png");
+            put(FarmInformation.FARM_STATUS.READY.ordinal(), "/res/checkbox.png");
+            put(FarmInformation.FARM_STATUS.REPORT_EXPECTED.ordinal(), "/res/ui/report.png");
+            put(FarmInformation.FARM_STATUS.TROOPS_FOUND.ordinal(), "/res/ui/red_report_lock.png");
+        };}),
+        SiegeStatus(new HashMap<Integer, String>() {{
+            put(FarmInformation.SIEGE_STATUS.BOTH_ON_WAY.ordinal(), "/res/ui/both_siege.png");
+            put(FarmInformation.SIEGE_STATUS.CATA_ON_WAY.ordinal(), "/res/unit_catapult.png");
+            put(FarmInformation.SIEGE_STATUS.RAM_ON_WAY.ordinal(), "/res/ui/rams.png");
+            put(FarmInformation.SIEGE_STATUS.AT_HOME.ordinal(), "/res/checkbox.png");
+            put(FarmInformation.SIEGE_STATUS.NOT_INITIATED.ordinal(), "/res/ui/spy_needed.png");
+            put(FarmInformation.SIEGE_STATUS.FINAL_FARM.ordinal(), "/res/final_farm.png");
+        };}),
         FightReportStatus(new HashMap<Integer, String>() {{
             put(FightReport.status.LOST_NOTHING.ordinal(), "/res/ui/bullet_ball_green.png");
             put(FightReport.status.WON_WITH_LOSSES.ordinal(), "/res/ui/bullet_ball_yellow.png");
             put(FightReport.status.LOST_EVERYTHING.ordinal(), "/res/ui/bullet_ball_red.png");
             put(FightReport.status.SPY.ordinal(), "/res/ui/bullet_ball_blue.png");
             put(FightReport.status.HIDDEN.ordinal(), "/res/ui/bullet_ball_grey.png");
+        };}),
+        TradeDirection(new HashMap<Integer, String>() {{
+            put(VillageMerchantInfo.Direction.BOTH.ordinal(), "/res/ui/trade_both.png");
+            put(VillageMerchantInfo.Direction.INCOMING.ordinal(), "/res/ui/trade_in.png");
+            put(VillageMerchantInfo.Direction.OUTGOING.ordinal(), "/res/ui/trade_out.png");
         };});
         
         private Map<Integer, ImageIcon> images;

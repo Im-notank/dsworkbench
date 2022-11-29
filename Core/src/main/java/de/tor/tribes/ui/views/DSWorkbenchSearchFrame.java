@@ -63,12 +63,16 @@ public class DSWorkbenchSearchFrame extends javax.swing.JFrame implements Search
         initComponents();
         // frameControlPanel1.setupPanel(this, true, true);
         jCenterInGameButton.setIcon(new ImageIcon("./graphics/icons/center.png"));
+        jSendResButton.setIcon(new ImageIcon("./graphics/icons/booty.png"));
+        jSendDefButton.setIcon(new ImageIcon("./graphics/icons/def.png"));
         jSearchFrameAlwaysOnTop.setSelected(GlobalOptions.getProperties().getBoolean("search.frame.alwaysOnTop"));
         setAlwaysOnTop(jSearchFrameAlwaysOnTop.isSelected());
 
         //check desktop support
         if (!Desktop.isDesktopSupported()) {
             jCenterInGameButton.setEnabled(false);
+            jSendDefButton.setEnabled(false);
+            jSendResButton.setEnabled(false);
         }
         mSearchThread = new SearchThread("SearchThread", this);
         mSearchThread.start();
@@ -113,6 +117,8 @@ public class DSWorkbenchSearchFrame extends javax.swing.JFrame implements Search
         jCenterButton = new javax.swing.JButton();
         jVillageList = new javax.swing.JComboBox();
         jCenterInGameButton = new javax.swing.JButton();
+        jSendResButton = new javax.swing.JButton();
+        jSendDefButton = new javax.swing.JButton();
         jInGameOptionsLabel = new javax.swing.JLabel();
         jSearchFrameAlwaysOnTop = new javax.swing.JCheckBox();
 
@@ -218,6 +224,28 @@ public class DSWorkbenchSearchFrame extends javax.swing.JFrame implements Search
             }
         });
 
+        jSendResButton.setBackground(new java.awt.Color(239, 235, 223));
+        jSendResButton.setToolTipText(trans.get("Rohstoffeschicken"));
+        jSendResButton.setMaximumSize(new java.awt.Dimension(35, 35));
+        jSendResButton.setMinimumSize(new java.awt.Dimension(35, 35));
+        jSendResButton.setPreferredSize(new java.awt.Dimension(35, 35));
+        jSendResButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fireSendResEvent(evt);
+            }
+        });
+
+        jSendDefButton.setBackground(new java.awt.Color(239, 235, 223));
+        jSendDefButton.setToolTipText(trans.get("Unterstuetzungschicken"));
+        jSendDefButton.setMaximumSize(new java.awt.Dimension(35, 35));
+        jSendDefButton.setMinimumSize(new java.awt.Dimension(35, 35));
+        jSendDefButton.setPreferredSize(new java.awt.Dimension(35, 35));
+        jSendDefButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fireSendDefEvent(evt);
+            }
+        });
+
         jInGameOptionsLabel.setText(trans.get("InGameOptionen"));
 
         javax.swing.GroupLayout jPlayerSearchLayout = new javax.swing.GroupLayout(jPlayerSearch);
@@ -240,7 +268,10 @@ public class DSWorkbenchSearchFrame extends javax.swing.JFrame implements Search
                     .addComponent(jVillageList, javax.swing.GroupLayout.Alignment.TRAILING, 0, 400, Short.MAX_VALUE)
                     .addGroup(jPlayerSearchLayout.createSequentialGroup()
                         .addComponent(jCenterInGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSendDefButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSendResButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPlayerSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jMarkTribeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,11 +304,14 @@ public class DSWorkbenchSearchFrame extends javax.swing.JFrame implements Search
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPlayerSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jCenterInGameButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jInGameOptionsLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jInGameOptionsLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSendResButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSendDefButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jSearchFrameAlwaysOnTop.setText(trans.get("ImmerimVordergrund"));
+        jSearchFrameAlwaysOnTop.setOpaque(false);
         jSearchFrameAlwaysOnTop.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fireSearchFrameAlwaysOnTopEvent(evt);
@@ -390,7 +424,29 @@ private void fireCenterMapInGameEvent(java.awt.event.MouseEvent evt) {//GEN-FIRS
         BrowserInterface.centerVillage(v);
     }
 }//GEN-LAST:event_fireCenterMapInGameEvent
-            
+    
+private void fireSendDefEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireSendDefEvent
+    if (!jSendDefButton.isEnabled()) {
+        return;
+    }
+    Village target = (Village) jVillageList.getSelectedItem();
+    Village source = DSWorkbenchMainFrame.getSingleton().getCurrentUserVillage();
+    if ((source != null) && (target != null)) {
+        BrowserInterface.sendTroops(source, target);
+    }
+}//GEN-LAST:event_fireSendDefEvent
+    
+private void fireSendResEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fireSendResEvent
+    if (!jSendResButton.isEnabled()) {
+        return;
+    }
+    Village target = (Village) jVillageList.getSelectedItem();
+    Village source = DSWorkbenchMainFrame.getSingleton().getCurrentUserVillage();
+    if ((source != null) && (target != null)) {
+        BrowserInterface.sendRes(source, target);
+    }
+}//GEN-LAST:event_fireSendResEvent
+    
 private void fireSearchFrameAlwaysOnTopEvent(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fireSearchFrameAlwaysOnTopEvent
     setAlwaysOnTop(!isAlwaysOnTop());
 }//GEN-LAST:event_fireSearchFrameAlwaysOnTopEvent
@@ -408,6 +464,8 @@ private void fireSearchFrameAlwaysOnTopEvent(javax.swing.event.ChangeEvent evt) 
     private javax.swing.JCheckBox jSearchFrameAlwaysOnTop;
     private javax.swing.JTextField jSearchTerm;
     private javax.swing.JLabel jSearchTermLabel;
+    private javax.swing.JButton jSendDefButton;
+    private javax.swing.JButton jSendResButton;
     private javax.swing.JLabel jTribesLabel;
     private javax.swing.JComboBox jTribesList;
     private javax.swing.JComboBox jVillageList;

@@ -23,6 +23,7 @@ import de.tor.tribes.ui.windows.AbstractDSWorkbenchFrame;
 import de.tor.tribes.util.attack.AttackManager;
 import de.tor.tribes.util.attack.StandardAttackManager;
 import de.tor.tribes.util.conquer.ConquerManager;
+import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.map.FormManager;
 import de.tor.tribes.util.mark.MarkerManager;
 import de.tor.tribes.util.note.NoteManager;
@@ -336,6 +337,8 @@ public class GlobalOptions {
             ReportManager.getSingleton().loadElements(mSelectedProfile.getProfileDirectory() + "/reports.xml");
             fireDataHolderEvent("Lade SOS-Anfragen");
             SOSManager.getSingleton().loadElements(mSelectedProfile.getProfileDirectory() + "/sos.xml");
+            fireDataHolderEvent("Lade Farminformationen");
+            FarmManager.getSingleton().loadElements(mSelectedProfile.getProfileDirectory() + "/farms.xml");
             logger.debug("Removing temporary data");
             fireDataHolderEvent("Entferne temporäre Daten");
             DataHolder.getSingleton().removeTempData();
@@ -380,6 +383,8 @@ public class GlobalOptions {
             ReportManager.getSingleton().saveElements(mSelectedProfile.getProfileDirectory() + "/reports.xml");
             logger.debug("Saving sos requests");
             SOSManager.getSingleton().saveElements(mSelectedProfile.getProfileDirectory() + "/sos.xml");
+            logger.debug("Saving farms");
+            FarmManager.getSingleton().saveElements(mSelectedProfile.getProfileDirectory() + "/farms.xml");
             logger.debug("User data saved");
         } else {
             if (internalDataDamaged) {

@@ -93,6 +93,7 @@ public class AttackTableModel extends AbstractTableModel {
         columnNames.add(trans.get("runtime")); columnTypes.add(Long.class); editable.add(false);
         columnNames.add(trans.get("remaining")); columnTypes.add(Long.class); editable.add(false);
         columnNames.add(trans.get("show_on_map")); columnTypes.add(Boolean.class); editable.add(true);
+        columnNames.add(trans.get("transfer")); columnTypes.add(Boolean.class); editable.add(true);
         columnNames.add(trans.get("times")); columnTypes.add(Short.class); editable.add(true);
         
         fireTableStructureChanged();
@@ -201,6 +202,8 @@ public class AttackTableModel extends AbstractTableModel {
             } else if(columnIndex == unitAfter + 4) {
                 return a.isShowOnMap();
             } else if(columnIndex == unitAfter + 5) {
+                return a.isTransferredToBrowser();
+            } else if(columnIndex == unitAfter + 6) {
                 return a.getMultiplier();
             }
         } catch (Exception ignored) {};
@@ -253,6 +256,8 @@ public class AttackTableModel extends AbstractTableModel {
             } else if(pCol == unitAfter + 4) {
                 a.setShowOnMap((Boolean) pValue);
             } else if(pCol == unitAfter + 5) {
+                a.setTransferredToBrowser((Boolean) pValue);
+            } else if(pCol == unitAfter + 6) {
                 a.setMultiplier((Short) pValue);
             }
         } catch (Exception ignored) {
