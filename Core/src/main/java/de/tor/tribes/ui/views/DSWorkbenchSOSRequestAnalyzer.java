@@ -23,7 +23,6 @@ import de.tor.tribes.php.UnitTableInterface;
 import de.tor.tribes.types.*;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
-import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.ProfileQuickChangePanel;
 import de.tor.tribes.ui.models.DefenseToolModel;
 import de.tor.tribes.ui.models.SupportsModel;
@@ -91,7 +90,6 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
     private static DSWorkbenchSOSRequestAnalyzer SINGLETON = null;
     private GenericTestPanel centerPanel = null;
     private DefenseAnalyzer a = null;
-    private ClickAccountPanel clickAccount = null;
     private ProfileQuickChangePanel profileQuickchangePanel = null;
 
     public static synchronized DSWorkbenchSOSRequestAnalyzer getSingleton() {
@@ -298,9 +296,8 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
             }
         });
         miscPane.getContentPane().add(setSelectionSecured);
-        clickAccount = new ClickAccountPanel();
         profileQuickchangePanel = new ProfileQuickChangePanel();
-        centerPanel.setupTaskPane(clickAccount, profileQuickchangePanel, viewPane, transferPane, miscPane);
+        centerPanel.setupTaskPane(profileQuickchangePanel, viewPane, transferPane, miscPane);
     }
 
     public boolean sendDataToDefensePlaner() {
@@ -364,27 +361,19 @@ public class DSWorkbenchSOSRequestAnalyzer extends AbstractDSWorkbenchFrame impl
             int row = jSupportsTable.convertRowIndexToModel(i);
             Defense defense = model.getRows()[row];
             if (!defense.isTransferredToBrowser()) {
-                if (rows.length == 1 || clickAccount.useClick()) {
-                    Village source = defense.getSupporter();
-                    Village target = defense.getTarget();
-                    TroopAmountFixed units = DSWorkbenchSettingsDialog.getSingleton().getDefense();
-                    if (units == null || !units.hasUnits()) {
-                        showError(trans.get("FehlerhafteEinstellungen"));
-                        break;
-                    }
-                    if (!BrowserInterface.sendTroops(source, target, units, profileQuickchangePanel.getSelectedProfile())) {
-                        if (rows.length > 1) {
-                            clickAccount.giveClickBack();
-                            showError(trans.get("Browsers"));
-                            break;
-                        }
-                    } else {
-                        jSupportsTable.getSelectionModel().removeSelectionInterval(i, i);
-                        defense.setTransferredToBrowser(true);
-                    }
-                } else {
-                    showInfo(trans.get("Click_Konto"));
+                Village source = defense.getSupporter();
+                Village target = defense.getTarget();
+                TroopAmountFixed units = DSWorkbenchSettingsDialog.getSingleton().getDefense();
+                if (units == null || !units.hasUnits()) {
+                    showError(trans.get("FehlerhafteEinstellungen"));
                     break;
+                }
+                if (!BrowserInterface.sendTroops(source, target, units, profileQuickchangePanel.getSelectedProfile())) {
+                    showError(trans.get("Browsers"));
+                    break;
+                } else {
+                    jSupportsTable.getSelectionModel().removeSelectionInterval(i, i);
+                    defense.setTransferredToBrowser(true);
                 }
             } else {//already transferred
                 jSupportsTable.getSelectionModel().removeSelectionInterval(i, i);

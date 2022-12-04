@@ -82,12 +82,6 @@ public class BrowserInterface {
                 url.append("&").append(unit.getPlainName()).append("=").append(amount);
             }
             
-            if (pSendTime != null) {
-                url.append("&ts=").append(pSendTime.getTime());
-            } else {
-                url.append("&ts=").append(System.currentTimeMillis());
-            }
-            
             return openPage(url.toString());
         } catch (Throwable t) {
             logger.error("Failed to open browser window", t);

@@ -26,7 +26,6 @@ import de.tor.tribes.types.StorageStatus;
 import de.tor.tribes.types.ext.Barbarians;
 import de.tor.tribes.types.ext.Tribe;
 import de.tor.tribes.types.ext.Village;
-import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.CoordinateSpinner;
 import de.tor.tribes.ui.models.FarmTableModel;
 import de.tor.tribes.ui.panels.GenericTestPanel;
@@ -93,7 +92,6 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
     private static Logger logger = LogManager.getLogger("FarmManager");
     private static DSWorkbenchFarmManager SINGLETON = null;
     private GenericTestPanel centerPanel = null;
-    private ClickAccountPanel clickAccount = null;
     private TroopSelectionPanelDynamic aTroops = null;
     private TroopSelectionPanelDynamic bTroops = null;
     private TroopSelectionPanelDynamic kTroops = null;
@@ -371,7 +369,6 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
     }
 
     private void buildMenu() {
-        clickAccount = new ClickAccountPanel();
         JXTaskPane farmSourcePane = new JXTaskPane();
         farmSourcePane.setTitle(trans.get("Farmen_search"));
         JXButton searchBarbs = new JXButton(
@@ -561,7 +558,7 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
 
         miscPane.getContentPane().add(resortButton);
 
-        centerPanel.setupTaskPane(clickAccount, farmSourcePane, farmPane, miscPane);
+        centerPanel.setupTaskPane(farmSourcePane, farmPane, miscPane);
     }
 
     private void showOverallStatus() {
@@ -882,37 +879,28 @@ public class DSWorkbenchFarmManager extends AbstractDSWorkbenchFrame implements 
                     || pConfig.equals(FARM_CONFIGURATION.K)) {
                 
                 //just use click if more than one row is selected
-                boolean clickUsed = rows.length == 1 || clickAccount.useClick();
-                if (clickUsed) {
-                    boolean success = false;
-                    boolean fatal = false;
-                    switch (f.farmFarm(pConfig)) {
-                        case FAILED:
-                            miscMessage = trans.get("No_Troops_Browsers");
-                            fatal = true;
-                            break;
-                        case IMPOSSIBLE:
-                            impossible++;
-                            break;
-                        case FARM_INACTIVE:
-                            farmInactive++;
-                            break;
-                        case OK:
-                            success = true;
-                            opened++;
-                            break;
-                        default:
-                            break;
-                    }
-                    getModel().fireTableRowsUpdated(modelRow, modelRow);
-                    if (!success && rows.length > 1) {
-                        clickAccount.giveClickBack();
-                    }
-                    if (fatal) {
+                boolean success = false;
+                boolean fatal = false;
+                switch (f.farmFarm(pConfig)) {
+                    case FAILED:
+                        miscMessage = trans.get("No_Troops_Browsers");
+                        fatal = true;
                         break;
-                    }
-                } else {
-                    miscMessage = trans.get("click_empty");
+                    case IMPOSSIBLE:
+                        impossible++;
+                        break;
+                    case FARM_INACTIVE:
+                        farmInactive++;
+                        break;
+                    case OK:
+                        success = true;
+                        opened++;
+                        break;
+                    default:
+                        break;
+                }
+                getModel().fireTableRowsUpdated(modelRow, modelRow);
+                if (fatal) {
                     break;
                 }
             } else {

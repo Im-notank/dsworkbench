@@ -18,7 +18,6 @@ package de.tor.tribes.ui.views;
 import de.tor.tribes.control.GenericManagerListener;
 import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.ext.Village;
-import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.ProfileQuickChangePanel;
 import de.tor.tribes.ui.components.TabPaneComponent;
 import de.tor.tribes.ui.panels.AttackTableTab;
@@ -126,7 +125,6 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
     private static DSWorkbenchAttackFrame SINGLETON = null;
     private CountdownThread mCountdownThread = null;
     private GenericTestPanel centerPanel = null;
-    private ClickAccountPanel clickAccount = null;
     private ProfileQuickChangePanel profilePanel = null;
 
     public static synchronized DSWorkbenchAttackFrame getSingleton() {
@@ -407,9 +405,8 @@ public class DSWorkbenchAttackFrame extends AbstractDSWorkbenchFrame implements 
         }));
         // </editor-fold>
 
-        clickAccount = new ClickAccountPanel();
         profilePanel = new ProfileQuickChangePanel();
-        centerPanel.setupTaskPane(clickAccount, profilePanel, editTaskPane, transferTaskPane, miscTaskPane);
+        centerPanel.setupTaskPane(profilePanel, editTaskPane, transferTaskPane, miscTaskPane);
     }
 
     /**
@@ -645,14 +642,6 @@ private void createNewAttackPlan() {
         jAttackFrameAlwaysOnTop.setSelected(false);
         fireAttackFrameAlwaysOnTopEvent(null);
         super.toBack();
-    }
-
-    public boolean decreaseClickAccountValue() {
-        return clickAccount.useClick();
-    }
-
-    public void increaseClickAccountValue() {
-        clickAccount.giveClickBack();
     }
 
     public UserProfile getQuickProfile() {

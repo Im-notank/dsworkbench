@@ -21,7 +21,6 @@ import de.tor.tribes.types.StorageStatus;
 import de.tor.tribes.types.UserProfile;
 import de.tor.tribes.types.VillageMerchantInfo;
 import de.tor.tribes.types.ext.Village;
-import de.tor.tribes.ui.components.ClickAccountPanel;
 import de.tor.tribes.ui.components.ProfileQuickChangePanel;
 import de.tor.tribes.ui.models.REDFinalDistributionTableModel;
 import de.tor.tribes.ui.models.REDFinalTransportsTableModel;
@@ -57,7 +56,6 @@ public class ResourceDistributorFinishPanel extends WizardPage {
     private static final Logger logger = LogManager.getLogger("ResourceDistributorFinishPanel");
     private static final String GENERAL_INFO = trans.get("Schritteangekommen");
     private static ResourceDistributorFinishPanel singleton = null;
-    private ClickAccountPanel clickPanel = null;
     private ProfileQuickChangePanel quickProfilePanel = null;
 
     public static synchronized ResourceDistributorFinishPanel getSingleton() {
@@ -103,8 +101,6 @@ public class ResourceDistributorFinishPanel extends WizardPage {
         jXCollapsiblePane2.setLayout(new BorderLayout());
         jXCollapsiblePane2.add(jInfoLabel, BorderLayout.CENTER);
         quickProfilePanel = new ProfileQuickChangePanel();
-        clickPanel = new ClickAccountPanel();
-        jClickAccountPanel.add(clickPanel, BorderLayout.CENTER);
         jQuickProfilePanel.add(quickProfilePanel, BorderLayout.CENTER);
     }
 
@@ -449,7 +445,6 @@ public class ResourceDistributorFinishPanel extends WizardPage {
     }//GEN-LAST:event_fireTransferSelectionToBrowserEvent
 
     private void transferToBrowser() {
-        boolean outOfClicks = false;
         boolean browserAccessFailed = false;
         int transferred = 0;
         int ignored = 0;
@@ -459,19 +454,12 @@ public class ResourceDistributorFinishPanel extends WizardPage {
                 ExtendedTransport transport = getTransportsModel().getRow(jTransportsTable.convertRowIndexToModel(i));
                 boolean removeSelection = false;
                 if (!jIgnoreSubmitted.isSelected() || !transport.isTransferredToBrowser()) {
-                    if (selectedRows.length == 1 || clickPanel.useClick()) {
-                        transport.setTransferredToBrowser(BrowserInterface.sendRes(transport.getSource(), transport.getTarget(), transport, quickProfilePanel.getSelectedProfile()));
-                        if (!transport.isTransferredToBrowser()) {//if transfer failed, set browser access error flag and give click back
-                            browserAccessFailed = (browserAccessFailed == false) ? true : browserAccessFailed;
-                            if (selectedRows.length > 1) {
-                                clickPanel.giveClickBack();
-                            }
-                        } else {
-                            transferred++;
-                            removeSelection = true;
-                        }
+                    transport.setTransferredToBrowser(BrowserInterface.sendRes(transport.getSource(), transport.getTarget(), transport, quickProfilePanel.getSelectedProfile()));
+                    if (!transport.isTransferredToBrowser()) {//if transfer failed, set browser access error flag and give click back
+                        browserAccessFailed = (browserAccessFailed == false) ? true : browserAccessFailed;
                     } else {
-                        outOfClicks = true;
+                        transferred++;
+                        removeSelection = true;
                     }
                 } else {
                     ignored++;
@@ -494,10 +482,6 @@ public class ResourceDistributorFinishPanel extends WizardPage {
         }
 
         saveTransports();
-        if (outOfClicks) {
-            showInfo(trans.get("KeineweiterenKlicksvorhanden")
-                    + trans.get("Eswurde") + transferred + trans.get("Transporteuebertragen"));
-        }
         if (browserAccessFailed) {
             showInfo(trans.get("EinermehrereTransporte"));
         }
