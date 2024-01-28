@@ -2387,3 +2387,36 @@ de.tor.tribes.ui.wiz.ServerSettings.problem_downloading_server=Error downloading
 
 de.tor.tribes.ui.wiz.FinishPage.main_text=<html> Congratulations, the basic settings of DS Workbench are now complete. Click on <b> Done </b> to start DS Workbench with the selected settings. If you would like to change something, you can either switch to the corresponding page via <b> Back </b>, or later directly in DS Workbench in the main menu, which you can find in the picture below recognize is to access all settings. </html>
 
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.points=points
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.owner=owner
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.killedOff=Killed enemies (offensive)
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.killedDef=Killed enemies (defensive)
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.rank=rank
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.ally=ally
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.moral=moral
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.bonus=bonus
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.tags=tags
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.lastReport=last report
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.lastFarm=last farmattack
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.noInformation=no information
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.resInStorage=resources in storage
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.conquerAt=conquered at
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.acceptance=acceptance
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.farm=farm
+
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.attWon=The attack won
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.defWon=Teh defender won
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.luckFromAtt=Luck (from the view of the attacker)
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.wall=wall
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.damageFrom=damaged from level
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.damageTo=to level
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.acceptanceFrom=acceptance reduced from
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.acceptanceTo=to
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.amount=amount
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.loss=losses
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.survivers=survivers
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopsHidden=hidden by the owner of the report
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopsDead=None of your troops returned.<BR/>No information could be gathered about the troop size of the enemy.
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troupOnTheWay=troops of the defender that were on the way
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopOutside=troops outside
+

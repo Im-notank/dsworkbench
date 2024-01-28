@@ -30,6 +30,8 @@ import de.tor.tribes.util.DSCalculator;
 import de.tor.tribes.util.GlobalOptions;
 import de.tor.tribes.util.ServerSettings;
 import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import de.tor.tribes.util.conquer.ConquerManager;
 import de.tor.tribes.util.farm.FarmManager;
 import de.tor.tribes.util.mark.MarkerManager;
@@ -48,6 +50,7 @@ import java.util.List;
  * @author Torridity
  */
 public class VillageHTMLTooltipGenerator {
+    private static Translator tans = TranslationManager.getTranslator("de.tor.tribes.util.html.VillageHTMLTooltipGenerator");
     
     public static String buildToolTip(Village pVillage) {
         return buildToolTip(pVillage, true);
@@ -66,35 +69,35 @@ public class VillageHTMLTooltipGenerator {
         SimpleDateFormat df = TimeManager.getSimpleDateFormat("dd.MM.yy HH:mm:ss");
         nf.setMinimumFractionDigits(0);
         nf.setMaximumFractionDigits(0);
-        b.append(buildInfoRow("Punkte:", nf.format(pVillage.getPoints()), false));
+        b.append(buildInfoRow(tans.get("points") + ":", nf.format(pVillage.getPoints()), false));
         if (pVillage.getTribe() != Barbarians.getSingleton()) {
-            b.append(buildInfoRow("Besitzer:", pVillage.getTribe(), showRanks));
+            b.append(buildInfoRow(tans.get("owner") + ":", pVillage.getTribe(), showRanks));
             if (showConquers) {
-                b.append(buildSubInfoRow("Besiegte Gegner (Off):", nf.format(pVillage.getTribe().getKillsAtt()) + " (" + nf.format(pVillage.getTribe().getRankAtt()) + ". Platz)"));
-                b.append(buildSubInfoRow("Besiegte Gegner (Deff):", nf.format(pVillage.getTribe().getKillsDef()) + " (" + nf.format(pVillage.getTribe().getRankDef()) + ". Platz)"));
+                b.append(buildSubInfoRow(tans.get("killedOff") + ":", nf.format(pVillage.getTribe().getKillsAtt()) + " (" + nf.format(pVillage.getTribe().getRankAtt()) + ". " + tans.get("rank") + ")"));
+                b.append(buildSubInfoRow(tans.get("killedDef") + ":", nf.format(pVillage.getTribe().getKillsDef()) + " (" + nf.format(pVillage.getTribe().getRankDef()) + ". " + tans.get("rank") + ")"));
             }
             
             if (pVillage.getTribe().getAlly() != null) {
-                b.append(buildInfoRow("Stamm:", pVillage.getTribe().getAlly(), showRanks));
+                b.append(buildInfoRow(tans.get("ally") + ":", pVillage.getTribe().getAlly(), showRanks));
             }
             if (showMoral) {
                 Tribe current = GlobalOptions.getSelectedProfile().getTribe();
                 if (current != null) {
                     if (current.getId() != pVillage.getTribe().getId()) {
-                        b.append(buildInfoRow("Moral:", DSCalculator
+                        b.append(buildInfoRow(tans.get("moral") + ":", DSCalculator
                                 .calculateMorale(current, pVillage.getTribe()) , false));
                     }
                 }
             }
         } else {
             if (showMoral) {
-                b.append(buildInfoRow("Moral:", "100%", false));
+                b.append(buildInfoRow(tans.get("moral") + ":", "100%", false));
             }
         }
         
         
         if (pVillage.getType() != 0) {
-            b.append(buildInfoRow("Bonus:", Village.getBonusDescription(pVillage), false));
+            b.append(buildInfoRow(tans.get("bonus") + ":", Village.getBonusDescription(pVillage), false));
         }
         
         List<Tag> tags = TagManager.getSingleton().getTags(pVillage);
@@ -104,7 +107,7 @@ public class VillageHTMLTooltipGenerator {
                 tagString += t.getName() + ";";
             }
             tagString = tagString.substring(0, tagString.lastIndexOf(";"));
-            b.append(buildInfoRow("Tags:", tagString, false));
+            b.append(buildInfoRow(tans.get("tags") + ":", tagString, false));
         }
         
         FightReport r = ReportManager.getSingleton().findLastReportForVillage(pVillage);
@@ -122,13 +125,13 @@ public class VillageHTMLTooltipGenerator {
                 imgString += VillageHTMLTooltipGenerator.class.getResource("/res/ui/bullet_ball_yellow.png");
             }
             imgString += "\"/>";
-            b.append(buildInfoRow("Letzter Bericht:", imgString + " " + df.format(r.getTimestamp()), false));
+            b.append(buildInfoRow(tans.get("lastReport") + ":", imgString + " " + df.format(r.getTimestamp()), false));
         }
         
         FarmInformation fi = FarmManager.getSingleton().getFarmInformation(pVillage);
         if (fi != null) {
-            b.append(buildInfoRow("Letzter Farmangriff:", (fi.getLastReport() > 0) ? df.format(fi.getLastReport()) : "Keine Informationen", false));
-            b.append(buildInfoRow("Rohstoffe im Speicher:",
+            b.append(buildInfoRow(tans.get("lastFarm") + ":", (fi.getLastReport() > 0) ? df.format(fi.getLastReport()) : tans.get("noInformation"), false));
+            b.append(buildInfoRow(tans.get("resInStorage") + ":",
                     nf.format(fi.getWoodInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/holz.png") + "\"/>&nbsp;"
                     + nf.format(fi.getClayInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/lehm.png") + "\"/>&nbsp;"
                     + nf.format(fi.getIronInStorage()) + "&nbsp;<img src=\"" + VillageHTMLTooltipGenerator.class.getResource("/res/eisen.png") + "\"/>", false));
@@ -140,8 +143,8 @@ public class VillageHTMLTooltipGenerator {
         Conquer c = ConquerManager.getSingleton().getConquer(pVillage);
         if (c != null) {
             SimpleDateFormat f = TimeManager.getSimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            b.append(buildInfoRow("Erobert am:", f.format(c.getTimestamp() * 1000L), false));
-            b.append(buildInfoRow("Zustimmung:", c.getCurrentAcceptance(), false));
+            b.append(buildInfoRow(tans.get("conquerAt") + ":", f.format(c.getTimestamp() * 1000L), false));
+            b.append(buildInfoRow(tans.get("acceptance") + ":", c.getCurrentAcceptance(), false));
         }
         
         b.append(buildNotes(pVillage));
@@ -174,7 +177,7 @@ public class VillageHTMLTooltipGenerator {
                 String rgb = Integer.toHexString(m.getMarkerColor().getRGB());
                 if (pExtended) {
                     String tribeText = t.getName();
-                    tribeText += " <i>(" + nf.format(t.getPoints()) + " Punkte, " + nf.format(t.getRank()) + ". Platz)</i>";
+                    tribeText += " <i>(" + nf.format(t.getPoints()) + " " + tans.get("points") + ", " + nf.format(t.getRank()) + ". " + tans.get("rank") + ")</i>";
                     b.append("<td width='300'>").append(tribeText).append("</td>\n");
                 } else {
                     b.append("<td width='300'>").append(t).append("</td>\n");
@@ -183,7 +186,7 @@ public class VillageHTMLTooltipGenerator {
             } else {
                 if (pExtended) {
                     String tribeText = t.getName();
-                    tribeText += " <i>(" + nf.format(t.getPoints()) + " Punkte, " + nf.format(t.getRank()) + ". Platz)</i>";
+                    tribeText += " <i>(" + nf.format(t.getPoints()) + " " + tans.get("points") + ", " + nf.format(t.getRank()) + ". " + tans.get("rank") + ")</i>";
                     b.append("<td width='300'>").append(tribeText).append("</td>\n");
                 } else {
                     b.append("<td width='300'>").append(t).append("</td>\n");
@@ -196,7 +199,7 @@ public class VillageHTMLTooltipGenerator {
                 String rgb = Integer.toHexString(m.getMarkerColor().getRGB());
                 if (pExtended) {
                     String allyText = a.getName() + " <i><b>" + a.getTag() + "</b></i>";
-                    allyText += " <i>(" + nf.format(a.getPoints()) + " Punkte, " + nf.format(a.getRank()) + ". Platz)</i>";
+                    allyText += " <i>(" + nf.format(a.getPoints()) + " " + tans.get("points") + ", " + nf.format(a.getRank()) + ". " + tans.get("rank") + ")</i>";
                     b.append("<td width='300'>").append(allyText).append("</td>\n");
                 } else {
                     b.append("<td width='300'>").append(a.getName()).append(" <i><b>").append(a.getTag()).append("</b></i>" + "</td>\n");
@@ -205,7 +208,7 @@ public class VillageHTMLTooltipGenerator {
             } else {
                 if (pExtended) {
                     String allyText = a.getName() + " <i><b>" + a.getTag() + "</b></i>";
-                    allyText += " <i>(" + nf.format(a.getPoints()) + " Punkte, " + nf.format(a.getRank()) + ". Platz)</i>";
+                    allyText += " <i>(" + nf.format(a.getPoints()) + " P" + tans.get("points") + "unkte, " + nf.format(a.getRank()) + ". " + tans.get("rank") + ")</i>";
                     b.append("<td width='300'>").append(allyText).append("</td>\n");
                 } else {
                     b.append("<td width='300'>").append(a.getName()).append(" <i><b>").append(a.getTag()).append("</b></i>" + "</td>\n");
@@ -229,7 +232,7 @@ public class VillageHTMLTooltipGenerator {
     static String buildFarmLevel(Village pVillage) {
         StringBuilder b = new StringBuilder();
         b.append("<tr>\n");
-        b.append("<td width=\"150\"><strong>Bauernhof:</strong></td>\n");
+        b.append("<td width=\"150\"><strong>" + tans.get("farm") + ":</strong></td>\n");
         b.append("<td colspan='2' width=\"300\">\n");
         b.append("<table width='100%' style=\"font-size:8px;border: 0px black; padding: 0px;\">\n");
         
@@ -251,7 +254,7 @@ public class VillageHTMLTooltipGenerator {
             }
         } else {
             b.append("<tr>\n");
-            b.append("<td width='100%'>Keine Informationen</td>\n");
+            b.append("<td width='100%'>" + tans.get("noInformation") + "</td>\n");
             b.append("</tr>\n");
         }
         

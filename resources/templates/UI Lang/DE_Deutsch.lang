@@ -2387,3 +2387,36 @@ de.tor.tribes.ui.wiz.ServerSettings.problem_downloading_server=Fehler beim Herun
 
 de.tor.tribes.ui.wiz.FinishPage.main_text=<html>Herzlichen Gl\u00FCckwunsch, die grundlegenden Einstellungen von DS Workbench ist nun abgeschlossen. Mit einem Klick auf <b>Fertig</b> wird DS Workbench mit den gew\u00E4hlten Einstellungen gestartet. M\u00F6chtest du daran noch etwas \u00E4ndern, so kannst du entweder \u00FCber <b>Zur\u00FCck</b> auf die entsprechende Seite wechseln, oder sp\u00E4ter direkt in DS Workbench im Hauptmen\u00FC, welches im unteren Bild zu erkennen ist, auf alle Einstellungen zugreifen.</html>
 
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.points=Punkte
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.owner=Besitzer
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.killedOff=Besiegte Gegner (Off)
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.killedDef=Besiegte Gegner (Deff)
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.rank=Platz
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.ally=Stamm
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.moral=Moral
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.bonus=Bonus
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.tags=Tags
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.lastReport=Letzter Bericht
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.lastFarm=Letzter Farmangriff
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.noInformation=Keine Informationen
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.resInStorage=Rohstoffe im Speicher
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.conquerAt=Erobert am
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.acceptance=Zustimmung
+de.tor.tribes.util.html.VillageHTMLTooltipGenerator.farm=Bauernhof
+
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.attWon=Der Angreifer hat gewonnen
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.defWon=Der Verteidiger hat gewonnen
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.luckFromAtt=Gl&uuml;ck (aus Sicht des Angreifers)
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.wall=Wall
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.damageFrom=besch&auml;digt von Level
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.damageTo=auf Level
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.acceptanceFrom=Zustimmung gesunken von
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.acceptanceTo=auf
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.amount=Anzahl
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.loss=Verluste
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.survivers=&Uuml;berlebende
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopsHidden=Durch den Besitzer des Berichts verborgen
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopsDead=Keiner deiner Kämpfer ist lebend zurückgekehrt.<BR/>Es konnten keine Informationen über die Truppenstärke des Gegners erlangt werden.
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troupOnTheWay=Truppen des Verteidigers, die unterwegs waren
+de.tor.tribes.util.html.FightReportHTMLToolTipGenerator.troopOutside=Truppen ausserhalb
+

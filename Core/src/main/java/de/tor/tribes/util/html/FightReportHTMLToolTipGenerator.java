@@ -22,6 +22,8 @@ import de.tor.tribes.types.ext.Village;
 import de.tor.tribes.util.BuildingSettings;
 import de.tor.tribes.util.EscapeChars;
 import de.tor.tribes.util.TimeManager;
+import de.tor.tribes.util.translation.TranslationManager;
+import de.tor.tribes.util.translation.Translator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,6 +41,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class FightReportHTMLToolTipGenerator {
     private final static Logger logger = LogManager.getLogger("FightReportHTMLToolTipGenerator");
+    private static Translator tans = TranslationManager.getTranslator("de.tor.tribes.util.html.FightReportHTMLToolTipGenerator");
 
     private final static String WINNER_STRING = "$WINNER_STRING";
     private final static String SEND_TIME = "$SEND_TIME";
@@ -89,12 +92,12 @@ public class FightReportHTMLToolTipGenerator {
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMinimumFractionDigits(0);
         nf.setMaximumFractionDigits(0);
-        res = res.replace(WINNER_STRING, ((pReport.isWon() ? "Der Angreifer hat gewonnen" : "Der Verteidiger hat gewonnen")));
+        res = res.replace(WINNER_STRING, ((pReport.isWon() ? tans.get("attWon") : tans.get("defWon"))));
         res = res.replace(SEND_TIME, f.format(new Date(pReport.getTimestamp())));
         res = res.replace(ATTACKER_TABLE, tables[0]);
         res = res.replace(DEFENDER_TABLE, tables[1]);
         res = res.replace(MISC_TABLES, buildMiscTables(pReport));
-        res = res.replace(LUCK_STRING, "Gl&uuml;ck (aus Sicht des Angreifers)");
+        res = res.replace(LUCK_STRING, tans.get("luckFromAtt"));
         res = res.replace(LUCK_BAR, buildLuckBar(pReport.getLuck()));
         res = res.replace(MORAL, nf.format(pReport.getMoral()) + "%");
         nf.setMinimumFractionDigits(1);
@@ -107,9 +110,9 @@ public class FightReportHTMLToolTipGenerator {
         res = res.replace(SOURCE, EscapeChars.forHTML(pReport.getSourceVillage().getFullName()));
         res = res.replace(DEFENDER, EscapeChars.forHTML(pReport.getDefender().getName()));
         res = res.replace(TARGET, EscapeChars.forHTML(pReport.getTargetVillage().getFullName()));
-        res = res.replace(RAM_DAMAGE, ((pReport.wasWallDamaged()) ? "Wall besch&auml;digt von Level <b>" + pReport.getWallBefore() + "</b> auf Level <b>" + pReport.getWallAfter() + "</b>" : ""));
-        res = res.replace(CATA_DAMAGE, ((pReport.wasBuildingDamaged()) ? BuildingSettings.BUILDING_NAMES[pReport.getAimedBuildingId()]+ " besch&auml;digt von Level <b>" + pReport.getBuildingBefore() + "</b> auf Level <b>" + pReport.getBuildingAfter() + "</b>" : ""));
-        res = res.replace(SNOB_INFLUENCE, ((pReport.wasSnobAttack()) ? "Zustimmung gesunken von <b>" + pReport.getAcceptanceBefore() + "</b> auf <b>" + pReport.getAcceptanceAfter() + "</b>" : ""));
+        res = res.replace(RAM_DAMAGE, ((pReport.wasWallDamaged()) ? tans.get("wall") + " " + tans.get("damageFrom") + " <b>" + pReport.getWallBefore() + "</b> " + tans.get("damageTo") + " <b>" + pReport.getWallAfter() + "</b>" : ""));
+        res = res.replace(CATA_DAMAGE, ((pReport.wasBuildingDamaged()) ? BuildingSettings.BUILDING_NAMES[pReport.getAimedBuildingId()]+ " " + tans.get("damageFrom") + " <b>" + pReport.getBuildingBefore() + "</b> " + tans.get("damageTo") + " <b>" + pReport.getBuildingAfter() + "</b>" : ""));
+        res = res.replace(SNOB_INFLUENCE, ((pReport.wasSnobAttack()) ? tans.get("acceptanceFrom") + " <b>" + pReport.getAcceptanceBefore() + "</b> " + tans.get("acceptanceTo") + " <b>" + pReport.getAcceptanceAfter() + "</b>" : ""));
 
         return res;
     }
@@ -123,12 +126,12 @@ public class FightReportHTMLToolTipGenerator {
         bDefender.append("<tr>");
 
         String headerRow = "<td width=\"100\">&nbsp;</td>";
-        String attackerAmountRow = "<tr><td width=\"100\"><div align=\"center\">Anzahl:</div></td>";
-        String defenderAmountRow = "<tr><td width=\"100\"><div align=\"center\">Anzahl:</div></td>";
-        String attackerLossRow = "<tr><td width=\"100\"><div align=\"center\">Verluste:</div></td>";
-        String defenderLossRow = "<tr><td width=\"100\"><div align=\"center\">Verluste:</div></td>";
-        String attackerSurviveRow = "<tr><td width=\"100\"><div align=\"center\">&Uuml;berlebende:</div></td>";
-        String defenderSurviveRow = "<tr><td width=\"100\"><div align=\"center\">&Uuml;berlebende:</div></td>";
+        String attackerAmountRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("amount") + ":</div></td>";
+        String defenderAmountRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("amount") + ":</div></td>";
+        String attackerLossRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("loss") + ":</div></td>";
+        String defenderLossRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("loss") + ":</div></td>";
+        String attackerSurviveRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("survivers") + ":</div></td>";
+        String defenderSurviveRow = "<tr><td width=\"100\"><div align=\"center\">" + tans.get("survivers") + ":</div></td>";
         for (UnitHolder unit : DataHolder.getSingleton().getUnits()) {
             headerRow += "<td><img src=\"" + FightReportHTMLToolTipGenerator.class.getResource("/res/ui/" + unit.getPlainName() + ".png") + "\"</td>";
             int amount = pReport.getAttackers().getAmountForUnit(unit);
@@ -178,10 +181,10 @@ public class FightReportHTMLToolTipGenerator {
 
         bAttacker.append(headerRow);
         if (pReport.areAttackersHidden()) {
-            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">Anzahl:</div></td>");
-            bAttacker.append("<td colspan=\"12\" rowspan=\"3\" ><div align=\"center\" valign=\"center\">Durch den Besitzer des Berichts verborgen</div></td></tr>");
-            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">Verluste:</div></td></tr>");
-            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">&Uuml;berlebende:</div></td></tr>");
+            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("amount") + ":</div></td>");
+            bAttacker.append("<td colspan=\"12\" rowspan=\"3\" ><div align=\"center\" valign=\"center\">" + tans.get("troopsHidden") + "</div></td></tr>");
+            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("loss") + ":</div></td></tr>");
+            bAttacker.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("survivers") + ":</div></td></tr>");
         } else {
             bAttacker.append(attackerAmountRow);
             bAttacker.append(attackerLossRow);
@@ -190,10 +193,10 @@ public class FightReportHTMLToolTipGenerator {
         bAttacker.append("</table>");
 
         if (pReport.wasLostEverything()) {
-            bDefender.append("<tr><td width=\"100\"><div align=\"center\">Anzahl:</div></td>");
-            bDefender.append("<td colspan=\"12\" rowspan=\"3\" ><div align=\"center\" valign=\"center\">Keiner deiner Kämpfer ist lebend zurückgekehrt.<BR/>Es konnten keine Informationen über die Truppenstärke des Gegners erlangt werden.</div></td></tr>");
-            bDefender.append("<tr><td width=\"100\"><div align=\"center\">Verluste:</div></td></tr>");
-            bDefender.append("<tr><td width=\"100\"><div align=\"center\">&Uuml;berlebende:</div></td></tr>");
+            bDefender.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("amount") + ":</div></td>");
+            bDefender.append("<td colspan=\"12\" rowspan=\"3\" ><div align=\"center\" valign=\"center\">" + tans.get("troopsDead") + "</div></td></tr>");
+            bDefender.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("loss") + ":</div></td></tr>");
+            bDefender.append("<tr><td width=\"100\"><div align=\"center\">" + tans.get("survivers") + ":</div></td></tr>");
 
         } else {
             bDefender.append(headerRow);
@@ -245,7 +248,7 @@ public class FightReportHTMLToolTipGenerator {
 
         onTheWayTable += "</table>";
         res = "<tr>";
-        res += "<td colspan=\"5\"><b>Truppen des Verteidigers, die unterwegs waren:</td>";
+        res += "<td colspan=\"5\"><b>" + tans.get("troupOnTheWay") + ":</td>";
         res += "</tr>";
         res += "<tr>";
         res += "<td colspan=\"5\">";
@@ -277,7 +280,7 @@ public class FightReportHTMLToolTipGenerator {
             }
 
             res += "<tr>";
-            res += "<td colspan=\"5\"><b>Truppen ausserhalb:</td>";
+            res += "<td colspan=\"5\"><b>" + tans.get("troopOutside") + ":</td>";
             res += "</tr>";
             res += "<tr>";
             res += "<td colspan=\"5\">";
