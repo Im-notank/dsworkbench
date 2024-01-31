@@ -32,6 +32,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -56,6 +57,7 @@ public class MovementParser implements SilentParserInterface {
         Boolean insideOfTable = false;
         int rowsTODO = -1;
         int movementType;
+        int currentYear = Calendar.getInstance(ParserVariableManager.getSingleton().getDateLocale()).get(Calendar.YEAR);
         
         while (lineTok.hasMoreElements()) {
             //parse single line for village
@@ -136,14 +138,24 @@ public class MovementParser implements SilentParserInterface {
                 }
 
                 boolean useMillis = ServerSettings.getSingleton().isMillisArrival();
-                SimpleDateFormat dateFormat;
+                String movementFormat;
                 if (!useMillis) {
-                    dateFormat = new SimpleDateFormat(getVariable("movement.date.format"), ParserVariableManager.getSingleton().getDateLocale());
+                    movementFormat = getVariable("movement.date.format");
                 } else {
-                    dateFormat = new SimpleDateFormat(getVariable("movement.date.format.ms"), ParserVariableManager.getSingleton().getDateLocale());
+                    movementFormat = getVariable("movement.date.format.ms");
                 }
+                SimpleDateFormat dateFormat = new SimpleDateFormat(movementFormat, ParserVariableManager.getSingleton().getDateLocale());
+                boolean containsYear = movementFormat.contains("y") || movementFormat.contains("Y");
+
                 try {
-                    parsed.setArriveTime(dateFormat.parse(parts[2]));
+                    Date arrive = dateFormat.parse(parts[2]);
+                    if(!containsYear) {
+                        Calendar c = Calendar.getInstance(ParserVariableManager.getSingleton().getDateLocale());
+                        c.setTime(arrive);
+                        c.set(Calendar.YEAR, currentYear);
+                        arrive = c.getTime();
+                    }
+                    parsed.setArriveTime(arrive);
                 }catch(Exception e) {
                     logger.warn("Exception during parsing the Date '" + parts[2] + "'", e);
                     continue;
